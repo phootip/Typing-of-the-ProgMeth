@@ -11,10 +11,14 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import model.IRenderable;
 import model.InputHolder;
+import model.MenuText;
+import model.RenderableHolder;
 
 public class MenuScreen extends StackPane{
 	
+	public static MenuScreen instance;
 	private Canvas canvas;
 	private GraphicsContext gc;
 	private Font font = Font.font("Cloud", FontWeight.LIGHT, 40);
@@ -27,25 +31,31 @@ public class MenuScreen extends StackPane{
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
 		
-		paintHomeMenu();
+		addHomeMenu();
+		
+		for(IRenderable i : RenderableHolder.instance.getEntities()){
+			i.draw(gc);
+		}
+		
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run(){
+				for(IRenderable i: RenderableHolder.instance.getEntities()){
+					
+				}
+			}
+		});
 		
 		this.getChildren().add(canvas);
 	}
 	
-	private void paintHomeMenu(){
+	private void addHomeMenu(){
 		//Paint Home Menu
 		gc.setFont(font);
 		this.gc.setFill(Color.WHITE);
-		FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
-		
-		double font_width = fontLoader.computeStringWidth("START", gc.getFont());
-		gc.fillText("START", ConfigOption.width/2-font_width/2, ConfigOption.height/2);
-
-		font_width = fontLoader.computeStringWidth("OPTION", gc.getFont());
-		gc.fillText("OPTION", ConfigOption.width/2-font_width/2, ConfigOption.height/2+100);		
-		
-		font_width = fontLoader.computeStringWidth("Exit", gc.getFont());
-		gc.fillText("Exit", ConfigOption.width/2-font_width/2, ConfigOption.height/2+200);
+		RenderableHolder.instance.add(new MenuText("START",0,gc));
+		RenderableHolder.instance.add(new MenuText("OPTION",1,gc));
+		RenderableHolder.instance.add(new MenuText("EXIT",2,gc));
 		
 		//Event Handler Hovering Menu
 		this.canvas.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -69,7 +79,14 @@ public class MenuScreen extends StackPane{
 				if(InputHolder.mouseOnScreen){
 					InputHolder.mouseX = event.getX();
 					InputHolder.mouseY = event.getY();
-					if()
+					for(IRenderable i: RenderableHolder.instance.getEntities()){
+						if(i.isFocused()){
+							((MenuText) i).drawFocus(gc);
+						}
+						else{
+							i.draw(gc);
+						}
+					}
 				}
 			}
 		});
@@ -84,5 +101,9 @@ public class MenuScreen extends StackPane{
 				}
 			}
 		});
+	}
+	
+	public GraphicsContext getGc(){
+		return this.gc;
 	}
 }

@@ -6,4 +6,6 @@ public interface IRenderable {
 	int getZ();
 	void draw(GraphicsContext gc);
 	boolean isDestroy();
+	boolean isFocused();
+	void setFocus(boolean isfouced);
 }
