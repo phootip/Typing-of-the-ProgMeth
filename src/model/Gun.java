@@ -1,17 +1,25 @@
 package model;
 
+import holder.IRenderable;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 
-public class Gun implements IRenderable{
+public class Gun extends Entity{
+
+	public Gun(int x, int y) {
+		super(x, y);
+		this.z = Integer.MAX_VALUE-10;
+	}
 
 	@Override
 	public int getZ() {
-		return 0;
+		return z;
 	}
 
 	@Override
 	public void draw(GraphicsContext gc) {
-		
+		Image img = new Image(ClassLoader.getSystemResource("pic/gun.png").toString());
+		gc.drawImage(img, x, y);
 	}
 
 	@Override
@@ -27,6 +35,11 @@ public class Gun implements IRenderable{
 	@Override
 	public void setFocus(boolean isfouced) {
 		
+	}
+
+	@Override
+	public boolean inHitBox() {
+		return false;
 	}
 
 }

@@ -3,6 +3,9 @@ package ui;
 import com.sun.javafx.tk.FontLoader;
 import com.sun.javafx.tk.Toolkit;
 
+import holder.IRenderable;
+import holder.InputHolder;
+import holder.RenderableHolder;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -11,10 +14,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import model.IRenderable;
-import model.InputHolder;
+import model.Gun;
 import model.MenuText;
-import model.RenderableHolder;
 
 public class MenuScreen extends StackPane{
 	
@@ -32,6 +33,7 @@ public class MenuScreen extends StackPane{
 		gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
 		
 		addHomeMenu();
+		RenderableHolder.instance.add(new Gun(1000,600));
 		
 		for(IRenderable i : RenderableHolder.instance.getEntities()){
 			i.draw(gc);
@@ -80,12 +82,17 @@ public class MenuScreen extends StackPane{
 					InputHolder.mouseX = event.getX();
 					InputHolder.mouseY = event.getY();
 					for(IRenderable i: RenderableHolder.instance.getEntities()){
-						if(i.isFocused()){
+						if(i.inHitBox() && i instanceof MenuText){
+							i.setFocus(true);
+							((MenuText) i).drawFocus(gc);
+							for(IRenderable j: RenderableHolder.instance.getEntities()){
+								if(!i.equals(j))j.setFocus(false);
+							}
+						}
+						else if(i.isFocused()){
 							((MenuText) i).drawFocus(gc);
 						}
-						else{
-							i.draw(gc);
-						}
+						else i.draw(gc);
 					}
 				}
 			}

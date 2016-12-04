@@ -3,6 +3,9 @@ package model;
 import com.sun.javafx.tk.FontLoader;
 import com.sun.javafx.tk.Toolkit;
 
+import holder.IRenderable;
+import holder.InputHolder;
+import holder.RenderableHolder;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import ui.ConfigOption;
@@ -52,18 +55,7 @@ public class MenuText implements IRenderable{
 
 	@Override
 	public boolean isFocused() {
-		if(InputHolder.mouseX >= x-20 && 
-				InputHolder.mouseX <= x+font_width+20 &&
-				InputHolder.mouseY >= y-font_height-20 &&
-				InputHolder.mouseY <= y+20){
-			for(IRenderable i: RenderableHolder.instance.getEntities()){
-				if(!i.equals(this)){
-					i.setFocus(false);
-				}
-				else i.setFocus(true);
-			}
-		}
-		return this.isfocused;
+		return isfocused;
 	}
 	
 	@Override
@@ -71,6 +63,17 @@ public class MenuText implements IRenderable{
 		this.isfocused = isfocused;
 	}
 
+	@Override
+	public boolean inHitBox(){
+		if(InputHolder.mouseX >= x-20 && 
+				InputHolder.mouseX <= x+font_width+20 &&
+				InputHolder.mouseY >= y-font_height-20 &&
+				InputHolder.mouseY <= y+20){
+			return true;
+		}
+		else return false;
+	}
+	
 	public String getName(){
 		return name;
 	}
