@@ -11,4 +11,12 @@ public class ThreadHolder {
 	public List<Thread> getThreads(){
 		return threads;
 	}
+	
+	public void add(Thread t){
+		threads.add(t);
+	}
+	
+	public void remove(Thread t){
+		threads.remove(t);
+	}
 }

@@ -9,4 +9,9 @@ public class InputHolder {
 	public static boolean mouseLeftDownTrigger;
 	public static ArrayList<String> keyPressed = new ArrayList<>();
 	public static ArrayList<String> keyTriggered = new ArrayList<>();
+	
+	public static void postUpdate(){
+		mouseLeftDownTrigger = false;
+		keyTriggered.clear();
+	}
 }

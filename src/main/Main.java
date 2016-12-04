@@ -2,6 +2,9 @@ package main;
 
 import java.util.ArrayList;
 
+import holder.IRenderable;
+import holder.RenderableHolder;
+import holder.ThreadHolder;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -10,9 +13,11 @@ import ui.MenuScreen;
 
 public class Main extends Application {
 	
-	public static Main instance;
+	public static Main instance = new Main();
 	private Scene menuScene;
 	private Scene gameScene;
+	private static Stage stage;
+	private static String scene_count; // indicate what scene to be shown.
 	
 	public static ArrayList<Integer> test1 = new ArrayList<Integer>();
 	public static void main(String[] args) {
@@ -20,10 +25,26 @@ public class Main extends Application {
 	}
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		this.menuScene = new Scene(new MenuScreen());
+		this.stage = primaryStage;
+		scene_count = "menuScene";
+		this.menuScene = new Scene(MenuScreen.instance);
+		
+		MenuScreen.instance.initailizeHomeMenu();
+		
 		primaryStage.setScene(this.menuScene);
 		primaryStage.setTitle("Typing of the Progmeth");
 		primaryStage.show();
+		
+		for(Thread t : ThreadHolder.instance.getThreads()){
+			t.start();
+		}
 	}
-
+	
+	public Stage getStage(){
+		return stage;
+	}
+	
+	public String getScene(){
+		return scene_count;
+	}
 }

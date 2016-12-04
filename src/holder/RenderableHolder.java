@@ -39,12 +39,20 @@ public class RenderableHolder {
 		sort();
 	}
 	
+	//remove
+	public void remove(int index){
+		entities.remove(index);
+	}
+	public void removeAll(){
+		entities.clear();
+	}
+	
 	
 	//getter
-	public RenderableHolder getInstance(){
+	public synchronized RenderableHolder getInstance(){
 		return instance;
 	}
-	public List<IRenderable> getEntities(){
+	public synchronized List<IRenderable> getEntities(){
 		return entities;
 	}
 }

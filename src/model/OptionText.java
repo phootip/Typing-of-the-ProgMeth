@@ -6,29 +6,28 @@ import com.sun.javafx.tk.Toolkit;
 import holder.ConfigOption;
 import holder.IRenderable;
 import holder.InputHolder;
-import holder.RenderableHolder;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import ui.MenuScreen;
 
-public class MenuText implements IRenderable{
+public class OptionText implements IRenderable{
 
 	private String name;
+	private String value;
 	private int order;
 	private double font_width;
 	private double font_height;
 	private double x;
 	private double y;
 	private boolean isfocused;
-	private int c=0;
-	public MenuText(String name,int order,GraphicsContext gc){
+	public OptionText(String name,String value,int order,GraphicsContext gc){
 		this.name = name;
+		this.value = value;
 		this.order = order;
 		FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
-		this.font_width = fontLoader.computeStringWidth(name, gc.getFont());
+		this.font_width = fontLoader.computeStringWidth(value, gc.getFont());
 		this.font_height = fontLoader.getFontMetrics(gc.getFont()).getLineHeight();
-		this.x = ConfigOption.width/2-font_width/2;
-		this.y = ConfigOption.height/2+font_height/2+order*100;
+		this.x = ConfigOption.width*5/6-font_width;
+		this.y = 100+font_height/2+order*100;
 		this.isfocused = false;
 	}
 	
@@ -40,20 +39,15 @@ public class MenuText implements IRenderable{
 	@Override
 	public void draw(GraphicsContext gc) {
 		gc.setFill(Color.WHITE);
-		gc.fillText(name, x,y);
+		gc.fillText(name, 200,y);
+		gc.fillText(value, x, y);
 	}
 	
-	public void drawFocus(GraphicsContext gc){
-		if(c<3){
-			gc.setFill(Color.YELLOW);
-			c++;
-		}
-		else if(c<6){
-			c++;
-			gc.setFill(Color.WHITE);
-		}
-		else c=0;
+	public void drawFocus(GraphicsContext gc,double op){
+		gc.setFill(Color.YELLOW);
+		gc.setGlobalAlpha(op);
 		gc.fillText(name, x, y);
+		gc.setGlobalAlpha(1.0);
 	}
 
 	@Override
@@ -88,5 +82,4 @@ public class MenuText implements IRenderable{
 	public int getOrder(){
 		return order;
 	}
-	
 }
