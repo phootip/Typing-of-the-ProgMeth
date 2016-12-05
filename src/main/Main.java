@@ -35,9 +35,8 @@ public class Main extends Application {
 		primaryStage.setTitle("Typing of the Progmeth");
 		primaryStage.show();
 		
-		for(Thread t : ThreadHolder.instance.getThreads()){
-			t.start();
-		}
+		ThreadHolder.instance.getThreads().get(0).start();
+		
 	}
 	
 	public Stage getStage(){
@@ -46,5 +45,8 @@ public class Main extends Application {
 	
 	public String getScene(){
 		return scene_count;
+	}
+	public void setScene(String s){
+		scene_count = s;
 	}
 }

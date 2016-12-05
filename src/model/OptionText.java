@@ -15,18 +15,21 @@ public class OptionText implements IRenderable{
 	private String value;
 	private int order;
 	private double font_width;
+	private double font_width2;
 	private double font_height;
 	private double x;
 	private double y;
 	private boolean isfocused;
+	private int c=0;
 	public OptionText(String name,String value,int order,GraphicsContext gc){
 		this.name = name;
 		this.value = value;
 		this.order = order;
 		FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
-		this.font_width = fontLoader.computeStringWidth(value, gc.getFont());
+		this.font_width = fontLoader.computeStringWidth(name, gc.getFont());
+		this.font_width2 = fontLoader.computeStringWidth(value, gc.getFont());
 		this.font_height = fontLoader.getFontMetrics(gc.getFont()).getLineHeight();
-		this.x = ConfigOption.width*5/6-font_width;
+		this.x = ConfigOption.width*5/6-font_width2;
 		this.y = 100+font_height/2+order*100;
 		this.isfocused = false;
 	}
@@ -43,11 +46,17 @@ public class OptionText implements IRenderable{
 		gc.fillText(value, x, y);
 	}
 	
-	public void drawFocus(GraphicsContext gc,double op){
-		gc.setFill(Color.YELLOW);
-		gc.setGlobalAlpha(op);
-		gc.fillText(name, x, y);
-		gc.setGlobalAlpha(1.0);
+	public void drawFocus(GraphicsContext gc){
+		if(c<3){
+			gc.setFill(Color.YELLOW);
+			c++;
+		}
+		else if(c<6){
+			c++;
+			gc.setFill(Color.WHITE);
+		}
+		else c=0;
+		gc.fillText(name, 200, y);
 	}
 
 	@Override
@@ -67,8 +76,8 @@ public class OptionText implements IRenderable{
 
 	@Override
 	public boolean inHitBox(){
-		if(InputHolder.mouseX >= x-20 && 
-				InputHolder.mouseX <= x+font_width+20 &&
+		if(InputHolder.mouseX >= 200-20 && 
+				InputHolder.mouseX <= 200+font_width+20 &&
 				InputHolder.mouseY >= y-font_height-20 &&
 				InputHolder.mouseY <= y+20){
 			return true;

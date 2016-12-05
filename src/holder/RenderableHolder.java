@@ -40,19 +40,19 @@ public class RenderableHolder {
 	}
 	
 	//remove
-	public void remove(int index){
+	public synchronized void remove(int index){
 		entities.remove(index);
 	}
-	public void removeAll(){
+	public synchronized void removeAll(){
 		entities.clear();
 	}
 	
 	
 	//getter
-	public synchronized RenderableHolder getInstance(){
+	public RenderableHolder getInstance(){
 		return instance;
 	}
-	public synchronized List<IRenderable> getEntities(){
+	public List<IRenderable> getEntities(){
 		return entities;
 	}
 }

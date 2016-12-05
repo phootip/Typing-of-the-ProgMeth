@@ -43,11 +43,11 @@ public class MenuScreen extends StackPane{
 			@Override
 			public void run(){
 				while(Main.instance.getScene()=="menuScene"){
-					for(IRenderable i: RenderableHolder.instance.getEntities()){
-						if(i.isFocused()){
-							((MenuText) i).drawFocus(gc);
+					for(int i=RenderableHolder.instance.getEntities().size()-1;i>-1;i--){
+						if(RenderableHolder.instance.getEntities().get(i).isFocused()){
+							((MenuText) RenderableHolder.instance.getEntities().get(i)).drawFocus(gc);
 						}
-						else i.draw(gc);
+						else RenderableHolder.instance.getEntities().get(i).draw(gc);
 						try {
 							Thread.sleep(17);
 						} catch (InterruptedException e) {
@@ -57,31 +57,26 @@ public class MenuScreen extends StackPane{
 				}
 			}
 		}));
-//		ThreadHolder.instance.add(new Thread(new Runnable() {
-//			@Override
-//			public void run(){
-//				while(Main.instance.getScene()=="menuScene"){
-//					if(InputHolder.mouseLeftDownTrigger){
-//						for(IRenderable i: RenderableHolder.instance.getEntities()){
-//							if(i.isFocused()){
-//								String name = ((MenuText) i).getName();
-//								//click EXIT
-//								if(name == "EXIT"){
-//									System.out.println("EXIT");
-//									Main.instance.getStage().close();
-//								}
-//								//click Option
-//								if(name == "OPTION"){
-//									System.out.println("OPTION");
-//									RenderableHolder.instance.removeAll();
-//								}
-//							}
-//						}
-//					}
-//					InputHolder.postUpdate();
-//				}
-//			}
-//		}));
+		ThreadHolder.instance.add(new Thread(new Runnable() {
+			@Override
+			public void run(){
+				RenderableHolder.instance.removeAll();
+				initializeOptionScreen();
+				while(Main.instance.getScene()=="optionScene"){
+					for(int i=RenderableHolder.instance.getEntities().size()-1;i>-1;i--){
+						if(RenderableHolder.instance.getEntities().get(i).isFocused()){
+							((OptionText) RenderableHolder.instance.getEntities().get(i)).drawFocus(gc);
+						}
+						else RenderableHolder.instance.getEntities().get(i).draw(gc);
+						try {
+							Thread.sleep(17);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}));
 		this.getChildren().add(canvas);
 	}
 	
@@ -117,7 +112,7 @@ public class MenuScreen extends StackPane{
 					InputHolder.mouseX = event.getX();
 					InputHolder.mouseY = event.getY();
 					for(IRenderable i: RenderableHolder.instance.getEntities()){
-						if(i.inHitBox() && i instanceof MenuText){
+						if(i.inHitBox() && (i instanceof MenuText || i instanceof OptionText)){
 							i.setFocus(true);
 							for(IRenderable j: RenderableHolder.instance.getEntities()){
 								if(!i.equals(j))j.setFocus(false);
@@ -145,6 +140,31 @@ public class MenuScreen extends StackPane{
 				if (event.getButton().toString() == "PRIMARY") {
 					if(InputHolder.mouseLeftDown == false){
 						InputHolder.mouseLeftDownTrigger = true;
+						for(int i=RenderableHolder.instance.getEntities().size()-1;i>-1;i--){
+							if(RenderableHolder.instance.getEntities().get(i).isFocused()){
+								String name;
+								if(RenderableHolder.instance.getEntities().get(i) instanceof MenuText){
+									name = ((MenuText)RenderableHolder.instance.getEntities().get(i)).getName();
+								}
+								else name = ((OptionText)RenderableHolder.instance.getEntities().get(i)).getName();
+								//click EXIT
+								if(name == "EXIT"){
+									System.out.println("EXIT");
+									Main.instance.getStage().close();
+								}
+								//click Option
+								if(name == "OPTION"){
+									System.out.println("OPTION");
+									Main.instance.setScene("optionScene");
+									ThreadHolder.instance.getThreads().get(1).start();
+								}
+								//Health
+								if(name == "< HEALTH >"){
+									System.out.println("< HEALTH >");
+								}
+							}
+						}
+						InputHolder.postUpdate();
 					}
 					InputHolder.mouseLeftDown = true;
 				}
@@ -162,11 +182,14 @@ public class MenuScreen extends StackPane{
 	}
 	
 	public void initializeOptionScreen(){
+		//BackGround
+		gc.setFill(Color.BLACK);
+		gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
 		gc.setFont(font);
 		this.gc.setFill(Color.WHITE);
-		RenderableHolder.instance.add(new OptionText("Health",ConfigOption.health+"",0,gc));
-		RenderableHolder.instance.add(new OptionText("DIFICULTY",ConfigOption.dificulty,1,gc));
-		RenderableHolder.instance.add(new OptionText("SOUND","10",2,gc));
+		RenderableHolder.instance.add(new OptionText("< HEALTH >",ConfigOption.health+"",0,gc));
+		RenderableHolder.instance.add(new OptionText("< DIFICULTY >",ConfigOption.dificulty,1,gc));
+		RenderableHolder.instance.add(new OptionText("< SOUND >","10",2,gc));
 	}
 	
 	public GraphicsContext getGc(){
