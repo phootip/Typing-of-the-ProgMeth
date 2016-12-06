@@ -19,4 +19,7 @@ public class ThreadHolder {
 	public void remove(Thread t){
 		threads.remove(t);
 	}
+	public void removeAll(){
+		threads.clear();
+	}
 }

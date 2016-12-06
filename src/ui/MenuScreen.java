@@ -22,6 +22,7 @@ import model.BackGround;
 import model.Gun;
 import model.MenuText;
 import model.OptionText;
+import model.Text;
 
 public class MenuScreen extends StackPane{
 	
@@ -34,54 +35,16 @@ public class MenuScreen extends StackPane{
 		this.canvas = new Canvas(ConfigOption.width,ConfigOption.height);
 		gc = this.canvas.getGraphicsContext2D();
 		
-		//BackGround
-		gc.setFill(Color.BLACK);
-		gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
+		addListener();
+		addMenuThread();
 		
-		// still can't blink
-		ThreadHolder.instance.add(new Thread(new Runnable() {
-			@Override
-			public void run(){
-				while(Main.instance.getScene()=="menuScene"){
-					for(int i=RenderableHolder.instance.getEntities().size()-1;i>-1;i--){
-						if(RenderableHolder.instance.getEntities().get(i).isFocused()){
-							((MenuText) RenderableHolder.instance.getEntities().get(i)).drawFocus(gc);
-						}
-						else RenderableHolder.instance.getEntities().get(i).draw(gc);
-						try {
-							Thread.sleep(17);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}
-				}
-			}
-		}));
-		ThreadHolder.instance.add(new Thread(new Runnable() {
-			@Override
-			public void run(){
-				RenderableHolder.instance.removeAll();
-				initializeOptionScreen();
-				while(Main.instance.getScene()=="optionScene"){
-					for(int i=RenderableHolder.instance.getEntities().size()-1;i>-1;i--){
-						if(RenderableHolder.instance.getEntities().get(i).isFocused()){
-							((OptionText) RenderableHolder.instance.getEntities().get(i)).drawFocus(gc);
-						}
-						else RenderableHolder.instance.getEntities().get(i).draw(gc);
-						try {
-							Thread.sleep(17);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}
-				}
-			}
-		}));
 		this.getChildren().add(canvas);
 	}
 	
-	public void initailizeHomeMenu(){
+	public void initializeHomeMenu(){
 		//Paint Home Menu
+		gc.setFill(Color.BLACK);
+		gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
 		gc.setFont(font);
 		this.gc.setFill(Color.WHITE);
 		RenderableHolder.instance.add(new MenuText("START",0,gc));
@@ -89,96 +52,6 @@ public class MenuScreen extends StackPane{
 		RenderableHolder.instance.add(new MenuText("EXIT",2,gc));
 		RenderableHolder.instance.add(new Gun(1000,600));
 		
-		//Event Handler Hovering Menu
-		this.canvas.setOnMouseEntered(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				// TODO Auto-generated method stub
-				InputHolder.mouseOnScreen = true;
-			}
-		});
-		
-		this.canvas.setOnMouseExited(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event){
-				InputHolder.mouseOnScreen = false;
-			}
-		});
-		
-		this.canvas.setOnMouseMoved(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event){
-				if(InputHolder.mouseOnScreen){
-					InputHolder.mouseX = event.getX();
-					InputHolder.mouseY = event.getY();
-					for(IRenderable i: RenderableHolder.instance.getEntities()){
-						if(i.inHitBox() && (i instanceof MenuText || i instanceof OptionText)){
-							i.setFocus(true);
-							for(IRenderable j: RenderableHolder.instance.getEntities()){
-								if(!i.equals(j))j.setFocus(false);
-							}
-						}
-					}
-				}
-			}
-		});
-		
-		this.canvas.setOnMouseDragged(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event){
-				if(InputHolder.mouseOnScreen){
-					InputHolder.mouseX = event.getX();
-					InputHolder.mouseY = event.getY();
-					
-				}
-			}
-		});
-		
-		this.canvas.setOnMousePressed(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				if (event.getButton().toString() == "PRIMARY") {
-					if(InputHolder.mouseLeftDown == false){
-						InputHolder.mouseLeftDownTrigger = true;
-						for(int i=RenderableHolder.instance.getEntities().size()-1;i>-1;i--){
-							if(RenderableHolder.instance.getEntities().get(i).isFocused()){
-								String name;
-								if(RenderableHolder.instance.getEntities().get(i) instanceof MenuText){
-									name = ((MenuText)RenderableHolder.instance.getEntities().get(i)).getName();
-								}
-								else name = ((OptionText)RenderableHolder.instance.getEntities().get(i)).getName();
-								//click EXIT
-								if(name == "EXIT"){
-									System.out.println("EXIT");
-									Main.instance.getStage().close();
-								}
-								//click Option
-								if(name == "OPTION"){
-									System.out.println("OPTION");
-									Main.instance.setScene("optionScene");
-									ThreadHolder.instance.getThreads().get(1).start();
-								}
-								//Health
-								if(name == "< HEALTH >"){
-									System.out.println("< HEALTH >");
-								}
-							}
-						}
-						InputHolder.postUpdate();
-					}
-					InputHolder.mouseLeftDown = true;
-				}
-			}
-		});
-		
-		this.canvas.setOnMouseReleased(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				if (event.getButton().toString() == "PRIMARY") {
-					InputHolder.mouseLeftDown = false;
-				}
-			}
-		});
 	}
 	
 	public void initializeOptionScreen(){
@@ -190,9 +63,170 @@ public class MenuScreen extends StackPane{
 		RenderableHolder.instance.add(new OptionText("< HEALTH >",ConfigOption.health+"",0,gc));
 		RenderableHolder.instance.add(new OptionText("< DIFICULTY >",ConfigOption.dificulty,1,gc));
 		RenderableHolder.instance.add(new OptionText("< SOUND >","10",2,gc));
+		RenderableHolder.instance.add(new MenuText("BACK",3,gc));
 	}
 	
 	public GraphicsContext getGc(){
 		return this.gc;
+	}
+	
+	private void addMenuThread(){
+		// Menu Thread
+			ThreadHolder.instance.add(new Thread(new Runnable() {
+				@Override
+				public void run(){
+					RenderableHolder.instance.removeAll();
+					initializeHomeMenu();
+					while(Main.instance.getScene()=="menuScene"){
+						for(int i=0;i<RenderableHolder.instance.getEntities().size();i++){
+							if(RenderableHolder.instance.getEntities().get(i).isFocused()){
+								((Text) RenderableHolder.instance.getEntities().get(i)).drawFocus(gc);
+							}
+							else RenderableHolder.instance.getEntities().get(i).draw(gc);
+							try {
+								Thread.sleep(17);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
+					}
+				}
+			}));
+	}
+	private void addOptionThread(){
+			ThreadHolder.instance.add(new Thread(new Runnable() {
+				@Override
+				public void run(){
+					RenderableHolder.instance.removeAll();
+					initializeOptionScreen();
+					while(Main.instance.getScene()=="optionScene"){
+						for(int i=0;i<RenderableHolder.instance.getEntities().size();i++){
+							if(RenderableHolder.instance.getEntities().get(i).isFocused()){
+								((Text) RenderableHolder.instance.getEntities().get(i)).drawFocus(gc);
+							}
+							else RenderableHolder.instance.getEntities().get(i).draw(gc);
+							try {
+								Thread.sleep(17);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
+					}
+				}
+			}));
+	}
+	
+	private void addListener(){
+		//Event Handler Hovering Menu
+				this.canvas.setOnMouseEntered(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent event) {
+						// TODO Auto-generated method stub
+						InputHolder.mouseOnScreen = true;
+					}
+				});
+				
+				this.canvas.setOnMouseExited(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent event){
+						InputHolder.mouseOnScreen = false;
+					}
+				});
+				
+				this.canvas.setOnMouseMoved(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent event){
+						if(InputHolder.mouseOnScreen){
+							InputHolder.mouseX = event.getX();
+							InputHolder.mouseY = event.getY();
+							for(IRenderable i: RenderableHolder.instance.getEntities()){
+								if(i.inHitBox() && (i instanceof MenuText || i instanceof OptionText)){
+									i.setFocus(true);
+									for(IRenderable j: RenderableHolder.instance.getEntities()){
+										if(!i.equals(j))j.setFocus(false);
+									}
+								}
+							}
+						}
+					}
+				});
+				
+				this.canvas.setOnMouseDragged(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent event){
+						if(InputHolder.mouseOnScreen){
+							InputHolder.mouseX = event.getX();
+							InputHolder.mouseY = event.getY();
+							
+						}
+					}
+				});
+				
+				this.canvas.setOnMousePressed(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent event) {
+						if (event.getButton().toString() == "PRIMARY") {
+							if(InputHolder.mouseLeftDown == false){
+								InputHolder.mouseLeftDownTrigger = true;
+								for(int i=RenderableHolder.instance.getEntities().size()-1;i>-1;i--){
+									if(RenderableHolder.instance.getEntities().get(i).isFocused() && RenderableHolder.instance.getEntities().get(i).inHitBox()){
+										String name;
+										if(RenderableHolder.instance.getEntities().get(i) instanceof MenuText){
+											name = ((MenuText)RenderableHolder.instance.getEntities().get(i)).getName();
+										}
+										else name = ((OptionText)RenderableHolder.instance.getEntities().get(i)).getName();
+										//START
+										if(name == "START"){
+											System.out.println("START");
+										}
+										//click OPTION
+										if(name == "OPTION"){
+											System.out.println("OPTION");
+											Main.instance.setScene("optionScene");
+											ThreadHolder.instance.removeAll();
+											addOptionThread();
+											ThreadHolder.instance.getThreads().get(0).start();
+										}
+										//click EXIT
+										if(name == "EXIT"){
+											System.out.println("EXIT");
+											Main.instance.getStage().close();
+										}
+										//HEALTH
+										if(name == "< HEALTH >"){
+											System.out.println("< HEALTH >");
+											if(((OptionText)RenderableHolder.instance.getEntities().get(i)).inHitBoxRight()){
+												ConfigOption
+											}
+										}
+										//HEALTH
+										if(name == "HEALTH"){
+											System.out.println("HEALTH");
+										}
+										//BACK
+										if(name == "BACK"){
+											System.out.println("BACK");
+											Main.instance.setScene("menuScene");
+											ThreadHolder.instance.removeAll();
+											addMenuThread();
+											ThreadHolder.instance.getThreads().get(0).start();
+										}
+									}
+								}
+								InputHolder.postUpdate();
+							}
+							InputHolder.mouseLeftDown = true;
+						}
+					}
+				});
+				
+				this.canvas.setOnMouseReleased(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent event) {
+						if (event.getButton().toString() == "PRIMARY") {
+							InputHolder.mouseLeftDown = false;
+						}
+					}
+				});
 	}
 }

@@ -8,30 +8,21 @@ import holder.IRenderable;
 import holder.InputHolder;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import jdk.nashorn.internal.runtime.regexp.joni.Config;
 
-public class OptionText implements IRenderable{
+public class OptionText extends Text{
 
-	private String name;
 	private String value;
-	private int order;
-	private double font_width;
 	private double font_width2;
-	private double font_height;
 	private double x;
 	private double y;
-	private boolean isfocused;
-	private int c=0;
 	public OptionText(String name,String value,int order,GraphicsContext gc){
-		this.name = name;
+		super(name,order,gc);
 		this.value = value;
-		this.order = order;
 		FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
-		this.font_width = fontLoader.computeStringWidth(name, gc.getFont());
 		this.font_width2 = fontLoader.computeStringWidth(value, gc.getFont());
-		this.font_height = fontLoader.getFontMetrics(gc.getFont()).getLineHeight();
 		this.x = ConfigOption.width*5/6-font_width2;
 		this.y = 100+font_height/2+order*100;
-		this.isfocused = false;
 	}
 	
 	@Override
@@ -83,6 +74,22 @@ public class OptionText implements IRenderable{
 			return true;
 		}
 		else return false;
+	}
+	
+	public boolean inHitBoxRight(){
+		if(InputHolder.mouseX >= 50+font_width+20 &&
+				InputHolder.mouseX <= 200+font_width+20 &&
+				InputHolder.mouseY >= y-font_height-20 &&
+				InputHolder.mouseY <= y+20) return true;
+		return false;
+	}
+	
+	public boolean inHitBoxLeft(){
+		if(InputHolder.mouseX >= 200-20 &&
+				InputHolder.mouseX <= 200-20+150 &&
+				InputHolder.mouseY >= y-font_height-20 &&
+				InputHolder.mouseY <= y+20) return true;
+		return false;
 	}
 	
 	public String getName(){

@@ -29,8 +29,6 @@ public class Main extends Application {
 		scene_count = "menuScene";
 		this.menuScene = new Scene(MenuScreen.instance);
 		
-		MenuScreen.instance.initailizeHomeMenu();
-		
 		primaryStage.setScene(this.menuScene);
 		primaryStage.setTitle("Typing of the Progmeth");
 		primaryStage.show();

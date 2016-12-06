@@ -11,22 +11,12 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import ui.MenuScreen;
 
-public class MenuText implements IRenderable{
+public class MenuText extends Text{
 
-	private String name;
-	private int order;
-	private double font_width;
-	private double font_height;
 	private double x;
 	private double y;
-	private boolean isfocused;
-	private int c=0;
 	public MenuText(String name,int order,GraphicsContext gc){
-		this.name = name;
-		this.order = order;
-		FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
-		this.font_width = fontLoader.computeStringWidth(name, gc.getFont());
-		this.font_height = fontLoader.getFontMetrics(gc.getFont()).getLineHeight();
+		super(name,order,gc);
 		this.x = ConfigOption.width/2-font_width/2;
 		this.y = ConfigOption.height/2+font_height/2+order*100;
 		this.isfocused = false;
@@ -43,6 +33,7 @@ public class MenuText implements IRenderable{
 		gc.fillText(name, x,y);
 	}
 	
+	@Override
 	public void drawFocus(GraphicsContext gc){
 		if(c<3){
 			gc.setFill(Color.YELLOW);
