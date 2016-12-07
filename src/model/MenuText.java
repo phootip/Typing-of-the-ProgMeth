@@ -18,7 +18,7 @@ public class MenuText extends Text{
 	public MenuText(String name,int order,GraphicsContext gc){
 		super(name,order,gc);
 		this.x = ConfigOption.width/2-font_width/2;
-		this.y = ConfigOption.height/2+font_height/2+order*100;
+		this.y = ConfigOption.height/2+3.5*font_height+order*50;
 		this.isfocused = false;
 	}
 	

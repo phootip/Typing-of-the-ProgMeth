@@ -8,7 +8,6 @@ import holder.IRenderable;
 import holder.InputHolder;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import jdk.nashorn.internal.runtime.regexp.joni.Config;
 
 public class OptionText extends Text{
 

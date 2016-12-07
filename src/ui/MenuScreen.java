@@ -12,6 +12,7 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -29,7 +30,7 @@ public class MenuScreen extends StackPane{
 	public static final MenuScreen instance = new MenuScreen();
 	private Canvas canvas;
 	private GraphicsContext gc;
-	private Font font = Font.font("Cloud", FontWeight.LIGHT, 40);
+	private Font font = Font.font("Cloud", FontWeight.LIGHT, 30);
 	
 	public MenuScreen(){
 		this.canvas = new Canvas(ConfigOption.width,ConfigOption.height);
@@ -43,14 +44,13 @@ public class MenuScreen extends StackPane{
 	
 	public void initializeHomeMenu(){
 		//Paint Home Menu
-		gc.setFill(Color.BLACK);
-		gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
+		gc.drawImage(BackGround.bg, 0, 0);
 		gc.setFont(font);
 		this.gc.setFill(Color.WHITE);
 		RenderableHolder.instance.add(new MenuText("START",0,gc));
-		RenderableHolder.instance.add(new MenuText("OPTION",1,gc));
-		RenderableHolder.instance.add(new MenuText("EXIT",2,gc));
-		RenderableHolder.instance.add(new Gun(1000,600));
+		RenderableHolder.instance.add(new MenuText("HIGH SCORE",1,gc));
+		RenderableHolder.instance.add(new MenuText("OPTION",2,gc));
+		RenderableHolder.instance.add(new MenuText("EXIT",3,gc));
 		
 	}
 	
@@ -196,14 +196,11 @@ public class MenuScreen extends StackPane{
 										if(name == "< HEALTH >"){
 											System.out.println("< HEALTH >");
 											if(((OptionText)RenderableHolder.instance.getEntities().get(i)).inHitBoxRight()){
-<<<<<<< HEAD
 												ConfigOption.setHealth(1);
-=======
 												ConfigOption.health++;
 											}
 											else if(((OptionText)RenderableHolder.instance.getEntities().get(i)).inHitBoxLeft()){
 												ConfigOption.health--;
->>>>>>> origin/master
 											}
 										}
 										//HEALTH
