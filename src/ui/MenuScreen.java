@@ -196,7 +196,10 @@ public class MenuScreen extends StackPane{
 										if(name == "< HEALTH >"){
 											System.out.println("< HEALTH >");
 											if(((OptionText)RenderableHolder.instance.getEntities().get(i)).inHitBoxRight()){
-												ConfigOption
+												ConfigOption.health++;
+											}
+											else if(((OptionText)RenderableHolder.instance.getEntities().get(i)).inHitBoxLeft()){
+												ConfigOption.health--;
 											}
 										}
 										//HEALTH
@@ -230,3 +233,4 @@ public class MenuScreen extends StackPane{
 				});
 	}
 }
+ 
