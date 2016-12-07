@@ -87,7 +87,7 @@ public class OptionText extends Text{
 	public boolean inHitBoxLeft(){
 		if(InputHolder.mouseX >= 200-20 &&
 				InputHolder.mouseX <= 200-20+150 &&
-				InputHolder.mouseY >= y-font_height-20 &&
+				InputHolder.mouseY >= y+font_height+20 &&
 				InputHolder.mouseY <= y+20) return true;
 		return false;
 	}
