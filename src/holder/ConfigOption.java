@@ -3,6 +3,8 @@ package holder;
 public class ConfigOption {
 	public static int width = 1200;
 	public static int height = 780;
+	
+	
 	public static String dificulty = "EASY";
 	public static int health = 100;
 	

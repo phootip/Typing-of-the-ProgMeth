@@ -1,5 +1,7 @@
 package ui;
 
+import holder.ConfigOption;
+import holder.GameLogic;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
@@ -11,5 +13,22 @@ public class GameScreen extends StackPane{
 	public static final GameScreen instance = new GameScreen();
 	private Canvas canvas;
 	private GraphicsContext gc;
+	private GameLogic gameLogic;
 	private Font font = Font.font("Cloud", FontWeight.LIGHT, 40);
+	public GameScreen(){
+		this.canvas = new Canvas(ConfigOption.width,ConfigOption.height);
+		this.gc = canvas.getGraphicsContext2D();
+		this.gameLogic = new GameLogic();
+		
+		
+		this.getChildren().add(canvas);
+	}
+	
+	public void initializeGameScreen(){
+		gameLogic.setIRenderable();
+	}
+	
+	public void GameStart(){
+		gameLogic.GameLoopStart();
+	}
 }

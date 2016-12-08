@@ -3,6 +3,7 @@ package model;
 import holder.IRenderable;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 public class Gun extends Entity{
 
@@ -18,8 +19,10 @@ public class Gun extends Entity{
 
 	@Override
 	public void draw(GraphicsContext gc) {
-		Image img = new Image(ClassLoader.getSystemResource("pic/gun.png").toString());
-		gc.drawImage(img, x, y);
+//		Image img = new Image(ClassLoader.getSystemResource("pic/gun.png").toString());
+//		gc.drawImage(img, x, y);
+		gc.setFill(Color.YELLOW);
+		gc.fillRect(x, y, 20, 10);
 	}
 
 	@Override

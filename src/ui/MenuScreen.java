@@ -227,6 +227,10 @@ public class MenuScreen extends StackPane{
 										//START
 										if(name == "START"){
 											System.out.println("START");
+											gc.setFill(Color.BLACK);
+											gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
+											ThreadHolder.instance.removeAll();
+											GameScreen.instance.initializeGameScreen();
 										}
 										if(name == "HIGH SCORE"){
 											System.out.println("HIGH SCORE");
