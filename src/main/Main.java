@@ -61,7 +61,7 @@ public class Main extends Application {
 		}
 	}
 	
-	public Stage getStage(){
+	public static Stage getStage(){
 		return primaryStage;
 	}
 	
