@@ -45,7 +45,7 @@ public class MenuScreen extends StackPane{
 		this.getChildren().add(canvas);
 	}
 	
-	public void initializeHomeMenu(){
+	public void initializeMenuScreen(){
 		//Paint Home Menu
 		gc.drawImage(BackGround.menubg, 0, 0);
 		gc.setFont(font);
@@ -102,7 +102,7 @@ public class MenuScreen extends StackPane{
 				@Override
 				public void run(){
 					RenderableHolder.instance.removeAll();
-					initializeHomeMenu();
+					initializeMenuScreen();
 					while(Main.instance.getScene()=="menuScene"){
 						for(int i=0;i<RenderableHolder.instance.getEntities().size();i++){
 							if(RenderableHolder.instance.getEntities().get(i).isFocused()){
@@ -172,7 +172,7 @@ public class MenuScreen extends StackPane{
 						if (event.getButton().toString() == "PRIMARY") {
 							if(InputHolder.mouseLeftDown == false){
 								InputHolder.mouseLeftDownTrigger = true;
-								for(int i=RenderableHolder.instance.getEntities().size()-1;i>-1;i--){
+								for(int i=0;i<RenderableHolder.instance.getEntities().size();i++){
 									if(RenderableHolder.instance.getEntities().get(i).isFocused() && RenderableHolder.instance.getEntities().get(i).inHitBox()){
 										String name;
 										if(RenderableHolder.instance.getEntities().get(i) instanceof MenuText){
@@ -185,7 +185,7 @@ public class MenuScreen extends StackPane{
 											gc.setFill(Color.BLACK);
 											gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
 											ThreadHolder.instance.removeAll();
-											GameScreen.instance.initializeGameScreen();
+											Main.instance.toggleScene();
 										}
 										if(name == "HIGH SCORE"){
 											System.out.println("HIGH SCORE");
@@ -223,7 +223,7 @@ public class MenuScreen extends StackPane{
 										if(name == "BACK"){
 											System.out.println("BACK");
 											RenderableHolder.instance.removeAll();
-											initializeHomeMenu();
+											initializeMenuScreen();
 										}
 									}
 								}

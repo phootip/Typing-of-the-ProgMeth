@@ -14,7 +14,7 @@ import ui.MenuScreen;
 
 public class Main extends Application {
 	
-	public static Main instance = new Main();
+	public static final Main instance = new Main();
 	private Scene menuScene;
 	private Scene gameScene;
 	private GameScreen gameScreen;
@@ -30,7 +30,8 @@ public class Main extends Application {
 		this.primaryStage = primaryStage;
 		scene_count = "menuScene";
 		this.menuScene = new Scene(MenuScreen.instance);
-		this.gameScene = new Scene(GameScreen.instance);
+		this.gameScreen = new GameScreen();
+		this.gameScene = new Scene(this.gameScreen);
 		
 		primaryStage.setScene(this.menuScene);
 		primaryStage.setTitle("Typing of the Progmeth");
@@ -45,11 +46,8 @@ public class Main extends Application {
 			scene_count = "gameScene";
 			primaryStage.setScene(gameScene);
 			RenderableHolder.instance.removeAll();
-			System.out.println("What");
-			for(Thread i : ThreadHolder.instance.getThreads()){
-				System.out.println(i.getState());
-			}
-			
+			ThreadHolder.instance.removeAll();
+			gameScreen.GameStart();
 		}
 		else{
 			scene_count = "menuScene";

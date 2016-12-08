@@ -10,7 +10,6 @@ import javafx.scene.text.FontWeight;
 
 public class GameScreen extends StackPane{
 
-	public static final GameScreen instance = new GameScreen();
 	private Canvas canvas;
 	private GraphicsContext gc;
 	private GameLogic gameLogic;
