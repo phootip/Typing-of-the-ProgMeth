@@ -1,5 +1,7 @@
 package ui;
 
+import java.util.ArrayList;
+
 import com.sun.javafx.tk.FontLoader;
 import com.sun.javafx.tk.Toolkit;
 
@@ -21,6 +23,7 @@ import javafx.scene.text.FontWeight;
 import main.Main;
 import model.BackGround;
 import model.Gun;
+import model.HighscoreText;
 import model.MenuText;
 import model.OptionText;
 import model.Text;
@@ -64,6 +67,16 @@ public class MenuScreen extends StackPane{
 		RenderableHolder.instance.add(new OptionText("< DIFICULTY >",ConfigOption.dificulty,1,gc));
 		RenderableHolder.instance.add(new OptionText("< SOUND >","10",2,gc));
 		RenderableHolder.instance.add(new MenuText("BACK",3,gc));
+	}
+	
+	public void initializeHighScoreScreen(){
+		//BackGround
+		gc.setFill(Color.BLACK);
+		gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
+		gc.setFont(font);
+		this.gc.setFill(Color.WHITE);
+		
+		RenderableHolder.instance.add(new HighscoreText("Mickie", 100, 0, gc));
 	}
 	
 	public GraphicsContext getGc(){
@@ -198,6 +211,7 @@ public class MenuScreen extends StackPane{
 											if(((OptionText)RenderableHolder.instance.getEntities().get(i)).inHitBoxRight()){
 												ConfigOption.setHealth(1);
 												ConfigOption.health++;
+												gc.dr
 											}
 											else if(((OptionText)RenderableHolder.instance.getEntities().get(i)).inHitBoxLeft()){
 												ConfigOption.health--;
