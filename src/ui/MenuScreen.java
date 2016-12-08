@@ -30,7 +30,6 @@ import model.Text;
 
 public class MenuScreen extends StackPane{
 	
-	public static final MenuScreen instance = new MenuScreen();
 	private Canvas canvas;
 	private GraphicsContext gc;
 	private Font font = Font.font("Cloud", FontWeight.LIGHT, 30);
@@ -182,9 +181,9 @@ public class MenuScreen extends StackPane{
 										//START
 										if(name == "START"){
 											System.out.println("START");
+											//BG
 											gc.setFill(Color.BLACK);
 											gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
-											ThreadHolder.instance.removeAll();
 											Main.instance.toggleScene();
 										}
 										if(name == "HIGH SCORE"){

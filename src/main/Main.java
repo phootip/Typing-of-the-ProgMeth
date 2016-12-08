@@ -2,6 +2,7 @@ package main;
 
 import java.util.ArrayList;
 
+import holder.GameLogic;
 import holder.IRenderable;
 import holder.RenderableHolder;
 import holder.ThreadHolder;
@@ -14,10 +15,12 @@ import ui.MenuScreen;
 
 public class Main extends Application {
 	
-	public static final Main instance = new Main();
+	public static Main instance;
 	private Scene menuScene;
-	private Scene gameScene;
+	private static Scene gameScene;
 	private GameScreen gameScreen;
+	private MenuScreen menuScreen;
+	private static GameLogic gameLogic;
 	private static Stage primaryStage;
 	private static String scene_count; // indicate what scene to be shown.
 	
@@ -27,10 +30,13 @@ public class Main extends Application {
 	}
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		primaryStage.setResizable(false);
 		this.primaryStage = primaryStage;
 		scene_count = "menuScene";
-		this.menuScene = new Scene(MenuScreen.instance);
-		this.gameScreen = new GameScreen();
+		this.gameLogic = new GameLogic();
+		this.menuScreen = new MenuScreen();
+		this.menuScene = new Scene(this.menuScreen);
+		this.gameScreen = new GameScreen(this.gameLogic);
 		this.gameScene = new Scene(this.gameScreen);
 		
 		primaryStage.setScene(this.menuScene);
@@ -41,13 +47,14 @@ public class Main extends Application {
 		
 	}
 	
-	public void toggleScene(){
+	public static void toggleScene(){
 		if(scene_count == "menuScene"){
 			scene_count = "gameScene";
 			primaryStage.setScene(gameScene);
 			RenderableHolder.instance.removeAll();
 			ThreadHolder.instance.removeAll();
-			gameScreen.GameStart();
+			gameLogic.setIRenderable();;
+			gameLogic.GameLoopStart();
 		}
 		else{
 			scene_count = "menuScene";
@@ -58,7 +65,7 @@ public class Main extends Application {
 		return primaryStage;
 	}
 	
-	public String getScene(){
+	public static String getScene(){
 		return scene_count;
 	}
 	public void setScene(String s){

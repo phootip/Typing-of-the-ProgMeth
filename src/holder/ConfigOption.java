@@ -1,5 +1,7 @@
 package holder;
 
+import java.util.ArrayList;
+
 public class ConfigOption {
 	public static int width = 1200;
 	public static int height = 780;
@@ -12,4 +14,9 @@ public class ConfigOption {
 	public static void setHealth(int i){
 		
 	}
+	
+	public static String[] rank3 = {};
+	public static String[] rank2 = {};
+	public static String[] rank1 = {};
+	
 }
