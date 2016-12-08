@@ -119,52 +119,7 @@ public class MenuScreen extends StackPane{
 				}
 			}));
 	}
-	private void addOptionThread(){
-			ThreadHolder.instance.add(new Thread(new Runnable() {
-				@Override
-				public void run(){
-					RenderableHolder.instance.removeAll();
-					initializeOptionScreen();
-					while(Main.instance.getScene()=="optionScene"){
-						for(int i=0;i<RenderableHolder.instance.getEntities().size();i++){
-							if(RenderableHolder.instance.getEntities().get(i).isFocused()){
-								((Text) RenderableHolder.instance.getEntities().get(i)).drawFocus(gc);
-							}
-							else RenderableHolder.instance.getEntities().get(i).draw(gc);
-							try {
-								Thread.sleep(17);
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
-						}
-					}
-				}
-			}));
-	}
-	
-	private void addHighscoreThread() {
-		ThreadHolder.instance.add(new Thread(new Runnable() {
-			@Override
-			public void run() {
-				RenderableHolder.instance.removeAll();
-				initializeHighScoreScreen();
-				while (Main.instance.getScene() == "highscoreScene") {
-					for (int i = 0; i < RenderableHolder.instance.getEntities().size(); i++) {
-						if (RenderableHolder.instance.getEntities().get(i).isFocused()) {
-							((Text) RenderableHolder.instance.getEntities().get(i)).drawFocus(gc);
-						} else
-							RenderableHolder.instance.getEntities().get(i).draw(gc);
-						try {
-							Thread.sleep(17);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}
-				}
-			}
-		}));
-	}
-	
+
 	private void addListener(){
 		//Event Handler Hovering Menu
 				this.canvas.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -234,23 +189,20 @@ public class MenuScreen extends StackPane{
 										}
 										if(name == "HIGH SCORE"){
 											System.out.println("HIGH SCORE");
-											Main.instance.setScene("highscoreScene");
-											ThreadHolder.instance.removeAll();
-											addHighscoreThread();
-											ThreadHolder.instance.getThreads().get(0).start();
+											RenderableHolder.instance.removeAll();
+											initializeHighScoreScreen();
 										}
 										//click OPTION
 										if(name == "OPTION"){
 											System.out.println("OPTION");
-											Main.instance.setScene("optionScene");
-											ThreadHolder.instance.removeAll();
-											addOptionThread();
-											ThreadHolder.instance.getThreads().get(0).start();
+											RenderableHolder.instance.removeAll();
+											initializeOptionScreen();
 										}
 										//click EXIT
 										if(name == "EXIT"){
 											System.out.println("EXIT");
 											Main.instance.getStage().close();
+											System.exit(0);
 										}
 										//HEALTH
 										if(name == "< HEALTH >"){
@@ -270,10 +222,8 @@ public class MenuScreen extends StackPane{
 										//BACK
 										if(name == "BACK"){
 											System.out.println("BACK");
-											Main.instance.setScene("menuScene");
-											ThreadHolder.instance.removeAll();
-											addMenuThread();
-											ThreadHolder.instance.getThreads().get(0).start();
+											RenderableHolder.instance.removeAll();
+											initializeHomeMenu();
 										}
 									}
 								}

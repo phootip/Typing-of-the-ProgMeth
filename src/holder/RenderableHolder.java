@@ -52,7 +52,7 @@ public class RenderableHolder {
 	public RenderableHolder getInstance(){
 		return instance;
 	}
-	public List<IRenderable> getEntities(){
+	public synchronized List<IRenderable> getEntities(){
 		return entities;
 	}
 }
