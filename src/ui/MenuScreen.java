@@ -47,7 +47,7 @@ public class MenuScreen extends StackPane{
 	
 	public void initializeHomeMenu(){
 		//Paint Home Menu
-		gc.drawImage(BackGround.bg, 0, 0);
+		gc.drawImage(BackGround.menubg, 0, 0);
 		gc.setFont(font);
 		this.gc.setFill(Color.WHITE);
 		RenderableHolder.instance.add(new MenuText("START",0,gc));
@@ -75,8 +75,21 @@ public class MenuScreen extends StackPane{
 		gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
 		gc.setFont(font);
 		this.gc.setFill(Color.WHITE);
-		
-		RenderableHolder.instance.add(new HighscoreText("Mickie", 100, 0, gc));
+		ArrayList<HighscoreText> highscore = new ArrayList<HighscoreText>(10);
+		highscore.add(new HighscoreText("Hater", 100, 0, gc));
+		highscore.add(new HighscoreText("Elle", 95, 1, gc));
+		highscore.add(new HighscoreText("Lily",90, 2, gc));
+		highscore.add(new HighscoreText("Leo", 85, 3, gc));
+		highscore.add(new HighscoreText("OPuto", 80,4, gc));
+		highscore.add(new HighscoreText("Ito", 75,5, gc));
+		highscore.add(new HighscoreText("Tera", 70, 6, gc));
+		highscore.add(new HighscoreText("Serena", 65, 7, gc));
+		highscore.add(new HighscoreText("Mickie", 60, 8, gc));
+		highscore.add(new HighscoreText("Error", 55, 9, gc));
+		for(HighscoreText i : highscore){
+			RenderableHolder.instance.add(i);
+		}
+		RenderableHolder.instance.add(new MenuText("BACK",4,gc));
 	}
 	
 	public GraphicsContext getGc(){
@@ -127,6 +140,29 @@ public class MenuScreen extends StackPane{
 					}
 				}
 			}));
+	}
+	
+	private void addHighscoreThread() {
+		ThreadHolder.instance.add(new Thread(new Runnable() {
+			@Override
+			public void run() {
+				RenderableHolder.instance.removeAll();
+				initializeHighScoreScreen();
+				while (Main.instance.getScene() == "highscoreScene") {
+					for (int i = 0; i < RenderableHolder.instance.getEntities().size(); i++) {
+						if (RenderableHolder.instance.getEntities().get(i).isFocused()) {
+							((Text) RenderableHolder.instance.getEntities().get(i)).drawFocus(gc);
+						} else
+							RenderableHolder.instance.getEntities().get(i).draw(gc);
+						try {
+							Thread.sleep(17);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}));
 	}
 	
 	private void addListener(){
@@ -192,6 +228,13 @@ public class MenuScreen extends StackPane{
 										if(name == "START"){
 											System.out.println("START");
 										}
+										if(name == "HIGH SCORE"){
+											System.out.println("HIGH SCORE");
+											Main.instance.setScene("highscoreScene");
+											ThreadHolder.instance.removeAll();
+											addHighscoreThread();
+											ThreadHolder.instance.getThreads().get(0).start();
+										}
 										//click OPTION
 										if(name == "OPTION"){
 											System.out.println("OPTION");
@@ -211,7 +254,6 @@ public class MenuScreen extends StackPane{
 											if(((OptionText)RenderableHolder.instance.getEntities().get(i)).inHitBoxRight()){
 												ConfigOption.setHealth(1);
 												ConfigOption.health++;
-												gc.dr
 											}
 											else if(((OptionText)RenderableHolder.instance.getEntities().get(i)).inHitBoxLeft()){
 												ConfigOption.health--;

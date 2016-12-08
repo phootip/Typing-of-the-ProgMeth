@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 import holder.ConfigOption;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -14,14 +16,15 @@ public class HighscoreText extends Text{
 		super(name,order,gc);
 		this.player_name=name;
 		this.player_score=score;
-		this.x = ConfigOption.width/5-font_width/2;
-		this.y = ConfigOption.height/2+2*font_height+order*100;
+		this.x = ConfigOption.width/6;
+		this.y = ConfigOption.height/10+font_height/2+order*60;
 	}
 	
 	@Override
 	public void draw(GraphicsContext gc) {
 		gc.setFill(Color.WHITE);
-		gc.fillText(name, x,y);
+		gc.fillText(player_name, x,y);
+		gc.fillText(player_score+"", x+ConfigOption.width/1.5, y);
 	}
 	
 	@Override
@@ -61,6 +64,6 @@ public class HighscoreText extends Text{
 	}
 	
 	private String getRecord() {
-		return name.trim() + ":" + score;
+		return "";
 	}
 }

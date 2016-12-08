@@ -8,7 +8,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
 public class BackGround implements IRenderable{
-	public static final Image bg = getImage("pic/start.jpg");
+	public static Image menubg = getImage("pic/start.jpg");
 	
 	
 	@Override
@@ -47,10 +47,5 @@ public class BackGround implements IRenderable{
 		return null;
 	}
 	
-	public void drawBackground(GraphicsContext gc) {
-		if (bg == null)
-			return;
-		gc.drawImage(bg, 0, 0);
-	}
 
 }
