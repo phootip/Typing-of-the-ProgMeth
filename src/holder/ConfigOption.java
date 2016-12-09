@@ -15,7 +15,13 @@ public class ConfigOption {
 		
 	}
 	
-	public static String[] rank3 = {};
+	public static String[] rank3 = { "Death is not an escape", "You never wlak alone", "We ain't ever getting older",
+			"we don't talk anymore", "the more I drink", "the more I think about you", "I don't wanna know",
+			"I have died every day", "ryuuga waga teki wo kurau", "ryujin no ken wo kurae", "justice rains from above",
+			"I've got you in my sights", "I'm lowering the temperature", "Nano Boost administered",
+			"Whe whe whe wheee whee wheee", "My servants never die", "YOU AND YOUR FRIENDS ARE DEAD",
+			"The right man in the wrong place", "War. War never changes", "Requiescat in pace", "Its super effective",
+			"Tell my wife, I had another wife", "A man chooses, a slave obeys", "Don't make a girl a promise", };
 	public static String[] rank2 = {};
 	public static String[] rank1 = {"Hello","Hi!","ah...","OMG","Really","Ant","Elephant","Rat","Mouse"};
 }
