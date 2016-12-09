@@ -19,7 +19,7 @@ public class Zombie extends Entity{
 	private double font_width;
 	private double font_width_remain;
 	private FontLoader fontLoader;
-	private Font font = Font.font("Cloud", FontWeight.LIGHT, 50);
+	private Font font = Font.font("Cloud", FontWeight.LIGHT, 30);
 	
 	public Zombie(int x, int y,String word,GraphicsContext gc) {
 		super(x, y);

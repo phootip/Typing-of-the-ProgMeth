@@ -18,7 +18,6 @@ public class GameLogic {
 	private ArrayList<String> wave3 = new ArrayList<>();
 	private ArrayList<String> used = new ArrayList<>();
 	private ArrayList<Zombie> zombies = new ArrayList<>();
-	private ArrayList<String> firstChar = new ArrayList<>();
 	private int chapter = 1;
 	private int wave = 1;
 	private int hitting = 0;
@@ -43,10 +42,9 @@ public class GameLogic {
 					removeSpace(wave1);
 				}
 				if(!focusing && InputHolder.keyTriggered.size()!=0){
-					for(int i = 0;i<firstChar.size();i++){
-						if(firstChar.get(i)==InputHolder.getLastTrigger()){
+					for(int i = 0;i<wave1.size();i++){
+						if(wave1.get(i).substring(0,1).toUpperCase().equals(InputHolder.getLastTrigger())){
 							focusing = true;
-							System.out.println(i);
 							hitting = i;
 							//set focus on zombie                              //+1 Skip Bg
 							((Zombie) RenderableHolder.instance.getEntities().get(hitting+1)).hit();
@@ -54,9 +52,21 @@ public class GameLogic {
 						}
 					}
 				} else if(focusing && InputHolder.keyTriggered.size()!=0){
+					System.out.println(InputHolder.getLastTrigger());
+					System.out.println(wave1.get(hitting).substring(0,1).toUpperCase());
 					if(InputHolder.getLastTrigger().equals(wave1.get(hitting).substring(0,1).toUpperCase())){
 						((Zombie) RenderableHolder.instance.getEntities().get(hitting+1)).hit();
 						wave1.set(hitting, wave1.get(hitting).substring(1));
+						// Zombie Dead
+						if(wave1.get(hitting).equals("")){
+							focusing = false;
+							wave1.remove(hitting);
+							RenderableHolder.instance.remove(hitting+1);
+							if(wave1.size()==0){
+								chapter++;
+								setupChapter = true;
+							}
+						}
 					}
 				}
 				
@@ -77,11 +87,17 @@ public class GameLogic {
 			if(chapter == 1){
 				//fetch word
 				wave1.add("Hello World");
-				firstChar.add("H");
 				wave1.add("Prog Meth");
-				firstChar.add("P");
+														// Have to random coordinate and time spawn
 				RenderableHolder.instance.add(new Zombie(800,390,wave1.get(0),gc));
 				RenderableHolder.instance.add(new Zombie(750,600,wave1.get(1),gc));
+			}
+			if(chapter == 2){
+				//fetch word
+				wave1.add("ah...");
+				wave1.add("Mis Night");
+				RenderableHolder.instance.add(new Zombie(800,100,wave1.get(0),gc));
+				RenderableHolder.instance.add(new Zombie(500,250,wave1.get(1),gc));
 			}
 		}
 	}
