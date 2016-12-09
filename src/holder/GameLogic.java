@@ -5,7 +5,10 @@ import java.util.Random;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import model.*;
+import modelText.StageText;
 import ui.GameScreen;
 
 public class GameLogic {
@@ -14,11 +17,9 @@ public class GameLogic {
 	private Gun gun = new Gun(115,410);
 	private AnimationTimer gameloop;
 	private GraphicsContext gc;
+	private Font font = Font.font("Cloud", FontWeight.LIGHT, 30);
 	private ArrayList<String> wave1 = new ArrayList<>();
-	private ArrayList<String> wave2 = new ArrayList<>();
-	private ArrayList<String> wave3 = new ArrayList<>();
 	private ArrayList<String> used = new ArrayList<>();
-	private ArrayList<Zombie> zombies = new ArrayList<>();
 	private int chapter = 1;
 	private int wave = 1;
 	private int hitting = 0;
@@ -38,6 +39,11 @@ public class GameLogic {
 					start = now;
 				}
 				if(setupChapter){
+					for(IRenderable i: RenderableHolder.instance.getEntities()){
+						if(i instanceof StageText)((StageText) i).setDestroy(true);
+					}
+					gc.setFont(font);
+					RenderableHolder.instance.add(new StageText("Chapter "+chapter,gc));
 					addZombies();
 					removeSpace(wave1);
 					setupChapter = false;
@@ -74,6 +80,7 @@ public class GameLogic {
 					}
 				}
 				frameCount++;
+				removeDestroyedEntities();
 				paint();
 				InputHolder.postUpdate();
 			}
@@ -111,6 +118,12 @@ public class GameLogic {
 	public void removeSpace(ArrayList<String> wave){
 		for(int i = 0;i<wave.size();i++){
 			wave.set(i, wave.get(i).replaceAll("\\s",""));
+		}
+	}
+	
+	private void removeDestroyedEntities(){
+		for(int i=0;i<RenderableHolder.instance.getEntities().size();i++){
+			if(RenderableHolder.instance.getEntities().get(i).isDestroy())RenderableHolder.instance.remove(i);
 		}
 	}
 	

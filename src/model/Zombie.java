@@ -20,7 +20,6 @@ public class Zombie extends Entity{
 	private double font_width;
 	private double font_width_remain;
 	private FontLoader fontLoader;
-	private Font font = Font.font("Cloud", FontWeight.LIGHT, 30);
 	private int count = 0;
 	
 	public Zombie(int x, int y,String word,GraphicsContext gc) {
@@ -30,7 +29,6 @@ public class Zombie extends Entity{
 		this.gc = gc;
 		this.word = word;
 		this.isDead = false;
-		gc.setFont(font);
 		fontLoader = Toolkit.getToolkit().getFontLoader();
 		this.font_width = fontLoader.computeStringWidth(word,gc.getFont());
 		this.font_width_remain = font_width;
@@ -52,7 +50,6 @@ public class Zombie extends Entity{
 
 	@Override
 	public void draw(GraphicsContext gc) {
-		gc.setFont(font);
 		if(count<20){
 			gc.drawImage(new Image(ClassLoader.getSystemResource("pic/ExampleZombie.png").toString()), x, y);
 		}else if(count<40){
