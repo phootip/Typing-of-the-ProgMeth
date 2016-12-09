@@ -14,4 +14,8 @@ public class InputHolder {
 		mouseLeftDownTrigger = false;
 		keyTriggered.clear();
 	}
+	
+	public static String getLastTrigger(){
+		return keyTriggered.get(keyTriggered.size()-1);
+	}
 }

@@ -15,6 +15,7 @@ import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -121,126 +122,127 @@ public class MenuScreen extends StackPane{
 
 	private void addListener(){
 		//Event Handler Hovering Menu
-				this.canvas.setOnMouseEntered(new EventHandler<MouseEvent>() {
-					@Override
-					public void handle(MouseEvent event) {
-						// TODO Auto-generated method stub
-						InputHolder.mouseOnScreen = true;
-					}
-				});
-				
-				this.canvas.setOnMouseExited(new EventHandler<MouseEvent>() {
-					@Override
-					public void handle(MouseEvent event){
-						InputHolder.mouseOnScreen = false;
-					}
-				});
-				
-				this.canvas.setOnMouseMoved(new EventHandler<MouseEvent>() {
-					@Override
-					public void handle(MouseEvent event){
-						if(InputHolder.mouseOnScreen){
-							InputHolder.mouseX = event.getX();
-							InputHolder.mouseY = event.getY();
-							for(IRenderable i: RenderableHolder.instance.getEntities()){
-								if(i.inHitBox() && (i instanceof MenuText || i instanceof OptionText)){
-									i.setFocus(true);
-									for(IRenderable j: RenderableHolder.instance.getEntities()){
-										if(!i.equals(j))j.setFocus(false);
-									}
+			this.canvas.setOnMouseEntered(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent event) {
+					// TODO Auto-generated method stub
+					InputHolder.mouseOnScreen = true;
+				}
+			});
+			
+			this.canvas.setOnMouseExited(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent event){
+					InputHolder.mouseOnScreen = false;
+				}
+			});
+			
+			this.canvas.setOnMouseMoved(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent event){
+					if(InputHolder.mouseOnScreen){
+						InputHolder.mouseX = event.getX();
+						InputHolder.mouseY = event.getY();
+						for(IRenderable i: RenderableHolder.instance.getEntities()){
+							if(i.inHitBox() && (i instanceof MenuText || i instanceof OptionText)){
+								i.setFocus(true);
+								for(IRenderable j: RenderableHolder.instance.getEntities()){
+									if(!i.equals(j))j.setFocus(false);
 								}
 							}
 						}
 					}
-				});
-				
-				this.canvas.setOnMouseDragged(new EventHandler<MouseEvent>() {
-					@Override
-					public void handle(MouseEvent event){
-						if(InputHolder.mouseOnScreen){
-							InputHolder.mouseX = event.getX();
-							InputHolder.mouseY = event.getY();
-							
-						}
+				}
+			});
+			
+			this.canvas.setOnMouseDragged(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent event){
+					if(InputHolder.mouseOnScreen){
+						InputHolder.mouseX = event.getX();
+						InputHolder.mouseY = event.getY();
+						
 					}
-				});
-				
-				this.canvas.setOnMousePressed(new EventHandler<MouseEvent>() {
-					@Override
-					public void handle(MouseEvent event) {
-						if (event.getButton().toString() == "PRIMARY") {
-							if(InputHolder.mouseLeftDown == false){
-								InputHolder.mouseLeftDownTrigger = true;
-								for(int i=0;i<RenderableHolder.instance.getEntities().size();i++){
-									if(RenderableHolder.instance.getEntities().get(i).isFocused() && RenderableHolder.instance.getEntities().get(i).inHitBox()){
-										String name;
-										if(RenderableHolder.instance.getEntities().get(i) instanceof MenuText){
-											name = ((MenuText)RenderableHolder.instance.getEntities().get(i)).getName();
+				}
+			});
+			
+			this.canvas.setOnMousePressed(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent event) {
+					if (event.getButton().toString() == "PRIMARY") {
+						if(InputHolder.mouseLeftDown == false){
+							InputHolder.mouseLeftDownTrigger = true;
+							for(int i=0;i<RenderableHolder.instance.getEntities().size();i++){
+								if(RenderableHolder.instance.getEntities().get(i).isFocused() && RenderableHolder.instance.getEntities().get(i).inHitBox()){
+									String name;
+									if(RenderableHolder.instance.getEntities().get(i) instanceof MenuText){
+										name = ((MenuText)RenderableHolder.instance.getEntities().get(i)).getName();
+									}
+									else name = ((OptionText)RenderableHolder.instance.getEntities().get(i)).getName();
+									//START
+									if(name == "START"){
+										System.out.println("START");
+										//BG
+										gc.setFill(Color.BLACK);
+										gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
+										Main.toggleScene();
+									}
+									if(name == "HIGH SCORE"){
+										System.out.println("HIGH SCORE");
+										RenderableHolder.instance.removeAll();
+										i=0;
+										initializeHighScoreScreen();
+									}
+									//click OPTION
+									if(name == "OPTION"){
+										System.out.println("OPTION");
+										RenderableHolder.instance.removeAll();
+										initializeOptionScreen();
+									}
+									//click EXIT
+									if(name == "EXIT"){
+										System.out.println("EXIT");
+										Main.instance.getStage().close();
+										System.exit(0);
+									}
+									//HEALTH
+									if(name == "< HEALTH >"){
+										System.out.println("< HEALTH >");
+										if(((OptionText)RenderableHolder.instance.getEntities().get(i)).inHitBoxRight()){
+											ConfigOption.setHealth(1);
+											ConfigOption.health++;
 										}
-										else name = ((OptionText)RenderableHolder.instance.getEntities().get(i)).getName();
-										//START
-										if(name == "START"){
-											System.out.println("START");
-											//BG
-											gc.setFill(Color.BLACK);
-											gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
-											Main.instance.toggleScene();
-										}
-										if(name == "HIGH SCORE"){
-											System.out.println("HIGH SCORE");
-											RenderableHolder.instance.removeAll();
-											initializeHighScoreScreen();
-										}
-										//click OPTION
-										if(name == "OPTION"){
-											System.out.println("OPTION");
-											RenderableHolder.instance.removeAll();
-											initializeOptionScreen();
-										}
-										//click EXIT
-										if(name == "EXIT"){
-											System.out.println("EXIT");
-											Main.instance.getStage().close();
-											System.exit(0);
-										}
-										//HEALTH
-										if(name == "< HEALTH >"){
-											System.out.println("< HEALTH >");
-											if(((OptionText)RenderableHolder.instance.getEntities().get(i)).inHitBoxRight()){
-												ConfigOption.setHealth(1);
-												ConfigOption.health++;
-											}
-											else if(((OptionText)RenderableHolder.instance.getEntities().get(i)).inHitBoxLeft()){
-												ConfigOption.health--;
-											}
-										}
-										//HEALTH
-										if(name == "HEALTH"){
-											System.out.println("HEALTH");
-										}
-										//BACK
-										if(name == "BACK"){
-											System.out.println("BACK");
-											RenderableHolder.instance.removeAll();
-											initializeMenuScreen();
+										else if(((OptionText)RenderableHolder.instance.getEntities().get(i)).inHitBoxLeft()){
+											ConfigOption.health--;
 										}
 									}
+									//HEALTH
+									if(name == "HEALTH"){
+										System.out.println("HEALTH");
+									}
+									//BACK
+									if(name == "BACK"){
+										System.out.println("BACK");
+										RenderableHolder.instance.removeAll();
+										initializeMenuScreen();
+									}
 								}
-								InputHolder.postUpdate();
 							}
-							InputHolder.mouseLeftDown = true;
+							InputHolder.postUpdate();
 						}
+						InputHolder.mouseLeftDown = true;
 					}
-				});
-				
-				this.canvas.setOnMouseReleased(new EventHandler<MouseEvent>() {
-					@Override
-					public void handle(MouseEvent event) {
-						if (event.getButton().toString() == "PRIMARY") {
-							InputHolder.mouseLeftDown = false;
-						}
+				}
+			});
+			
+			this.canvas.setOnMouseReleased(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent event) {
+					if (event.getButton().toString() == "PRIMARY") {
+						InputHolder.mouseLeftDown = false;
 					}
-				});
+				}
+			});
 	}
 }
  

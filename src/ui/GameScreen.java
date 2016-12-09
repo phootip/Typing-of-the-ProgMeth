@@ -25,8 +25,6 @@ public class GameScreen extends StackPane{
 		this.gameLogic = gamelogic;
 		gameLogic.setGc(gc);
 		
-		addListener();
-		
 		this.getChildren().add(canvas);
 	}
 	
@@ -48,6 +46,7 @@ public class GameScreen extends StackPane{
 					InputHolder.keyTriggered.add(key);
 					InputHolder.keyPressed.add(key);
 				}
+				System.out.println("keyPress!!");
 			}
 		});
 		

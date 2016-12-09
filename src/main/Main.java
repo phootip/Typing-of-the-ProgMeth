@@ -4,10 +4,14 @@ import java.util.ArrayList;
 
 import holder.GameLogic;
 import holder.IRenderable;
+import holder.InputHolder;
 import holder.RenderableHolder;
 import holder.ThreadHolder;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import ui.GameScreen;
@@ -38,6 +42,7 @@ public class Main extends Application {
 		this.menuScene = new Scene(this.menuScreen);
 		this.gameScreen = new GameScreen(this.gameLogic);
 		this.gameScene = new Scene(this.gameScreen);
+		addGameListener();
 		
 		primaryStage.setScene(this.menuScene);
 		primaryStage.setTitle("Typing of the Progmeth");
@@ -53,7 +58,7 @@ public class Main extends Application {
 			primaryStage.setScene(gameScene);
 			RenderableHolder.instance.removeAll();
 			ThreadHolder.instance.removeAll();
-			gameLogic.setIRenderable();;
+			gameLogic.setIRenderable();
 			gameLogic.GameLoopStart();
 		}
 		else{
@@ -70,5 +75,26 @@ public class Main extends Application {
 	}
 	public void setScene(String s){
 		scene_count = s;
+	}
+	
+	private void addGameListener(){
+		gameScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent e) {
+				String key = e.getCode().toString();
+				if(!InputHolder.keyPressed.contains(key)){
+					InputHolder.keyTriggered.add(key);
+					InputHolder.keyPressed.add(key);
+				}
+				
+			}
+		});
+		gameScene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent e) {
+				String key = e.getCode().toString();
+				InputHolder.keyPressed.remove(key);
+			}
+		});
 	}
 }
