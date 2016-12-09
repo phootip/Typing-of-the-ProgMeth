@@ -21,6 +21,7 @@ public class Zombie extends Entity{
 	private double font_width_remain;
 	private FontLoader fontLoader;
 	private Font font = Font.font("Cloud", FontWeight.LIGHT, 30);
+	private int count = 0;
 	
 	public Zombie(int x, int y,String word,GraphicsContext gc) {
 		super(x, y);
@@ -52,9 +53,17 @@ public class Zombie extends Entity{
 	@Override
 	public void draw(GraphicsContext gc) {
 		gc.setFont(font);
-		gc.drawImage(new Image(ClassLoader.getSystemResource("pic/ExampleZombie.png").toString()), x, y);
+		if(count<20){
+			gc.drawImage(new Image(ClassLoader.getSystemResource("pic/ExampleZombie.png").toString()), x, y);
+		}else if(count<40){
+			gc.drawImage(new Image(ClassLoader.getSystemResource("pic/ExampleZombie_move2.png").toString()), x, y);
+		}else if(count<60){
+			gc.drawImage(new Image(ClassLoader.getSystemResource("pic/ExampleZombie_move3.png").toString()), x, y);
+			if(count>58) count =0;
+		}
 		gc.setFill(Color.GREEN);
 		gc.fillText(word, x+font_width-font_width_remain, y);
+		count++;
 	}
 
 	@Override

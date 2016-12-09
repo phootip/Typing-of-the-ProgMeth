@@ -37,9 +37,9 @@ public class GameLogic {
 					start = now;
 				}
 				if(setupChapter){
-					setupChapter = false;
 					addZombies();
 					removeSpace(wave1);
+					setupChapter = false;
 				}
 				if(!focusing && InputHolder.keyTriggered.size()!=0){
 					for(int i = 0;i<wave1.size();i++){
