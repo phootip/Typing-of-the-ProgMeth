@@ -22,6 +22,7 @@ public class HighscoreText extends Text{
 	
 	@Override
 	public void draw(GraphicsContext gc) {
+		Thread t = new Thread();
 		gc.setFill(Color.WHITE);
 		gc.fillText(player_name, x,y);
 		gc.fillText(player_score+"", x+ConfigOption.width/1.5, y);

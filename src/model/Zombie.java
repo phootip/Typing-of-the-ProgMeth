@@ -51,14 +51,16 @@ public class Zombie extends Entity{
 	@Override
 	public void draw(GraphicsContext gc) {
 		if(count<20){
-			gc.drawImage(new Image(ClassLoader.getSystemResource("pic/ExampleZombie.png").toString()), x, y);
+			gc.drawImage(new Image(ClassLoader.getSystemResource("pic/ExampleZombie_move1.png").toString()), x, y);
 		}else if(count<40){
 			gc.drawImage(new Image(ClassLoader.getSystemResource("pic/ExampleZombie_move2.png").toString()), x, y);
 		}else if(count<60){
 			gc.drawImage(new Image(ClassLoader.getSystemResource("pic/ExampleZombie_move3.png").toString()), x, y);
-			if(count>58) count =0;
+		}else if(count<80){
+			gc.drawImage(new Image(ClassLoader.getSystemResource("pic/ExampleZombie_move2.png").toString()), x, y);
+			if(count>78) count =0;
 		}
-		gc.setFill(Color.GREEN);
+		gc.setFill(Color.CRIMSON);
 		gc.fillText(word, x+font_width-font_width_remain, y);
 		count++;
 	}
@@ -85,4 +87,5 @@ public class Zombie extends Entity{
 	public void setFocus(boolean isfouced) {
 		this.isFocused = isfouced;
 	}
+	
 }

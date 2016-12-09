@@ -1,10 +1,11 @@
 package model;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class MainCharacter extends Entity{
-
+	private Image hero = new Image(ClassLoader.getSystemResource("pic/soldier76.png").toString());
 	public MainCharacter(int x, int y) {
 		super(x, y);
 		this.z = Integer.MAX_VALUE-12;
@@ -14,8 +15,7 @@ public class MainCharacter extends Entity{
 	
 	@Override
 	public void draw(GraphicsContext gc) {
-		gc.setFill(Color.RED);
-		gc.fillRect(x, y, 30, 60);
+		gc.drawImage(hero,x-hero.getWidth()/2, y);
 	}
 
 	@Override

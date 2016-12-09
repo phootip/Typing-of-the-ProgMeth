@@ -15,7 +15,7 @@ public class ConfigOption {
 		
 	}
 	
-	public static String[] rank3 = { "Death is not an escape", "You never wlak alone", "We ain't ever getting older",
+	public static String[] rank3 = { "Death is not an escape", "You never dead alone", "We ain't ever getting older",
 			"we don't talk anymore", "the more I drink", "the more I think about you", "I don't wanna know",
 			"I have died every day", "ryuuga waga teki wo kurau", "ryujin no ken wo kurae", "justice rains from above",
 			"I've got you in my sights", "I'm lowering the temperature", "Nano Boost administered",
