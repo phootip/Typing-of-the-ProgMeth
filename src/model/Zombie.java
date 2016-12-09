@@ -14,6 +14,7 @@ public class Zombie extends Entity{
 
 	private GraphicsContext gc;
 	private String word;
+	private int speed;
 	private boolean isDead;
 	private boolean isFocused;
 	private double font_width;
@@ -24,6 +25,7 @@ public class Zombie extends Entity{
 	public Zombie(int x, int y,String word,GraphicsContext gc) {
 		super(x, y);
 		this.z = 0;
+		this.speed = 1;
 		this.gc = gc;
 		this.word = word;
 		this.isDead = false;
@@ -41,6 +43,10 @@ public class Zombie extends Entity{
 		if(word.substring(0, 1).equals(" ")) word = word.substring(2);
 		else word = word.substring(1);
 		font_width_remain = fontLoader.computeStringWidth(word,gc.getFont());
+	}
+	
+	public void Move(){
+		this.x -= speed;
 	}
 
 	@Override

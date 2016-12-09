@@ -52,8 +52,6 @@ public class GameLogic {
 						}
 					}
 				} else if(focusing && InputHolder.keyTriggered.size()!=0){
-					System.out.println(InputHolder.getLastTrigger());
-					System.out.println(wave1.get(hitting).substring(0,1).toUpperCase());
 					if(InputHolder.getLastTrigger().equals(wave1.get(hitting).substring(0,1).toUpperCase())){
 						((Zombie) RenderableHolder.instance.getEntities().get(hitting+1)).hit();
 						wave1.set(hitting, wave1.get(hitting).substring(1));
@@ -67,6 +65,11 @@ public class GameLogic {
 								setupChapter = true;
 							}
 						}
+					}
+				}
+				for(int i=0;i<RenderableHolder.instance.getEntities().size();i++){
+					if(RenderableHolder.instance.getEntities().get(i) instanceof Zombie){
+						((Zombie) RenderableHolder.instance.getEntities().get(i)).Move();
 					}
 				}
 				
