@@ -24,10 +24,10 @@ import javafx.scene.text.FontWeight;
 import main.Main;
 import model.BackGround;
 import model.Gun;
-import model.HighscoreText;
-import model.MenuText;
-import model.OptionText;
-import model.Text;
+import modelText.HighscoreText;
+import modelText.MenuText;
+import modelText.OptionText;
+import modelText.Text;
 
 public class MenuScreen extends StackPane{
 	

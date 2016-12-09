@@ -17,6 +17,5 @@ public class ConfigOption {
 	
 	public static String[] rank3 = {};
 	public static String[] rank2 = {};
-	public static String[] rank1 = {};
-	
+	public static String[] rank1 = {"Hello","Hi!","ah...","OMG","Really","Ant","Elephant","Rat","Mouse"};
 }

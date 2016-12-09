@@ -1,6 +1,7 @@
 package holder;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
@@ -72,7 +73,6 @@ public class GameLogic {
 						((Zombie) RenderableHolder.instance.getEntities().get(i)).Move();
 					}
 				}
-				
 				frameCount++;
 				paint();
 				InputHolder.postUpdate();
@@ -91,16 +91,19 @@ public class GameLogic {
 				//fetch word
 				wave1.add("Hello World");
 				wave1.add("Prog Meth");
-														// Have to random coordinate and time spawn
-				RenderableHolder.instance.add(new Zombie(800,390,wave1.get(0),gc));
-				RenderableHolder.instance.add(new Zombie(750,600,wave1.get(1),gc));
+				for(String i: wave1){
+					RenderableHolder.instance.add(new Zombie(1200+(int)(Math.random()*401),
+							90+(int)(Math.random()*601),i,gc));
+				}
 			}
 			if(chapter == 2){
 				//fetch word
 				wave1.add("ah...");
 				wave1.add("Mis Night");
-				RenderableHolder.instance.add(new Zombie(800,100,wave1.get(0),gc));
-				RenderableHolder.instance.add(new Zombie(500,250,wave1.get(1),gc));
+				for(String i: wave1){
+					RenderableHolder.instance.add(new Zombie(1200+(int)(Math.random()*401),
+							90+(int)(Math.random()*601),i,gc));
+				}
 			}
 		}
 	}
