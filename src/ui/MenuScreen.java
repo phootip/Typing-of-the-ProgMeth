@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import com.sun.javafx.tk.FontLoader;
 import com.sun.javafx.tk.Toolkit;
@@ -75,89 +76,53 @@ public class MenuScreen extends StackPane{
 	}
 	
 	public void initializeHighScoreScreen() throws FileNotFoundException{
-		//BackGround
+		
+		// BackGround
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
 		gc.setFont(font);
 		this.gc.setFill(Color.WHITE);
-		//BackGround
-				gc.setFill(Color.BLACK);
-				gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
-				gc.setFont(font);
-				this.gc.setFill(Color.WHITE);
-				String str = ClassLoader.getSystemResource("highscore.txt").toString();
-				String result = str.substring(6,str.length());
-				File highscore = new File(result);
-				FileReader file;
-				try {
-					file = new FileReader(highscore);
-					BufferedReader infile = new BufferedReader(file);
-					String sc;
-					while ((sc = infile.readLine()) != "") {
-						
-						String[] player = sc.split("");
-						System.out.println(player);
-						
-					}
-					infile.close();
-					
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				/*try {
-					infile = new BufferedReader(ClassLoader.getSystemResource("highscore.txt"));
-					while (infile.hasNextLine()) {
-						String[] s = infile.nextLine().split(" ");
-						String name = s[0];
-						int score = Integer.parseInt(s[1]);
-						int order = Integer.parseInt(s[2]);
-						HighscoreText t = new HighscoreText(name, score, order, gc);
-						RenderableHolder.instance.add(t);
-
-					}
-					infile.close();
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				while (infile.hasNextLine()) {
-					String[] s = infile.nextLine().split(" ");
-					String name = s[0];
-					int score = Integer.parseInt(s[1]);
-					int order = Integer.parseInt(s[2]);
-					HighscoreText t = new HighscoreText(name, score, order, gc);
-					RenderableHolder.instance.add(t);
-					
-				}
-				infile.close();
-			ry {
-					
-				} catch (Exception e) {
-					// TODO: handle exception
-				
-				ThreadHolder.instance.getThreads().clear();
-				for (HighscoreText i : highscore) {
-					String p = i.getName();
-					Thread g = new Thread(new Runnable() {
-						public void run() {
-
-							try {
-								i.draw(gc);
-
-							} catch (Exception e) {
-								// TODO: handle exception
-							}
-						}
-					});
-					ThreadHolder.instance.getThreads().add(g);
-				}
-				for(Thread s : ThreadHolder.instance.getThreads()){
-					s.start();
-				/**}
-				RenderableHolder.instance.add(new MenuText("BACK",4,gc));
-				*/
+		String str = ClassLoader.getSystemResource("highscore.txt").toString();
+		String result = str.substring(6);
+		File highscore = new File(result);
+		Scanner sc = new Scanner(highscore);
+		while (sc.hasNextLine()) {
+			String[] line = sc.nextLine().split(" ");
+			String name = line[0];
+			int score = Integer.parseInt(line[1]);
+			int order = Integer.parseInt(line[2]);
+			RenderableHolder.instance.getEntities().add(new HighscoreText(name, score, order, gc));
+		}
+		/*
+		 * try { infile = new
+		 * BufferedReader(ClassLoader.getSystemResource("highscore.txt")); while
+		 * (infile.hasNextLine()) { String[] s = infile.nextLine().split(" ");
+		 * String name = s[0]; int score = Integer.parseInt(s[1]); int order =
+		 * Integer.parseInt(s[2]); HighscoreText t = new HighscoreText(name,
+		 * score, order, gc); RenderableHolder.instance.add(t);
+		 * 
+		 * } infile.close(); } catch (FileNotFoundException e) { // TODO
+		 * Auto-generated catch block e.printStackTrace(); } while
+		 * (infile.hasNextLine()) { String[] s = infile.nextLine().split(" ");
+		 * String name = s[0]; int score = Integer.parseInt(s[1]); int order =
+		 * Integer.parseInt(s[2]); HighscoreText t = new HighscoreText(name,
+		 * score, order, gc); RenderableHolder.instance.add(t);
+		 * 
+		 * } infile.close(); ry {
+		 * 
+		 * } catch (Exception e) { // TODO: handle exception
+		 * 
+		 * ThreadHolder.instance.getThreads().clear(); for (HighscoreText i :
+		 * highscore) { String p = i.getName(); Thread g = new Thread(new
+		 * Runnable() { public void run() {
+		 * 
+		 * try { i.draw(gc);
+		 * 
+		 * } catch (Exception e) { // TODO: handle exception } } });
+		 * ThreadHolder.instance.getThreads().add(g); } for(Thread s :
+		 * ThreadHolder.instance.getThreads()){ s.start(); /**}
+		 * RenderableHolder.instance.add(new MenuText("BACK",4,gc));
+		 */
 	}
 	
 	
@@ -262,7 +227,14 @@ public class MenuScreen extends StackPane{
 										System.out.println("HIGH SCORE");
 										RenderableHolder.instance.removeAll();
 										i=0;
-										//initializeHighScoreScreen();
+										String s = ClassLoader.getSystemResource("highscore.txt").toString();
+										System.out.println(s.substring(6));
+										try {
+											initializeHighScoreScreen();
+										} catch (FileNotFoundException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
 									}
 									//click OPTION
 									if(name == "OPTION"){
