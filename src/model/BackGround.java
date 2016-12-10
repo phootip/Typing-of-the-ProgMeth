@@ -17,7 +17,7 @@ public class BackGround implements IRenderable{
 
 	@Override
 	public void draw(GraphicsContext gc) {
-		gc.drawImage(gameBg, 0, 0);;
+		gc.drawImage(gameBg, 0, 0);
 	}
 
 	@Override

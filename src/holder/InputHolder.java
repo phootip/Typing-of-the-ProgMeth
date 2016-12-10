@@ -16,9 +16,9 @@ public class InputHolder {
 	}
 	
 	public static String getLastTrigger(){
-		if(keyTriggered.get(keyTriggered.size()-1).equals("PERIOD")){
-			return ".";
-		}
+		if(keyTriggered.get(keyTriggered.size()-1).equals("PERIOD"))return ".";
+		else if(keyTriggered.get(keyTriggered.size()-1).equals("QUOTE"))return"'";
+		else if(keyTriggered.get(keyTriggered.size()-1).equals("COMMA"))return",";		
 		return keyTriggered.get(keyTriggered.size()-1);
 	}
 }

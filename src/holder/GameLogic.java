@@ -5,6 +5,7 @@ import java.util.Random;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import model.*;
@@ -13,6 +14,9 @@ import ui.GameScreen;
 
 public class GameLogic {
 	private int score=0;
+	private int health;
+	private String word;
+	private String char1;
 	private MainCharacter mainCharacter = new MainCharacter(100,395);
 	private Gun gun = new Gun(115,410);
 	private AnimationTimer gameloop;
@@ -23,13 +27,16 @@ public class GameLogic {
 	private int chapter = 1;
 	private int wave = 1;
 	private int hitting = 0;
+	private boolean gameStart = true;
+	private boolean setupChapter = false;
 	private boolean focusing = false;
-	private boolean setupChapter = true;
+	private boolean endChapter = false;
 	
 	public GameLogic(){
 		gameloop = new AnimationTimer(){
 			Long start=0l;
 			int frameCount = 0;
+			int wait = 0;
 			@Override
 			public void handle(long now) {
 				long diff = now-start;
@@ -38,6 +45,18 @@ public class GameLogic {
 					frameCount=0;
 					start = now;
 				}
+				
+				if(gameStart){
+					gc.setFill(Color.WHITE);
+					gc.setStroke(Color.BLACK);
+					if(wait==0)RenderableHolder.instance.add(new StageText("Ready",gc));
+					wait++;
+					if(wait>119){
+						setupChapter = true;
+						gameStart = false;
+					}
+				}
+				//set Up Level
 				if(setupChapter){
 					for(IRenderable i: RenderableHolder.instance.getEntities()){
 						if(i instanceof StageText)((StageText) i).setDestroy(true);
@@ -48,6 +67,7 @@ public class GameLogic {
 					removeSpace(wave1);
 					setupChapter = false;
 				}
+				// isn't focusing
 				if(!focusing && InputHolder.keyTriggered.size()!=0){
 					for(int i = 0;i<wave1.size();i++){
 						if(wave1.get(i).substring(0,1).toUpperCase().equals(InputHolder.getLastTrigger())){
@@ -59,6 +79,7 @@ public class GameLogic {
 						}
 					}
 				} else if(focusing && InputHolder.keyTriggered.size()!=0){
+					System.out.println(InputHolder.getLastTrigger());
 					if(InputHolder.getLastTrigger().equals(wave1.get(hitting).substring(0,1).toUpperCase())){
 						((Zombie) RenderableHolder.instance.getEntities().get(hitting+1)).hit();
 						wave1.set(hitting, wave1.get(hitting).substring(1));
@@ -69,9 +90,19 @@ public class GameLogic {
 							RenderableHolder.instance.remove(hitting+1);
 							if(wave1.size()==0){
 								chapter++;
-								setupChapter = true;
+								endChapter = true;
 							}
 						}
+					}
+				}
+				
+				// Wait after all zombies are dead.
+				if(endChapter){
+					wait++;
+					if(wait == 120){
+						wait=0;
+						setupChapter = true;
+						endChapter = false;
 					}
 				}
 				for(int i=0;i<RenderableHolder.instance.getEntities().size();i++){
@@ -92,27 +123,45 @@ public class GameLogic {
 		
 	}
 	
-	public void addZombies(){
+	private void addZombies(){
+		int order = 1;
 		if(ConfigOption.dificulty=="EASY"){
 			if(chapter == 1){
 				//fetch word
-				wave1.add("Hello World");
-				wave1.add("Prog Meth");
+				fetchWord(1,5,wave1);
 				for(String i: wave1){
-					RenderableHolder.instance.add(new Zombie(1200+(int)(Math.random()*401),
+					RenderableHolder.instance.add(new Zombie(1000+200*order+(int)(Math.random()*401),
 							90+(int)(Math.random()*601),i,gc));
+					order++;
 				}
+				order =0;
 			}
 			if(chapter == 2){
 				//fetch word
-				wave1.add("ah...");
-				wave1.add("Mis Night");
+				fetchWord(3,5,wave1);
 				for(String i: wave1){
-					RenderableHolder.instance.add(new Zombie(1200+(int)(Math.random()*401),
+					RenderableHolder.instance.add(new Zombie(1200+200*order+(int)(Math.random()*401),
 							90+(int)(Math.random()*601),i,gc));
+					order++;
 				}
+				order=0;
 			}
 		}
+	}
+	
+	//fetch word
+	private void fetchWord(int rank,int amount,ArrayList<String> wave){
+		String[] a = ConfigOption.getRank(rank);
+		int range = a.length;
+		for(int i =0;i<amount;i++){
+			do{
+				word = a[(int)(Math.random()*range)];
+				char1 = word.substring(0,1).toUpperCase();
+			}while(used.contains(char1));
+			used.add(char1);
+			wave.add(word);
+		}
+		used.clear();
 	}
 	
 	public void removeSpace(ArrayList<String> wave){
@@ -133,6 +182,8 @@ public class GameLogic {
 			RenderableHolder.instance.getEntities().get(i).draw(gc);
 		}
 	}
+	
+	
 	//add basic Object
 	public void setIRenderable(){
 		RenderableHolder.instance.removeAll();
