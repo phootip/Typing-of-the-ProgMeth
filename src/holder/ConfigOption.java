@@ -14,6 +14,11 @@ public class ConfigOption {
 	public static void setHealth(int i){
 		
 	}
+	public static String[] getRank(int rank){
+		if(rank == 1)return rank1;
+		else if(rank ==2)return rank2;
+		else return rank3;
+	}
 	
 	public static String[] rank3 = { "Death is not an escape", "You never dead alone", "We ain't ever getting older",
 			"we don't talk anymore", "the more I drink", "the more I think about you", "I don't wanna know",
@@ -23,5 +28,5 @@ public class ConfigOption {
 			"The right man in the wrong place", "War. War never changes", "Requiescat in pace", "Its super effective",
 			"Tell my wife, I had another wife", "A man chooses, a slave obeys", "Don't make a girl a promise", };
 	public static String[] rank2 = {};
-	public static String[] rank1 = {"Hello","Hi!","ah...","OMG","Really","Ant","Elephant","Rat","Mouse"};
+	public static String[] rank1 = {"Hello","Hi","ah...","OMG","Really","Ant","Elephant","Rat","Mouse"};
 }

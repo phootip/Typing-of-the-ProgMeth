@@ -16,7 +16,7 @@ public class StageText extends Text{
 	public StageText(String name, GraphicsContext gc) {
 		super(name, 0, gc);
 		this.x = ConfigOption.width/2-font_width/2;
-		this.y = ConfigOption.height/2+font_height/2;
+		this.y = ConfigOption.height/2+font_height/2-100;
 	}
 
 	@Override

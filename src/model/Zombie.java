@@ -3,6 +3,7 @@ package model;
 import com.sun.javafx.tk.FontLoader;
 import com.sun.javafx.tk.Toolkit;
 
+import holder.RenderableHolder;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -18,6 +19,7 @@ public class Zombie extends Entity{
 	private boolean isDead;
 	private boolean isFocused;
 	private double font_width;
+	private double font_height;
 	private double font_width_remain;
 	private FontLoader fontLoader;
 	private int count = 0;
@@ -31,6 +33,7 @@ public class Zombie extends Entity{
 		this.isDead = false;
 		fontLoader = Toolkit.getToolkit().getFontLoader();
 		this.font_width = fontLoader.computeStringWidth(word,gc.getFont());
+		this.font_height = fontLoader.getFontMetrics(gc.getFont()).getLineHeight();
 		this.font_width_remain = font_width;
 	}
 	
@@ -39,6 +42,7 @@ public class Zombie extends Entity{
 	}
 	
 	public void hit(){
+		this.z = 10;
 		if(word.substring(0, 1).equals(" ")) word = word.substring(2);
 		else word = word.substring(1);
 		font_width_remain = fontLoader.computeStringWidth(word,gc.getFont());
@@ -60,7 +64,11 @@ public class Zombie extends Entity{
 			gc.drawImage(new Image(ClassLoader.getSystemResource("pic/ExampleZombie_move2.png").toString()), x, y);
 			if(count>78) count =0;
 		}
-		gc.setFill(Color.CRIMSON);
+		gc.setFill(Color.BLUE);
+		gc.fillRect(x-15, y-font_height+5, font_width+30, font_height+10);
+		gc.setFill(Color.BLACK);
+		gc.fillRect(x-10, y-font_height+10, font_width+20, font_height);
+		gc.setFill(Color.WHITE);
 		gc.fillText(word, x+font_width-font_width_remain, y);
 		count++;
 	}
