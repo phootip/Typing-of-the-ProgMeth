@@ -86,50 +86,30 @@ public class MenuScreen extends StackPane{
 		String result = str.substring(6);
 		File highscore = new File(result);
 		Scanner sc = new Scanner(highscore);
+		ThreadHolder.instance.getThreads().clear();
 		while (sc.hasNextLine()) {
 			String[] line = sc.nextLine().split(" ");
 			String name = line[0];
 			int score = Integer.parseInt(line[1]);
 			int order = Integer.parseInt(line[2]);
-			RenderableHolder.instance.getEntities().add(new HighscoreText(name, score, order, gc));
+			HighscoreText s = new HighscoreText(name, score, order, gc);
+			Thread std = new Thread(new Runnable() {
+				public void run() {
+					try {
+						RenderableHolder.instance.getEntities().add(s);
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
+				}
+			});
+			ThreadHolder.instance.getThreads().add(std);
 		}
-		/*
-		 * try { infile = new
-		 * BufferedReader(ClassLoader.getSystemResource("highscore.txt")); while
-		 * (infile.hasNextLine()) { String[] s = infile.nextLine().split(" ");
-		 * String name = s[0]; int score = Integer.parseInt(s[1]); int order =
-		 * Integer.parseInt(s[2]); HighscoreText t = new HighscoreText(name,
-		 * score, order, gc); RenderableHolder.instance.add(t);
-		 * 
-		 * } infile.close(); } catch (FileNotFoundException e) { // TODO
-		 * Auto-generated catch block e.printStackTrace(); } while
-		 * (infile.hasNextLine()) { String[] s = infile.nextLine().split(" ");
-		 * String name = s[0]; int score = Integer.parseInt(s[1]); int order =
-		 * Integer.parseInt(s[2]); HighscoreText t = new HighscoreText(name,
-		 * score, order, gc); RenderableHolder.instance.add(t);
-		 * 
-		 * } infile.close(); ry {
-		 * 
-		 * } catch (Exception e) { // TODO: handle exception
-		 * 
-		 * ThreadHolder.instance.getThreads().clear(); for (HighscoreText i :
-		 * highscore) { String p = i.getName(); Thread g = new Thread(new
-		 * Runnable() { public void run() {
-		 * 
-		 * try { i.draw(gc);
-		 * 
-		 * } catch (Exception e) { // TODO: handle exception } } });
-		 * ThreadHolder.instance.getThreads().add(g); } for(Thread s :
-		 * ThreadHolder.instance.getThreads()){ s.start(); /**}
-		 * RenderableHolder.instance.add(new MenuText("BACK",4,gc));
-		 */
+		for(Thread s : ThreadHolder.instance.getThreads()){ 
+			s.start();
+		}
+		RenderableHolder.instance.add(new MenuText("BACK",4,gc));
 	}
 	
-	
-	
-	public GraphicsContext getGc(){
-		return this.gc;
-	}
 	
 	
 	private void addMenuThread(){

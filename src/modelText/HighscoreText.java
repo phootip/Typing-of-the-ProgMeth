@@ -32,8 +32,7 @@ public class HighscoreText extends Text{
 	
 	@Override
 	public void drawFocus(GraphicsContext gc){
-		gc.setFill(Color.CRIMSON);
-		gc.fillText(name, x, y);
+		
 	}
 
 	@Override
