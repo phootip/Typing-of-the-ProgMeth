@@ -1,6 +1,7 @@
 package modelText;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import holder.ConfigOption;
 import javafx.scene.canvas.GraphicsContext;
@@ -22,10 +23,11 @@ public class HighscoreText extends Text{
 	
 	@Override
 	public void draw(GraphicsContext gc) {
-		Thread t = new Thread();
+		gc.setGlobalAlpha(0.1);
 		gc.setFill(Color.WHITE);
 		gc.fillText(player_name, x,y);
 		gc.fillText(player_score+"", x+ConfigOption.width/1.5, y);
+		gc.setGlobalAlpha(1.0);
 	}
 	
 	@Override

@@ -86,15 +86,33 @@ public class MenuScreen extends StackPane{
 		highscore.add(new HighscoreText("Serena", 65, 7, gc));
 		highscore.add(new HighscoreText("Mickie", 60, 8, gc));
 		highscore.add(new HighscoreText("Error", 55, 9, gc));
-		for(HighscoreText i : highscore){
-			RenderableHolder.instance.add(i);
+		ThreadHolder.instance.getThreads().clear();
+		for (HighscoreText i : highscore) {
+			Thread highscorethread = new Thread(new Runnable() {
+				public void run() {
+
+					try {
+						RenderableHolder.instance.add(i);
+
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
+				}
+			});
+			ThreadHolder.instance.getThreads().add(highscorethread);
+		}
+		for(Thread s : ThreadHolder.instance.getThreads()){
+			s.start();
 		}
 		RenderableHolder.instance.add(new MenuText("BACK",4,gc));
 	}
 	
+	
+	
 	public GraphicsContext getGc(){
 		return this.gc;
 	}
+	
 	
 	private void addMenuThread(){
 		// Menu Thread
