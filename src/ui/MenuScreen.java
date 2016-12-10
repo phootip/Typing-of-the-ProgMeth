@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import com.sun.javafx.tk.FontLoader;
@@ -73,7 +74,7 @@ public class MenuScreen extends StackPane{
 		RenderableHolder.instance.add(new MenuText("BACK",3,gc));
 	}
 	
-	public void initializeHighScoreScreen(){
+	public void initializeHighScoreScreen() throws FileNotFoundException{
 		//BackGround
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
@@ -100,7 +101,7 @@ public class MenuScreen extends StackPane{
 					}
 					infile.close();
 					
-				} catch (FileNotFoundException e) {
+				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -261,7 +262,7 @@ public class MenuScreen extends StackPane{
 										System.out.println("HIGH SCORE");
 										RenderableHolder.instance.removeAll();
 										i=0;
-										initializeHighScoreScreen();
+										//initializeHighScoreScreen();
 									}
 									//click OPTION
 									if(name == "OPTION"){
