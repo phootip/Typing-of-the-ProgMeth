@@ -1,0 +1,10 @@
+HighscoreText("Hater", 100, 0, gc));
+HighscoreText("Elle", 95, 1, gc));
+HighscoreText("Lily",90, 2, gc));
+HighscoreText("Leo", 85, 3, gc));
+HighscoreText("OPuto", 80,4, gc));
+HighscoreText("Ito", 75,5, gc));
+HighscoreText("Tera", 70, 6, gc));
+HighscoreText("Serena", 65, 7, gc));
+HighscoreText("Mickie", 60, 8, gc));
+HighscoreText("Error", 55, 9, gc));

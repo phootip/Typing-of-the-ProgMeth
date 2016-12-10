@@ -75,20 +75,10 @@ public class MenuScreen extends StackPane{
 		gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
 		gc.setFont(font);
 		this.gc.setFill(Color.WHITE);
-		ArrayList<HighscoreText> highscore = new ArrayList<HighscoreText>(10);
-		highscore.add(new HighscoreText("Hater", 100, 0, gc));
-		highscore.add(new HighscoreText("Elle", 95, 1, gc));
-		highscore.add(new HighscoreText("Lily",90, 2, gc));
-		highscore.add(new HighscoreText("Leo", 85, 3, gc));
-		highscore.add(new HighscoreText("OPuto", 80,4, gc));
-		highscore.add(new HighscoreText("Ito", 75,5, gc));
-		highscore.add(new HighscoreText("Tera", 70, 6, gc));
-		highscore.add(new HighscoreText("Serena", 65, 7, gc));
-		highscore.add(new HighscoreText("Mickie", 60, 8, gc));
-		highscore.add(new HighscoreText("Error", 55, 9, gc));
+		
 		ThreadHolder.instance.getThreads().clear();
 		for (HighscoreText i : highscore) {
-			Thread highscorethread = new Thread(new Runnable() {
+			Thread i = new Thread(new Runnable() {
 				public void run() {
 
 					try {
