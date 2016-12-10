@@ -8,13 +8,13 @@ import javafx.scene.canvas.GraphicsContext;
 
 public abstract class Text implements IRenderable{
 	protected String name;
-	protected int order;
+	protected double order;
 	protected double font_width;
 	protected double font_height;
 	protected boolean isfocused;
 	protected int c=0;
 	protected FontLoader fontLoader;
-	public Text(String name,int order,GraphicsContext gc){
+	public Text(String name,double order,GraphicsContext gc){
 		this.name = name;
 		this.order = order;
 		fontLoader = Toolkit.getToolkit().getFontLoader();
@@ -29,7 +29,7 @@ public abstract class Text implements IRenderable{
 	public String getName(){
 		return name;
 	}
-	public int getOrder(){
+	public double getOrder(){
 		return order;
 	}
 }

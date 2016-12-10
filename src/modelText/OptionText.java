@@ -15,7 +15,7 @@ public class OptionText extends Text{
 	private double font_width2;
 	private double x;
 	private double y;
-	public OptionText(String name,String value,int order,GraphicsContext gc){
+	public OptionText(String name,String value,double order,GraphicsContext gc){
 		super(name,order,gc);
 		this.value = value;
 		FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
@@ -94,7 +94,7 @@ public class OptionText extends Text{
 	public String getName(){
 		return name;
 	}
-	public int getOrder(){
+	public double getOrder(){
 		return order;
 	}
 }

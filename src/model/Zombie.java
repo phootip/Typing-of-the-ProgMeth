@@ -50,11 +50,12 @@ public class Zombie extends Entity{
 		font_width_remain = fontLoader.computeStringWidth(word,gc.getFont());
 	}
 	
-	public void Move(){
+	public boolean Move(){
 		if(movable){
 			x -= speed;
 			if(x<200)movable=false;
 		}
+		return movable;
 	}
 
 	@Override
@@ -107,6 +108,9 @@ public class Zombie extends Entity{
 	
 	public void setZ(int z){
 		this.z = z;
+	}
+	public int getX(){
+		return x;
 	}
 	
 }

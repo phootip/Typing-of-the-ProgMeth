@@ -15,7 +15,8 @@ public class MenuText extends Text{
 
 	private double x;
 	private double y;
-	public MenuText(String name,int order,GraphicsContext gc){
+	private boolean isDestroy;
+	public MenuText(String name,double order,GraphicsContext gc){
 		super(name,order,gc);
 		this.x = ConfigOption.width/2-font_width/2;
 		this.y = ConfigOption.height/2+3.5*font_height+order*50;
@@ -30,6 +31,8 @@ public class MenuText extends Text{
 	@Override
 	public void draw(GraphicsContext gc) {
 		gc.setFill(Color.WHITE);
+		gc.setStroke(Color.BLACK);
+		gc.strokeText(name, x, y);
 		gc.fillText(name, x,y);
 	}
 	
@@ -49,7 +52,7 @@ public class MenuText extends Text{
 
 	@Override
 	public boolean isDestroy() {
-		return false;
+		return isDestroy;
 	}
 
 	@Override
@@ -76,8 +79,10 @@ public class MenuText extends Text{
 	public String getName(){
 		return name;
 	}
-	public int getOrder(){
+	public double getOrder(){
 		return order;
 	}
-	
+	public void setDestroy(boolean isDestroyed){
+		this.isDestroy = isDestroyed;
+	}
 }
