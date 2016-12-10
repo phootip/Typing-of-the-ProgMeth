@@ -5,10 +5,12 @@ import javafx.scene.canvas.GraphicsContext;
 public interface IRenderable {
 	/*
 	 *  bg = -100;
-	 *  zombie = 0;
-	 *  maincharacter = 100;
-	 *  bunger = 101;
-	 *  gun = 102;
+	 *  maincharacter = 90;
+	 *  bunger = 91;
+	 *  gun = 92;
+	 *  zombie = 95;
+	 *  focused zombie = 99;
+	 *  stageText = 100;
 	 */
 	int getZ();
 	void draw(GraphicsContext gc);

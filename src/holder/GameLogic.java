@@ -17,8 +17,6 @@ public class GameLogic {
 	private int health;
 	private String word;
 	private String char1;
-	private MainCharacter mainCharacter = new MainCharacter(100,395);
-	private Gun gun = new Gun(115,410);
 	private AnimationTimer gameloop;
 	private GraphicsContext gc;
 	private Font font = Font.font("Cloud", FontWeight.LIGHT, 30);
@@ -27,6 +25,7 @@ public class GameLogic {
 	private int chapter = 1;
 	private int wave = 1;
 	private int hitting = 0;
+	private int hitting2 =0;
 	private boolean gameStart = true;
 	private boolean setupChapter = false;
 	private boolean focusing = false;
@@ -47,13 +46,16 @@ public class GameLogic {
 				}
 				
 				if(gameStart){
-					gc.setFill(Color.WHITE);
-					gc.setStroke(Color.BLACK);
-					if(wait==0)RenderableHolder.instance.add(new StageText("Ready",gc));
+					gc.setFont(font);
+					if(wait==0){
+						health = ConfigOption.health;
+						RenderableHolder.instance.add(new StageText("Ready",gc));
+					}
 					wait++;
 					if(wait>119){
 						setupChapter = true;
 						gameStart = false;
+						wait=0;
 					}
 				}
 				//set Up Level
@@ -61,7 +63,7 @@ public class GameLogic {
 					for(IRenderable i: RenderableHolder.instance.getEntities()){
 						if(i instanceof StageText)((StageText) i).setDestroy(true);
 					}
-					gc.setFont(font);
+					
 					RenderableHolder.instance.add(new StageText("Chapter "+chapter,gc));
 					addZombies();
 					removeSpace(wave1);
@@ -73,21 +75,23 @@ public class GameLogic {
 						if(wave1.get(i).substring(0,1).toUpperCase().equals(InputHolder.getLastTrigger())){
 							focusing = true;
 							hitting = i;
-							//set focus on zombie                              //+1 Skip Bg
-							((Zombie) RenderableHolder.instance.getEntities().get(hitting+1)).hit();
+							hitting2 = RenderableHolder.instance.getEntities().size();
+							((Zombie) RenderableHolder.instance.getEntities().get(hitting+4)).setZ(Integer.MAX_VALUE-1);
+							((Zombie) RenderableHolder.instance.getEntities().get(hitting+4)).setFocus(true);
+							//set focus on zombie                              //+4 Skip Bg main bunger gun
+							((Zombie) RenderableHolder.instance.getEntities().get(hitting+4)).hit();
 							wave1.set(hitting, wave1.get(hitting).substring(1));
 						}
 					}
-				} else if(focusing && InputHolder.keyTriggered.size()!=0){
-					System.out.println(InputHolder.getLastTrigger());
+				} else if(focusing && InputHolder.keyTriggered.size()!=0){  // already set focused zombie
 					if(InputHolder.getLastTrigger().equals(wave1.get(hitting).substring(0,1).toUpperCase())){
-						((Zombie) RenderableHolder.instance.getEntities().get(hitting+1)).hit();
+						((Zombie) RenderableHolder.instance.getEntities().get(hitting2-2)).hit();
 						wave1.set(hitting, wave1.get(hitting).substring(1));
 						// Zombie Dead
 						if(wave1.get(hitting).equals("")){
 							focusing = false;
 							wave1.remove(hitting);
-							RenderableHolder.instance.remove(hitting+1);
+							RenderableHolder.instance.remove(hitting2-2);
 							if(wave1.size()==0){
 								chapter++;
 								endChapter = true;
@@ -112,6 +116,7 @@ public class GameLogic {
 				}
 				frameCount++;
 				removeDestroyedEntities();
+				RenderableHolder.instance.sort();
 				paint();
 				InputHolder.postUpdate();
 			}
@@ -155,7 +160,8 @@ public class GameLogic {
 		int range = a.length;
 		for(int i =0;i<amount;i++){
 			do{
-				word = a[(int)(Math.random()*range)];
+				int ran = (int)(Math.random()*range);
+				word = a[ran];
 				char1 = word.substring(0,1).toUpperCase();
 			}while(used.contains(char1));
 			used.add(char1);
@@ -181,6 +187,8 @@ public class GameLogic {
 		for(int i=0;i<RenderableHolder.instance.getEntities().size();i++){
 			RenderableHolder.instance.getEntities().get(i).draw(gc);
 		}
+		gc.setFill(Color.RED);
+		gc.fillText("HEALTH : "+health, 10, 50);
 	}
 	
 	
@@ -190,8 +198,8 @@ public class GameLogic {
 		//add bg
 		RenderableHolder.instance.add(new BackGround());
 		//add Main Character, Gun & Bunger
-		RenderableHolder.instance.add(mainCharacter);
-		RenderableHolder.instance.add(gun);
+		RenderableHolder.instance.add(new MainCharacter(100,395));
+		RenderableHolder.instance.add(new Gun(115,410));
 		RenderableHolder.instance.add(new Bunger(150,90));
 	}
 	public void GameLoopStart(){

@@ -18,6 +18,7 @@ public class Zombie extends Entity{
 	private int speed;
 	private boolean isDead;
 	private boolean isFocused;
+	private boolean movable;
 	private double font_width;
 	private double font_height;
 	private double font_width_remain;
@@ -26,7 +27,7 @@ public class Zombie extends Entity{
 	
 	public Zombie(int x, int y,String word,GraphicsContext gc) {
 		super(x, y);
-		this.z = 0;
+		this.z = Integer.MAX_VALUE-5;
 		this.speed = 1;
 		this.gc = gc;
 		this.word = word;
@@ -35,6 +36,8 @@ public class Zombie extends Entity{
 		this.font_width = fontLoader.computeStringWidth(word,gc.getFont());
 		this.font_height = fontLoader.getFontMetrics(gc.getFont()).getLineHeight();
 		this.font_width_remain = font_width;
+		this.movable = true;
+		this.isFocused = false;
 	}
 	
 	public String getWord(){
@@ -42,14 +45,16 @@ public class Zombie extends Entity{
 	}
 	
 	public void hit(){
-		this.z = 10;
 		if(word.substring(0, 1).equals(" ")) word = word.substring(2);
 		else word = word.substring(1);
 		font_width_remain = fontLoader.computeStringWidth(word,gc.getFont());
 	}
 	
 	public void Move(){
-		this.x -= speed;
+		if(movable){
+			x -= speed;
+			if(x<200)movable=false;
+		}
 	}
 
 	@Override
@@ -64,7 +69,11 @@ public class Zombie extends Entity{
 			gc.drawImage(new Image(ClassLoader.getSystemResource("pic/ExampleZombie_move2.png").toString()), x, y);
 			if(count>78) count =0;
 		}
-		gc.setFill(Color.BLUE);
+		if(isFocused){
+			gc.setFill(Color.RED);
+		}else{
+			gc.setFill(Color.BLUE);			
+		}
 		gc.fillRect(x-15, y-font_height+5, font_width+30, font_height+10);
 		gc.setFill(Color.BLACK);
 		gc.fillRect(x-10, y-font_height+10, font_width+20, font_height);
@@ -94,6 +103,10 @@ public class Zombie extends Entity{
 	@Override
 	public void setFocus(boolean isfouced) {
 		this.isFocused = isfouced;
+	}
+	
+	public void setZ(int z){
+		this.z = z;
 	}
 	
 }

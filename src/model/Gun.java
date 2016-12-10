@@ -19,10 +19,8 @@ public class Gun extends Entity{
 
 	@Override
 	public void draw(GraphicsContext gc) {
-//		Image img = new Image(ClassLoader.getSystemResource("pic/gun.png").toString());
-//		gc.drawImage(img, x, y);
-		gc.setFill(Color.YELLOW);
-		gc.fillRect(x, y, 20, 10);
+		Image img = new Image(ClassLoader.getSystemResource("pic/soldier76arm.png").toString());
+		gc.drawImage(img, x, y);
 	}
 
 	@Override
