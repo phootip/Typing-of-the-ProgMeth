@@ -12,7 +12,7 @@ public class ConfigOption {
 	
 	public static final int[] healths = {50,100,150};
 	public static void setHealth(int i){
-		if(i > 300) health = 300;
+		if(i > 150) health = 300;
 		else if (i < 50) health = 50;
 	}
 	
