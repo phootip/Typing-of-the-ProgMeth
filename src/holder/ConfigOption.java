@@ -15,6 +15,10 @@ public class ConfigOption {
 		if(i > 300) health = 300;
 		else if (i < 50) health = 50;
 	}
+	
+	public static ArrayList<Integer> highscore_score = new ArrayList<>(10);
+	public static ArrayList<String> highscore_name = new ArrayList<>(10);
+	
 	public static String[] getRank(int rank){
 		if(rank == 1)return rank1;
 		else if(rank ==2)return rank2;
