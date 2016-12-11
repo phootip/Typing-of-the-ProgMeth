@@ -3,7 +3,9 @@ package model;
 import com.sun.javafx.tk.FontLoader;
 import com.sun.javafx.tk.Toolkit;
 
+import holder.GameLogic;
 import holder.RenderableHolder;
+import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -24,11 +26,12 @@ public class Zombie extends Entity{
 	private double font_width_remain;
 	private FontLoader fontLoader;
 	private int count = 0;
+	private int count2= 0;
 	
 	public Zombie(int x, int y,String word,GraphicsContext gc) {
 		super(x, y);
 		this.z = Integer.MAX_VALUE-5;
-		this.speed = 10;
+		this.speed = 1;
 		this.gc = gc;
 		this.word = word;
 		this.isDead = false;
@@ -48,6 +51,25 @@ public class Zombie extends Entity{
 		if(word.substring(0, 1).equals(" ")) word = word.substring(2);
 		else word = word.substring(1);
 		font_width_remain = fontLoader.computeStringWidth(word,gc.getFont());
+	}
+	
+	public void miss(){
+		new AnimationTimer(){
+			int count = 0;
+			int x2 = x;
+			int y2 = y;
+			@Override
+			public void handle(long now) {
+				if(count<=30){
+					gc.setFill(Color.LIMEGREEN);
+					gc.strokeText("MISS", x2, y2+80);
+					gc.fillText("MISS", x2, y2+80);
+					y2--;
+				}else this.stop();
+				count++;
+				System.out.println("miss");
+			}
+		}.start();
 	}
 	
 	public boolean Move(){
