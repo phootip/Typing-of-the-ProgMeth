@@ -36,48 +36,49 @@ import modelText.MenuText;
 import modelText.OptionText;
 import modelText.Text;
 
-public class MenuScreen extends StackPane{
-	
+public class MenuScreen extends StackPane {
+
 	private Canvas canvas;
 	private GraphicsContext gc;
 	private Font font = Font.font("Cloud", FontWeight.LIGHT, 30);
 	
-	public MenuScreen(){
-		this.canvas = new Canvas(ConfigOption.width,ConfigOption.height);
+
+	public MenuScreen() {
+		this.canvas = new Canvas(ConfigOption.width, ConfigOption.height);
 		gc = this.canvas.getGraphicsContext2D();
-		
+
 		addListener();
 		addMenuThread();
-		
+
 		this.getChildren().add(canvas);
 	}
-	
-	public void initializeMenuScreen(){
-		//Paint Home Menu
+
+	public void initializeMenuScreen() {
+		// Paint Home Menu
 		gc.drawImage(BackGround.menubg, 0, 0);
 		gc.setFont(font);
 		this.gc.setFill(Color.WHITE);
-		RenderableHolder.instance.add(new MenuText("START",0,gc));
-		RenderableHolder.instance.add(new MenuText("HIGH SCORE",1,gc));
-		RenderableHolder.instance.add(new MenuText("OPTION",2,gc));
-		RenderableHolder.instance.add(new MenuText("EXIT",3,gc));
-		
+		RenderableHolder.instance.add(new MenuText("START", 0, gc));
+		RenderableHolder.instance.add(new MenuText("HIGH SCORE", 1, gc));
+		RenderableHolder.instance.add(new MenuText("OPTION", 2, gc));
+		RenderableHolder.instance.add(new MenuText("EXIT", 3, gc));
+
 	}
-	
-	public void initializeOptionScreen(){
-		//BackGround
+
+	public void initializeOptionScreen() {
+		// BackGround
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
 		gc.setFont(font);
 		this.gc.setFill(Color.WHITE);
-		RenderableHolder.instance.add(new OptionText("< HEALTH >",ConfigOption.health+"",0,gc));
-		RenderableHolder.instance.add(new OptionText("< DIFICULTY >",ConfigOption.dificulty,1,gc));
-		RenderableHolder.instance.add(new OptionText("< SOUND >","10",2,gc));
-		RenderableHolder.instance.add(new MenuText("BACK",3,gc));
+		RenderableHolder.instance.add(new OptionText("< HEALTH >", ConfigOption.health + "", 0, gc));
+		RenderableHolder.instance.add(new OptionText("< DIFICULTY >", ConfigOption.dificultylist[ConfigOption.dif], 1, gc));
+		RenderableHolder.instance.add(new OptionText("< SOUND >", "10", 2, gc));
+		RenderableHolder.instance.add(new MenuText("BACK", 3, gc));
 	}
-	
-	public void initializeHighScoreScreen() throws FileNotFoundException{
-		
+
+	public void initializeHighScoreScreen() throws FileNotFoundException {
+
 		// BackGround
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
@@ -105,194 +106,222 @@ public class MenuScreen extends StackPane{
 			});
 			ThreadHolder.instance.getThreads().add(std);
 		}
-		for(Thread s : ThreadHolder.instance.getThreads()){ 
+		for (Thread s : ThreadHolder.instance.getThreads()) {
 			s.start();
 		}
-		RenderableHolder.instance.add(new MenuText("BACK",4,gc));
-	}
-	
-	
-	private void addMenuThread(){
-		// Menu Thread
-			ThreadHolder.instance.add(new Thread(new Runnable() {
-				@Override
-				public void run(){
-					RenderableHolder.instance.removeAll();
-					initializeMenuScreen();
-					while(Main.instance.getScene()=="menuScene"){
-						for(int i=0;i<RenderableHolder.instance.getEntities().size();i++){
-							if(RenderableHolder.instance.getEntities().get(i).isFocused()){
-								((Text) RenderableHolder.instance.getEntities().get(i)).drawFocus(gc);
-							}
-							else RenderableHolder.instance.getEntities().get(i).draw(gc);
-							try {
-								Thread.sleep(17);
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
-						}
-					}
-				}
-			}));
+		RenderableHolder.instance.add(new MenuText("BACK", 4, gc));
 	}
 
-	private void addListener(){
-		//Event Handler Hovering Menu
-			this.canvas.setOnMouseEntered(new EventHandler<MouseEvent>() {
-				@Override
-				public void handle(MouseEvent event) {
-					// TODO Auto-generated method stub
-					InputHolder.mouseOnScreen = true;
+	private void addMenuThread() {
+		// Menu Thread
+		ThreadHolder.instance.add(new Thread(new Runnable() {
+			@Override
+			public void run() {
+				RenderableHolder.instance.removeAll();
+				initializeMenuScreen();
+				while (Main.instance.getScene() == "menuScene") {
+					for (int i = 0; i < RenderableHolder.instance.getEntities().size(); i++) {
+						if (RenderableHolder.instance.getEntities().get(i).isFocused()) {
+							((Text) RenderableHolder.instance.getEntities().get(i)).drawFocus(gc);
+						} else
+							RenderableHolder.instance.getEntities().get(i).draw(gc);
+						try {
+							Thread.sleep(17);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
 				}
-			});
-			
-			this.canvas.setOnMouseExited(new EventHandler<MouseEvent>() {
-				@Override
-				public void handle(MouseEvent event){
-					InputHolder.mouseOnScreen = false;
-				}
-			});
-			
-			this.canvas.setOnMouseMoved(new EventHandler<MouseEvent>() {
-				@Override
-				public void handle(MouseEvent event){
-					if(InputHolder.mouseOnScreen){
-						InputHolder.mouseX = event.getX();
-						InputHolder.mouseY = event.getY();
-						for(IRenderable i: RenderableHolder.instance.getEntities()){
-							if(i.inHitBox() && (i instanceof MenuText || i instanceof OptionText)){
-								i.setFocus(true);
-								for(IRenderable j: RenderableHolder.instance.getEntities()){
-									if(!i.equals(j))j.setFocus(false);
-								}
+			}
+		}));
+	}
+
+	private void addListener() {
+		// Event Handler Hovering Menu
+		this.canvas.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				InputHolder.mouseOnScreen = true;
+			}
+		});
+
+		this.canvas.setOnMouseExited(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				InputHolder.mouseOnScreen = false;
+			}
+		});
+
+		this.canvas.setOnMouseMoved(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if (InputHolder.mouseOnScreen) {
+					InputHolder.mouseX = event.getX();
+					InputHolder.mouseY = event.getY();
+					for (IRenderable i : RenderableHolder.instance.getEntities()) {
+						if (i.inHitBox() && (i instanceof MenuText || i instanceof OptionText)) {
+							i.setFocus(true);
+							for (IRenderable j : RenderableHolder.instance.getEntities()) {
+								if (!i.equals(j))
+									j.setFocus(false);
 							}
 						}
 					}
 				}
-			});
-			
-			this.canvas.setOnMouseDragged(new EventHandler<MouseEvent>() {
-				@Override
-				public void handle(MouseEvent event){
-					if(InputHolder.mouseOnScreen){
-						InputHolder.mouseX = event.getX();
-						InputHolder.mouseY = event.getY();
-						
-					}
+			}
+		});
+
+		this.canvas.setOnMouseDragged(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if (InputHolder.mouseOnScreen) {
+					InputHolder.mouseX = event.getX();
+					InputHolder.mouseY = event.getY();
+
 				}
-			});
-			
-			this.canvas.setOnMousePressed(new EventHandler<MouseEvent>() {
-				@Override
-				public void handle(MouseEvent event) {
-					if (event.getButton().toString() == "PRIMARY") {
-						if(InputHolder.mouseLeftDown == false){
-							InputHolder.mouseLeftDownTrigger = true;
-							for(int i=0;i<RenderableHolder.instance.getEntities().size();i++){
-								if(RenderableHolder.instance.getEntities().get(i).isFocused() && RenderableHolder.instance.getEntities().get(i).inHitBox()){
-									String name;
-									if(RenderableHolder.instance.getEntities().get(i) instanceof MenuText){
-										name = ((MenuText)RenderableHolder.instance.getEntities().get(i)).getName();
+			}
+		});
+
+		this.canvas.setOnMousePressed(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton().toString() == "PRIMARY") {
+					if (InputHolder.mouseLeftDown == false) {
+						InputHolder.mouseLeftDownTrigger = true;
+						for (int i = 0; i < RenderableHolder.instance.getEntities().size(); i++) {
+							if (RenderableHolder.instance.getEntities().get(i).isFocused()
+									&& RenderableHolder.instance.getEntities().get(i).inHitBox()) {
+								String name;
+								if (RenderableHolder.instance.getEntities().get(i) instanceof MenuText) {
+									name = ((MenuText) RenderableHolder.instance.getEntities().get(i)).getName();
+								} else
+									name = ((OptionText) RenderableHolder.instance.getEntities().get(i)).getName();
+								// START
+								if (name == "START") {
+									System.out.println("START");
+									// BG
+									gc.setFill(Color.BLACK);
+									gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
+									Main.toggleScene();
+								}
+								// click HIGH SCORE
+								if (name == "HIGH SCORE") {
+									System.out.println("HIGH SCORE");
+
+									RenderableHolder.instance.removeAll();
+									try {
+										initializeHighScoreScreen();
+									} catch (FileNotFoundException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
 									}
-									else name = ((OptionText)RenderableHolder.instance.getEntities().get(i)).getName();
-									//START
-									if(name == "START"){
-										System.out.println("START");
-										//BG
+								}
+								// click OPTION
+								if (name == "OPTION") {
+									System.out.println("OPTION");
+									RenderableHolder.instance.removeAll();
+									initializeOptionScreen();
+								}
+								// click EXIT
+								if (name == "EXIT") {
+									System.out.println("EXIT");
+									Main.instance.getStage().close();
+									System.exit(0);
+								}
+								// HEALTH
+								if (name == "< HEALTH >") {
+									System.out.println("< HEALTH >");
+									if (((OptionText) RenderableHolder.instance.getEntities().get(i)).inHitBoxRight()) {
+										ConfigOption.health += 50;
+										ConfigOption.setHealth(ConfigOption.health);
 										gc.setFill(Color.BLACK);
-										gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
-										Main.toggleScene();
-									}
-									//click HIGH SCORE
-									if(name == "HIGH SCORE"){
-										System.out.println("HIGH SCORE");
-										
-										RenderableHolder.instance.removeAll();
-										try {
-											initializeHighScoreScreen();
-										} catch (FileNotFoundException e) {
-											// TODO Auto-generated catch block
-											e.printStackTrace();
-										}
-									}
-									//click OPTION
-									if(name == "OPTION"){
-										System.out.println("OPTION");
-										RenderableHolder.instance.removeAll();
-										initializeOptionScreen();
-									}
-									//click EXIT
-									if(name == "EXIT"){
-										System.out.println("EXIT");
-										Main.instance.getStage().close();
-										System.exit(0);
-									}
-									//HEALTH
-									if(name == "< HEALTH >"){
-										System.out.println("< HEALTH >");
-										if(((OptionText)RenderableHolder.instance.getEntities().get(i)).inHitBoxRight()){
-											ConfigOption.health+=10;
-											ConfigOption.setHealth(ConfigOption.health);
-											gc.setFill(Color.BLACK);
-											gc.fillRect(900, 90, 100,60);
-											RenderableHolder.instance.getEntities().remove(0);
-											RenderableHolder.instance.getEntities().add(0,new OptionText("< HEALTH >",ConfigOption.health+"",0,gc));
-											
-										}
-										else if(((OptionText)RenderableHolder.instance.getEntities().get(i)).inHitBoxLeft()){
-											ConfigOption.health-=10;
-											ConfigOption.setHealth(ConfigOption.health);
-											System.out.println(ConfigOption.health);
-											gc.setFill(Color.BLACK);
-											gc.fillRect(900, 90, 100,60);
-											RenderableHolder.instance.getEntities().remove(0);
-											RenderableHolder.instance.getEntities().add(0,new OptionText("< HEALTH >",ConfigOption.health+"",0,gc));
-										}
-									}
-									if(name == "< DIFICULTY >"){
-										System.out.println("< DIFICULTY >");
-										if(((OptionText)RenderableHolder.instance.getEntities().get(i)).inHitBoxRight()){
-											gc.setFill(Color.BLACK);
-											gc.fillRect(910, 180, 100,60);
-											RenderableHolder.instance.getEntities().remove(1);
-											RenderableHolder.instance.getEntities().add(1,new OptionText("< DIFICULTY >",ConfigOption.dificulty+"",1,gc));
-											
-										}
-										else if(((OptionText)RenderableHolder.instance.getEntities().get(i)).inHitBoxLeft()){
-											System.out.println("left");
-											gc.setFill(Color.BLACK);
-											gc.fillRect(900, 120, 100,60);
-											RenderableHolder.instance.getEntities().remove(1);
-											RenderableHolder.instance.getEntities().add(1,new OptionText("< DIFICULTY >",ConfigOption.dificulty+"",1,gc));
-										}
-									}
-									//HEALTH
-									if(name == "HEALTH"){
-										System.out.println("HEALTH");
-									}
-									//BACK
-									if(name == "BACK"){
-										System.out.println("BACK");
-										RenderableHolder.instance.removeAll();
-										initializeMenuScreen();
+										gc.fillRect(900, 90, 100, 60);
+										RenderableHolder.instance.getEntities().remove(0);
+										RenderableHolder.instance.getEntities().add(0,
+												new OptionText("< HEALTH >", ConfigOption.health + "", 0, gc));
+
+									} else if (((OptionText) RenderableHolder.instance.getEntities().get(i))
+											.inHitBoxLeft()) {
+										ConfigOption.health -= 50;
+										ConfigOption.setHealth(ConfigOption.health);
+										System.out.println(ConfigOption.health);
+										gc.setFill(Color.BLACK);
+										gc.fillRect(900, 90, 100, 60);
+										RenderableHolder.instance.getEntities().remove(0);
+										RenderableHolder.instance.getEntities().add(0,
+												new OptionText("< HEALTH >", ConfigOption.health + "", 0, gc));
 									}
 								}
+								// DIFICULTY
+								if (name == "< DIFICULTY >") {
+									System.out.println("< DIFICULTY >");
+									if (((OptionText) RenderableHolder.instance.getEntities().get(i)).inHitBoxRight()) {
+										ConfigOption.dif++;
+										System.out.println(ConfigOption.dif);
+										ConfigOption.setDificulty(ConfigOption.dif);
+										gc.setFill(Color.BLACK);
+										gc.fillRect(880, 180, 200, 60);
+										RenderableHolder.instance.getEntities().remove(1);
+										RenderableHolder.instance.getEntities().add(1,new OptionText("< DIFICULTY >", ConfigOption.dificultylist[ConfigOption.dif], 1, gc));
+
+									} else if (((OptionText) RenderableHolder.instance.getEntities().get(i)).inHitBoxLeft()) {
+										ConfigOption.dif--;
+										ConfigOption.setDificulty(ConfigOption.dif);
+										gc.setFill(Color.BLACK);
+										gc.fillRect(880, 180, 200, 60);
+										RenderableHolder.instance.getEntities().remove(1);
+										RenderableHolder.instance.getEntities().add(1,new OptionText("< DIFICULTY >", ConfigOption.dificultylist[ConfigOption.dif], 1, gc));
+									}
+								}
+
+								if (name == "< VOLUME >") {
+									System.out.println("< DIFICULTY >");
+									if (((OptionText) RenderableHolder.instance.getEntities().get(i)).inHitBoxRight()) {
+										gc.setFill(Color.BLACK);
+										gc.fillRect(910, 180, 100, 60);
+										RenderableHolder.instance.getEntities().remove(1);
+										RenderableHolder.instance.getEntities().add(1,
+												new OptionText("< DIFICULTY >", ConfigOption.dificulty + "", 1, gc));
+
+									} else if (((OptionText) RenderableHolder.instance.getEntities().get(i))
+											.inHitBoxLeft()) {
+										System.out.println("left");
+										gc.setFill(Color.BLACK);
+										gc.fillRect(900, 120, 100, 60);
+										RenderableHolder.instance.getEntities().remove(1);
+										RenderableHolder.instance.getEntities().add(1,
+												new OptionText("< DIFICULTY >", ConfigOption.dificulty + "", 1, gc));
+									}
+								}
+								// HEALTH
+								if (name == "HEALTH") {
+									System.out.println("HEALTH");
+								}
+								// BACK
+								if (name == "BACK") {
+									System.out.println("BACK");
+									RenderableHolder.instance.removeAll();
+									initializeMenuScreen();
+								}
 							}
-							InputHolder.postUpdate();
 						}
-						InputHolder.mouseLeftDown = true;
+						InputHolder.postUpdate();
 					}
+					InputHolder.mouseLeftDown = true;
 				}
-			});
-			
-			this.canvas.setOnMouseReleased(new EventHandler<MouseEvent>() {
-				@Override
-				public void handle(MouseEvent event) {
-					if (event.getButton().toString() == "PRIMARY") {
-						InputHolder.mouseLeftDown = false;
-					}
+			}
+		});
+
+		this.canvas.setOnMouseReleased(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton().toString() == "PRIMARY") {
+					InputHolder.mouseLeftDown = false;
 				}
-			});
+			}
+		});
+
 	}
 }
  

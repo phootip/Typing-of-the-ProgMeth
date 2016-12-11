@@ -5,15 +5,21 @@ import java.util.ArrayList;
 public class ConfigOption {
 	public static int width = 1200;
 	public static int height = 780;
+	public static int dif = 0;
 	
 	
-	public static String dificulty = "EASY";
+	public static String[] dificultylist = {"EASY","MEDIUM","HARD"};
+	public static String dificulty = dificultylist[dif];
 	public static int health = 100;
 	
 	public static final int[] healths = {50,100,150};
 	public static void setHealth(int i){
-		if(i > 150) health = 300;
+		if(i > 150) health = 150;
 		else if (i < 50) health = 50;
+	}
+	public static void setDificulty(int i){
+		if(i > 2) dif = 2;
+		else if (i < 0) dif = 0;
 	}
 	
 	public static ArrayList<Integer> highscore_score = new ArrayList<>(10);
