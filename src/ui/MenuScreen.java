@@ -7,7 +7,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 import com.sun.javafx.tk.FontLoader;
@@ -94,8 +93,6 @@ public class MenuScreen extends StackPane{
 			String name = line[0];
 			int score = Integer.parseInt(line[1]);
 			int order = Integer.parseInt(line[2]);
-			ConfigOption.highscore_name.add(order, name);
-			ConfigOption.highscore_score.add(order, score);
 			HighscoreText s = new HighscoreText(name, score, order, gc);
 			Thread std = new Thread(new Runnable() {
 				public void run() {
@@ -234,11 +231,39 @@ public class MenuScreen extends StackPane{
 									if(name == "< HEALTH >"){
 										System.out.println("< HEALTH >");
 										if(((OptionText)RenderableHolder.instance.getEntities().get(i)).inHitBoxRight()){
-											ConfigOption.setHealth(1);
-											ConfigOption.health++;
+											ConfigOption.health+=10;
+											ConfigOption.setHealth(ConfigOption.health);
+											gc.setFill(Color.BLACK);
+											gc.fillRect(900, 90, 100,60);
+											RenderableHolder.instance.getEntities().remove(0);
+											RenderableHolder.instance.getEntities().add(0,new OptionText("< HEALTH >",ConfigOption.health+"",0,gc));
+											
 										}
 										else if(((OptionText)RenderableHolder.instance.getEntities().get(i)).inHitBoxLeft()){
-											ConfigOption.health--;
+											ConfigOption.health-=10;
+											ConfigOption.setHealth(ConfigOption.health);
+											System.out.println(ConfigOption.health);
+											gc.setFill(Color.BLACK);
+											gc.fillRect(900, 90, 100,60);
+											RenderableHolder.instance.getEntities().remove(0);
+											RenderableHolder.instance.getEntities().add(0,new OptionText("< HEALTH >",ConfigOption.health+"",0,gc));
+										}
+									}
+									if(name == "< DIFICULTY >"){
+										System.out.println("< DIFICULTY >");
+										if(((OptionText)RenderableHolder.instance.getEntities().get(i)).inHitBoxRight()){
+											gc.setFill(Color.BLACK);
+											gc.fillRect(910, 180, 100,60);
+											RenderableHolder.instance.getEntities().remove(1);
+											RenderableHolder.instance.getEntities().add(1,new OptionText("< DIFICULTY >",ConfigOption.dificulty+"",1,gc));
+											
+										}
+										else if(((OptionText)RenderableHolder.instance.getEntities().get(i)).inHitBoxLeft()){
+											System.out.println("left");
+											gc.setFill(Color.BLACK);
+											gc.fillRect(900, 120, 100,60);
+											RenderableHolder.instance.getEntities().remove(1);
+											RenderableHolder.instance.getEntities().add(1,new OptionText("< DIFICULTY >",ConfigOption.dificulty+"",1,gc));
 										}
 									}
 									//HEALTH
