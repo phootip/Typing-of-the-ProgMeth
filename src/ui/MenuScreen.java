@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import com.sun.javafx.tk.FontLoader;
@@ -111,7 +112,6 @@ public class MenuScreen extends StackPane{
 	}
 	
 	
-	
 	private void addMenuThread(){
 		// Menu Thread
 			ThreadHolder.instance.add(new Thread(new Runnable() {
@@ -203,12 +203,11 @@ public class MenuScreen extends StackPane{
 										gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
 										Main.toggleScene();
 									}
+									//click HIGH SCORE
 									if(name == "HIGH SCORE"){
 										System.out.println("HIGH SCORE");
+										
 										RenderableHolder.instance.removeAll();
-										i=0;
-										String s = ClassLoader.getSystemResource("highscore.txt").toString();
-										System.out.println(s.substring(6));
 										try {
 											initializeHighScoreScreen();
 										} catch (FileNotFoundException e) {
