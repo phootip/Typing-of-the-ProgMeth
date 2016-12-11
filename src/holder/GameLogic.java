@@ -74,7 +74,7 @@ public class GameLogic {
 					}
 					
 					RenderableHolder.instance.add(new StageText("Chapter "+chapter,gc));
-					addZombies();
+					addEnemies();
 					removeSpace(wave1);
 					setupChapter = false;
 				}
@@ -84,24 +84,24 @@ public class GameLogic {
 					if(!focusing){
 						for(int i = 0;i<wave1.size();i++){
 							if(InputHolder.getLastTrigger().equals(wave1.get(i).substring(0,1).toUpperCase()) && 
-									((Zombie) RenderableHolder.instance.getEntities().get(i+4)).getX()<1300){
+									((Enemy) RenderableHolder.instance.getEntities().get(i+4)).getX()<1300){
 								focusing = true;
 								hitting = i;
 								hitting2 = RenderableHolder.instance.getEntities().size();
-								((Zombie) RenderableHolder.instance.getEntities().get(hitting+4)).setZ(Integer.MAX_VALUE-1);
-								((Zombie) RenderableHolder.instance.getEntities().get(hitting+4)).setFocus(true);
-								//set focus on zombie                              //+4 Skip Bg main bunger gun
-								((Zombie) RenderableHolder.instance.getEntities().get(hitting+4)).hit();
+								((Enemy) RenderableHolder.instance.getEntities().get(hitting+4)).setZ(Integer.MAX_VALUE-1);
+								((Enemy) RenderableHolder.instance.getEntities().get(hitting+4)).setFocus(true);
+								//set focus on Enemy                              //+4 Skip Bg main bunger gun
+								((Enemy) RenderableHolder.instance.getEntities().get(hitting+4)).hit();
 								wave1.set(hitting, wave1.get(hitting).substring(1));
 								score+=5;
 							}
 						}
-					} else if(focusing){  // already set focused zombie
+					} else if(focusing){  // already set focused Enemy
 						if(InputHolder.getLastTrigger().equals(wave1.get(hitting).substring(0,1).toUpperCase())){
-							((Zombie) RenderableHolder.instance.getEntities().get(hitting2-2)).hit();
+							((Enemy) RenderableHolder.instance.getEntities().get(hitting2-2)).hit();
 							wave1.set(hitting, wave1.get(hitting).substring(1));
 							score+=5;
-							// Zombie Dead
+							// Enemy Dead
 							if(wave1.get(hitting).equals("")){
 								focusing = false;
 								wave1.remove(hitting);
@@ -122,12 +122,12 @@ public class GameLogic {
 							totalMiss++;
 							perfect=0;
 							miss++;
-							((Zombie) RenderableHolder.instance.getEntities().get(hitting2-2)).miss();
+							((Enemy) RenderableHolder.instance.getEntities().get(hitting2-2)).miss();
 						}
 					}
 				}
 				
-				// Wait after all zombies are dead.
+				// Wait after all Enemys are dead.
 				if(endChapter){
 					wait++;
 					if(wait == 120){
@@ -137,7 +137,7 @@ public class GameLogic {
 					}
 				}
 				
-				//Zombie attacking
+				//Enemy attacking
 				moveAndActtack();
 				
 				frameCount++;
@@ -167,6 +167,7 @@ public class GameLogic {
 						gc.setFill(Color.BLACK);
 						gc.fillText("ENTER YOUR NAME", ConfigOption.width/2-150, ConfigOption.height/2);
 					}else if(count<20){
+						gc.setFill(Color.RED);
 						gc.fillText("GAME OVER", ConfigOption.width/2-100, ConfigOption.height/2-50);
 						gc.strokeText("GAME OVER", ConfigOption.width/2-100, ConfigOption.height/2-50);
 					}
@@ -182,14 +183,19 @@ public class GameLogic {
 		};
 	}
 	
-	private void addZombies(){
+	private void addEnemies(){
 		int order = 1;
 		if(ConfigOption.dificulty=="EASY"){
 			if(chapter == 1){
 				//fetch word
 				fetchWord(1,5,wave1);
-				for(String i: wave1){
+				for(String i: wave1.subList(0, 3)){
 					RenderableHolder.instance.add(new Zombie(1000+200*order+(int)(Math.random()*401),
+							90+(int)(Math.random()*601),i,gc));
+					order++;
+				}
+				for(String i:wave1.subList(3, 5)){
+					RenderableHolder.instance.add(new Dog(1000+200*order+(int)(Math.random()*401),
 							90+(int)(Math.random()*601),i,gc));
 					order++;
 				}
@@ -253,8 +259,8 @@ public class GameLogic {
 	
 	private void moveAndActtack(){
 		for(int i=0;i<RenderableHolder.instance.getEntities().size();i++){
-			if(RenderableHolder.instance.getEntities().get(i) instanceof Zombie){
-				if(((Zombie) RenderableHolder.instance.getEntities().get(i)).Move());
+			if(RenderableHolder.instance.getEntities().get(i) instanceof Enemy){
+				if(((Enemy) RenderableHolder.instance.getEntities().get(i)).Move());
 				else{
 					hit_count++;
 					if(hit_count>29){
