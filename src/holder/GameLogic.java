@@ -32,6 +32,7 @@ public class GameLogic {
 	private boolean focusing = false;
 	private boolean endChapter = false;
 	private boolean gameOver = false;
+	private String name = "";
 	
 	public GameLogic(){
 		gameloop = new AnimationTimer(){
@@ -144,8 +145,17 @@ public class GameLogic {
 				else{ // GAME OVER !!
 					if(wait > 20){
 						if(hit_count<5)gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
-						gc.fillText("GAME OVER", ConfigOption.width/2-100, ConfigOption.height/2-50);
-						gc.strokeText("GAME OVER", ConfigOption.width/2-100, ConfigOption.height/2-50);
+						if(hit_count>=20){
+							gc.setFill(Color.BLACK);
+							gc.setGlobalAlpha(1);
+							gc.fillText("ENTER YOUR NAME", ConfigOption.width/2-150, ConfigOption.height/2);
+						}else{
+							gc.fillText("GAME OVER", ConfigOption.width/2-100, ConfigOption.height/2-50);
+							gc.strokeText("GAME OVER", ConfigOption.width/2-100, ConfigOption.height/2-50);
+						}
+						if(InputHolder.keyTriggered.size()!=0){
+							
+						}
 						wait = 0;
 						hit_count++;
 					}
@@ -153,10 +163,6 @@ public class GameLogic {
 				}
 			}
 		};
-	}
-	
-	public void update(){
-		
 	}
 	
 	private void addZombies(){

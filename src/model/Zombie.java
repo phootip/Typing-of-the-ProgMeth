@@ -28,7 +28,7 @@ public class Zombie extends Entity{
 	public Zombie(int x, int y,String word,GraphicsContext gc) {
 		super(x, y);
 		this.z = Integer.MAX_VALUE-5;
-		this.speed = 1;
+		this.speed = 10;
 		this.gc = gc;
 		this.word = word;
 		this.isDead = false;
