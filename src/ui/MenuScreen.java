@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 import com.sun.javafx.tk.FontLoader;
@@ -93,8 +94,8 @@ public class MenuScreen extends StackPane{
 			String name = line[0];
 			int score = Integer.parseInt(line[1]);
 			int order = Integer.parseInt(line[2]);
-			ConfigOption.highscore_name.add(name);
-			ConfigOption.highscore_score.add(score);
+			ConfigOption.highscore_name.add(order, name);
+			ConfigOption.highscore_score.add(order, score);
 			HighscoreText s = new HighscoreText(name, score, order, gc);
 			Thread std = new Thread(new Runnable() {
 				public void run() {
