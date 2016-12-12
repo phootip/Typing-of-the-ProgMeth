@@ -1,10 +1,10 @@
-Hater:100
-Elle:95
-Lily:90
-Leo:85
-OPuto:80
-Ito:75
-Tera:70
-Serena:65
-Mickie:60
-Error:55
+Hater 100 0
+Elle 95 1
+Lily 90 2
+Leo 85 3
+OPuto 80 4
+Ito 75 5
+Tera 70 6
+Serena 65 7
+Mickie 60 8
+Error 55 9
