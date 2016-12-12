@@ -25,7 +25,7 @@ public class HighscoreText extends Text{
 	public void draw(GraphicsContext gc) {
 		gc.setGlobalAlpha(0.1);
 		gc.setFill(Color.WHITE);
-		gc.fillText(player_name, x,y);
+		gc.fillText((int)order+1+"."+player_name, x,y);
 		gc.fillText(player_score+"", x+ConfigOption.width/1.5, y);
 		gc.setGlobalAlpha(1.0);
 	}
@@ -63,9 +63,5 @@ public class HighscoreText extends Text{
 	public void setFocus(boolean isfouced) {
 		// TODO Auto-generated method stub
 		
-	}
-	
-	private String getRecord() {
-		return "";
 	}
 }

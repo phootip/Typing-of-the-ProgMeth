@@ -50,6 +50,7 @@ public class GameLogic {
 					System.out.println(frameCount);
 					frameCount=0;
 					start = now;
+					System.out.println(ConfigOption.highscore);
 				}
 				
 				if(gameStart){
@@ -247,7 +248,8 @@ public class GameLogic {
 	
 	private void removeDestroyedEntities(){
 		for(int i=0;i<RenderableHolder.instance.getEntities().size();i++){
-			if(RenderableHolder.instance.getEntities().get(i).isDestroy())RenderableHolder.instance.remove(i);
+			if(RenderableHolder.instance.getEntities().get(i).isDestroy())
+				RenderableHolder.instance.remove(i);
 		}
 	}
 	

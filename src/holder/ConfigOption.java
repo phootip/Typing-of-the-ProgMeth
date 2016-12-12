@@ -1,6 +1,12 @@
 package holder;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class ConfigOption {
 	public static int width = 1200;
@@ -8,7 +14,7 @@ public class ConfigOption {
 	public static int dif = 0;
 	public static int health = 100;
 	public static int volume = 10;
-	
+	public static ArrayList<String> highscore = new ArrayList<>(10);
 	
 	public static String[] difficultylist = {"EASY","MEDIUM","HARD"};
 	public static String difficulty = difficultylist[dif];
@@ -25,9 +31,6 @@ public class ConfigOption {
 		difficulty = difficultylist[dif];
 	}
 	
-	public static ArrayList<Integer> highscore_score = new ArrayList<>(10);
-	public static ArrayList<String> highscore_name = new ArrayList<>(10);
-	
 	public static String[] getRank(int rank){
 		if(rank == 1)return rank1;
 		else if(rank ==2)return rank2;
@@ -43,4 +46,46 @@ public class ConfigOption {
 			"Tell my wife, I had another wife", "A man chooses, a slave obeys", "Don't make a girl a promise", };
 	public static String[] rank2 = {};
 	public static String[] rank1 = {"Hello","Hi","ah...","OMG","Really","Ant","Elephant","Rat","Mouse"};
+	
+	public static void loadHighScore(){
+		File f = new File("highscore.txt");
+		try {
+			Scanner sc = new Scanner(f);
+			while (sc.hasNextLine()) {
+				highscore.add(sc.nextLine());
+			}
+			System.out.println(highscore);
+			sc.close();
+			// Create and read defualt file again if file not found
+		} catch (FileNotFoundException e) {
+			createDefualtFile();
+			loadHighScore();
+		}
+	}
+	
+	public static void createDefualtFile(){
+		try {
+			BufferedWriter out = new BufferedWriter(new FileWriter("highscore.txt"));
+			String str = "Hello test\nCreate Defualt";
+			out.write(str);
+			out.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void sortHighScore(){
+		for(int i=0;i<highscore.size();i++){
+			for(int j=0;j<i;j++){
+				if(Integer.parseInt(highscore.get(i).substring(highscore.get(i).indexOf(":")+1))>
+				Integer.parseInt(highscore.get(j).substring(highscore.get(j).indexOf(":")+1))){
+					String temp = highscore.get(j);
+					highscore.set(j, highscore.get(i));
+					highscore.set(i, temp);
+				}
+			}
+		}
+		System.out.println(highscore);
+	}
 }

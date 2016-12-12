@@ -2,6 +2,7 @@ package main;
 
 import java.util.ArrayList;
 
+import holder.ConfigOption;
 import holder.GameLogic;
 import holder.IRenderable;
 import holder.InputHolder;
@@ -35,6 +36,9 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setResizable(false);
+		ConfigOption.loadHighScore();
+		ConfigOption.sortHighScore();
+		
 		this.primaryStage = primaryStage;
 		scene_count = "menuScene";
 		this.gameLogic = new GameLogic();

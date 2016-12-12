@@ -85,36 +85,15 @@ public class MenuScreen extends StackPane {
 		gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
 		gc.setFont(font);
 		this.gc.setFill(Color.WHITE);
-		String str = ClassLoader.getSystemResource("highscore.txt").toString();
-		String result = str.substring(6);
-		File highscore = new File(result);
-		Scanner sc = new Scanner(highscore);
 		ThreadHolder.instance.getThreads().clear();
-		while (sc.hasNextLine()) {
-			String[] line = sc.nextLine().split(" ");
-			String name = line[0];
-			int score = Integer.parseInt(line[1]);
-			int order = Integer.parseInt(line[2]);
-			int index = 0;
-			HighscoreText s = new HighscoreText(name, score, order, gc);
-			Thread std = new Thread(new Runnable() {
-				public void run() {
-					try {
-						for(int i=0;i<index;i++){
-							ThreadHolder.instance.getThreads().get(i).join();
-						}
-						RenderableHolder.instance.getEntities().add(s);
-					} catch (Exception e) {
-						// TODO: handle exception
-					}
-				}
-			});
-			ThreadHolder.instance.getThreads().add(std);
+		int order=0;
+		for(String i: ConfigOption.highscore){
+			String name = i.substring(0, i.indexOf(":"));
+			int score = Integer.parseInt(i.substring(i.indexOf(":")+1));
+			RenderableHolder.instance.add(new HighscoreText(name, score, order, gc));
+			order++;
+			RenderableHolder.instance.add(new MenuText("BACK", 4, gc));
 		}
-		for (Thread s : ThreadHolder.instance.getThreads()) {
-			s.start();
-		}
-		RenderableHolder.instance.add(new MenuText("BACK", 4, gc));
 	}
 
 	private void addMenuThread() {
