@@ -88,4 +88,9 @@ public class ConfigOption {
 		}
 		System.out.println(highscore);
 	}
+	
+	public static boolean checkHighScore(int score){
+		if(score>Integer.parseInt(highscore.get(9).substring(highscore.get(9).indexOf(":")+1)))return true;
+		else return false;
+	}
 }

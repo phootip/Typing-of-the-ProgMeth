@@ -3,6 +3,8 @@ package holder;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.sun.javafx.tk.Toolkit;
+
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -36,7 +38,7 @@ public class GameLogic {
 	private boolean setupChapter = false;
 	private boolean focusing = false;
 	private boolean endChapter = false;
-	private String name = "";
+	private String name = "P H O O _";
 	
 	public GameLogic(){
 		gameloop = new AnimationTimer(){
@@ -50,7 +52,6 @@ public class GameLogic {
 					System.out.println(frameCount);
 					frameCount=0;
 					start = now;
-					System.out.println(ConfigOption.highscore);
 				}
 				
 				if(gameStart){
@@ -152,33 +153,54 @@ public class GameLogic {
 		gameOverloop = new AnimationTimer(){
 			Long start =0l;
 			int count = 0;
-			int wait = 0;
+			int frame = 0;
+			int w =1;
+			int h =1;
 			@Override
 			public void handle(long now) {
 				long diff = now-start;
 				if(diff>=1000000000l){
 				}
-				if(wait > 20){
-					if(count<5)gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
-					if(count==20){
-						gc.setGlobalAlpha(1);
-						gc.setLineWidth(2);
-						gc.setStroke(Color.WHITE);
-						gc.strokeText("ENTER YOUR NAME", ConfigOption.width/2-150, ConfigOption.height/2);
-						gc.setFill(Color.BLACK);
-						gc.fillText("ENTER YOUR NAME", ConfigOption.width/2-150, ConfigOption.height/2);
-					}else if(count<20){
+				if(count>=20){
+					gc.setGlobalAlpha(1);
+					gc.setLineWidth(2);
+					gc.setFill(Color.BLACK);
+					gc.setStroke(Color.WHITE);
+					gc.fillRect(ConfigOption.width/2-w/2, ConfigOption.height/2+50-h/2, w, h);
+					gc.strokeRect(ConfigOption.width/2-w/2, ConfigOption.height/2+50-h/2, w, h);
+					gc.setFill(Color.WHITE);
+					if(w<500){
+						w+=30;
+					}else if(h<300){
+						h+=20;
+					}else if(ConfigOption.checkHighScore(score)){
+						gc.fillText("ENTER YOUR NAME", ConfigOption.width/2-135, ConfigOption.height/2-30);
+						gc.fillText("SCORE : "+score, ConfigOption.width/2-80, ConfigOption.height/2+150);
+						gc.fillText(name.substring(0,name.length()-2), ConfigOption.width/2-200, ConfigOption.height/2+60);
+						double name_width = Toolkit.getToolkit().getFontLoader().computeStringWidth(name, gc.getFont());
+						if(count%4<=1){
+							gc.fillText(name.substring(name.length()-1), ConfigOption.width/2-210+name_width, ConfigOption.height/2+60);
+						}
+					}else{
+						gc.fillText("BACK", ConfigOption.width/2-40, ConfigOption.height/2+50);
+					}
+					
+				}
+				if(frame > 15){
+					if(count<5){
 						gc.setFill(Color.RED);
-						gc.fillText("GAME OVER", ConfigOption.width/2-100, ConfigOption.height/2-50);
-						gc.strokeText("GAME OVER", ConfigOption.width/2-100, ConfigOption.height/2-50);
+						gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
 					}
-					if(InputHolder.keyTriggered.size()!=0){
-						
+					else if(count<20){
+						gc.setStroke(Color.BLACK);
+						gc.setFill(Color.RED);
+						gc.fillText("GAME OVER", ConfigOption.width/2-85, ConfigOption.height/2-150);
+						gc.strokeText("GAME OVER", ConfigOption.width/2-85, ConfigOption.height/2-150);
 					}
-					wait = 0;
+					frame = 0;
 					count++;
 				}
-				wait++;
+				frame++;
 			}
 			
 		};
@@ -286,6 +308,7 @@ public class GameLogic {
 							gc.setGlobalAlpha(0.1);
 							gc.setLineWidth(10);
 							gameloop.stop();
+							System.out.println("GAME OVER !!");
 						}
 					}
 				}
