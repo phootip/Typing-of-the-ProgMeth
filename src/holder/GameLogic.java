@@ -39,6 +39,7 @@ public class GameLogic {
 	private boolean setupChapter = false;
 	private boolean focusing = false;
 	private boolean endChapter = false;
+	private boolean gameEnding = false;
 	private String name = "_";
 	
 	public GameLogic(){
@@ -80,7 +81,6 @@ public class GameLogic {
 					wave1.clear();
 					addEnemies();
 					removeSpace(wave1);
-					System.out.println("setupChapter" + setupChapter);
 					setupChapter = false;
 				}
 				
@@ -113,13 +113,20 @@ public class GameLogic {
 								RenderableHolder.instance.remove(hitting2-2);
 								if(miss==0){
 									perfect++;
-									if(perfect>=10)score+=25;
-									else if(perfect>=5)score+=15;
+									if(perfect>=10)score+=50;
+									else if(perfect>=5)score+=25;
 									else score+=5;
 								}else miss=0;
 								if(wave1.size()==0){
 									chapter++;
-									endChapter = true;
+									if(chapter==3){
+										gameEnding=true;
+										gc.setGlobalAlpha(0.1);
+										gc.setLineWidth(10);
+										gameOverloop.start();
+										this.stop();
+									}
+									else endChapter = true;
 								}
 							}
 						}
@@ -155,7 +162,7 @@ public class GameLogic {
 		
 		gameOverloop = new AnimationTimer(){
 			Long start =0l;
-			int count = 0;
+			int count = 1;
 			int frame = 0;
 			int w =1;
 			int h =1;
@@ -188,6 +195,7 @@ public class GameLogic {
 									System.out.println("save highscore success");
 									Main.toggleScene();
 									resetGamelogic();
+									w=0;h=0;count=0;
 									this.stop();
 								}else{
 									//there is no name
@@ -216,6 +224,7 @@ public class GameLogic {
 								System.out.println("To Main Menu");
 								Main.toggleScene();
 								resetGamelogic();
+								w=0;h=0;count=0;
 								this.stop();
 							}
 						}
@@ -224,14 +233,22 @@ public class GameLogic {
 				}
 				if(frame > 15){
 					if(count<5){
-						gc.setFill(Color.RED);
+						if(gameEnding)gc.setFill(Color.GREEN);
+						else gc.setFill(Color.RED);
 						gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
 					}
 					else if(count<20){
 						gc.setStroke(Color.BLACK);
-						gc.setFill(Color.RED);
-						gc.fillText("GAME OVER", ConfigOption.width/2-85, ConfigOption.height/2-150);
-						gc.strokeText("GAME OVER", ConfigOption.width/2-85, ConfigOption.height/2-150);
+						if(gameEnding){
+							gc.setFill(Color.YELLOW);
+							gc.fillText("CONGRATULATION", ConfigOption.width/2-125, ConfigOption.height/2-170);
+							gc.strokeText("CONGRATULATION", ConfigOption.width/2-125, ConfigOption.height/2-170);
+						}
+						else{
+							gc.setFill(Color.RED);
+							gc.fillText("GAME OVER", ConfigOption.width/2-85, ConfigOption.height/2-150);
+							gc.strokeText("GAME OVER", ConfigOption.width/2-85, ConfigOption.height/2-150);							
+						}
 					}
 					frame = 0;
 					count++;
@@ -274,7 +291,14 @@ public class GameLogic {
 		}
 		else if (ConfigOption.difficulty=="MEDIUM"){
 			if(chapter==1){
-				fetchWord(1,5,wave1);
+				fetchWord(1,3,wave1);
+				for(String i: wave1){
+					RenderableHolder.instance.add(new Dog(1000+200*order+(int)(Math.random()*401),
+							90+(int)(Math.random()*601),i,gc));
+				}
+			}
+			if(chapter==2){
+				fetchWord(1,3,wave1);
 				for(String i: wave1){
 					RenderableHolder.instance.add(new Dog(1000+200*order+(int)(Math.random()*401),
 							90+(int)(Math.random()*601),i,gc));
@@ -384,5 +408,6 @@ public class GameLogic {
 		setupChapter = false;
 		focusing = false;
 		endChapter = false;
+		gameEnding = false;
 	}
 }

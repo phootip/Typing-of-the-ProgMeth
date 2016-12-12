@@ -15,6 +15,7 @@ public class OptionText extends Text{
 	private double font_width2;
 	private double x;
 	private double y;
+	private GraphicsContext gc;
 	public OptionText(String name,String value,double order,GraphicsContext gc){
 		super(name,order,gc);
 		this.value = value;
@@ -22,6 +23,7 @@ public class OptionText extends Text{
 		this.font_width2 = fontLoader.computeStringWidth(value, gc.getFont());
 		this.x = ConfigOption.width*5/6-font_width2;
 		this.y = 100+font_height/2+order*100;
+		this.gc = gc;
 	}
 	
 	@Override
@@ -53,6 +55,8 @@ public class OptionText extends Text{
 	//set Value
 	public void setValue(String value){
 		this.value = value;
+		this.font_width2 = fontLoader.computeStringWidth(value, gc.getFont());
+		this.x = ConfigOption.width*5/6-font_width2;
 	}
 
 	@Override
