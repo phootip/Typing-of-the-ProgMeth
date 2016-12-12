@@ -121,10 +121,6 @@ public class GameLogic {
 									chapter++;
 									if(chapter==3){
 										gameEnding=true;
-										gc.setGlobalAlpha(0.1);
-										gc.setLineWidth(10);
-										gameOverloop.start();
-										this.stop();
 									}
 									else endChapter = true;
 								}
@@ -146,6 +142,16 @@ public class GameLogic {
 						wait=0;
 						setupChapter = true;
 						endChapter = false;
+					}
+				}
+				if(gameEnding){
+					wait++;
+					if(wait==120){
+						wait=0;
+						gc.setGlobalAlpha(0.1);
+						gc.setLineWidth(10);
+						gameOverloop.start();
+						this.stop();
 					}
 				}
 				
