@@ -1,10 +1,10 @@
-HAHA:110
 Hater:100
 Elle:95
-D:95
 Lily:90
 Leo:85
-FOURTH:80
 OPuto:80
-PHOO:80
 Ito:75
+Tera:70
+Serena:65
+Mickie:60
+Error:55

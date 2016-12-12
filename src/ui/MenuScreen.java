@@ -96,7 +96,7 @@ public class MenuScreen extends StackPane {
 		}
 	}
 
-	private void addMenuThread() {
+	public void addMenuThread() {
 		// Menu Thread
 		ThreadHolder.instance.add(new Thread(new Runnable() {
 			@Override

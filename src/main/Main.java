@@ -21,10 +21,10 @@ import ui.MenuScreen;
 public class Main extends Application {
 	
 	public static Main instance;
-	private Scene menuScene;
+	private static Scene menuScene;
 	private static Scene gameScene;
 	private GameScreen gameScreen;
-	private MenuScreen menuScreen;
+	private static MenuScreen menuScreen;
 	private static GameLogic gameLogic;
 	private static Stage primaryStage;
 	private static String scene_count; // indicate what scene to be shown.
@@ -38,7 +38,6 @@ public class Main extends Application {
 		primaryStage.setResizable(false);
 		ConfigOption.loadHighScore();
 		ConfigOption.sortHighScore();
-		
 		this.primaryStage = primaryStage;
 		scene_count = "menuScene";
 		this.gameLogic = new GameLogic();
@@ -67,6 +66,11 @@ public class Main extends Application {
 		}
 		else{
 			scene_count = "menuScene";
+			RenderableHolder.instance.removeAll();
+			ThreadHolder.instance.removeAll();
+			primaryStage.setScene(menuScene);
+			menuScreen.addMenuThread();
+			ThreadHolder.instance.getThreads().get(0).start();
 		}
 	}
 	

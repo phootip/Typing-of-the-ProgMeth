@@ -10,6 +10,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import main.Main;
 import model.*;
 import modelText.MenuText;
 import modelText.StageText;
@@ -38,7 +39,7 @@ public class GameLogic {
 	private boolean setupChapter = false;
 	private boolean focusing = false;
 	private boolean endChapter = false;
-	private String name = "P H O O _";
+	private String name = "_";
 	
 	public GameLogic(){
 		gameloop = new AnimationTimer(){
@@ -76,8 +77,10 @@ public class GameLogic {
 					}
 					
 					RenderableHolder.instance.add(new StageText("Chapter "+chapter,gc));
+					wave1.clear();
 					addEnemies();
 					removeSpace(wave1);
+					System.out.println("setupChapter" + setupChapter);
 					setupChapter = false;
 				}
 				
@@ -166,6 +169,7 @@ public class GameLogic {
 					gc.setLineWidth(2);
 					gc.setFill(Color.BLACK);
 					gc.setStroke(Color.WHITE);
+					//open end screen animation
 					gc.fillRect(ConfigOption.width/2-w/2, ConfigOption.height/2+50-h/2, w, h);
 					gc.strokeRect(ConfigOption.width/2-w/2, ConfigOption.height/2+50-h/2, w, h);
 					gc.setFill(Color.WHITE);
@@ -176,13 +180,45 @@ public class GameLogic {
 					}else if(ConfigOption.checkHighScore(score)){
 						gc.fillText("ENTER YOUR NAME", ConfigOption.width/2-135, ConfigOption.height/2-30);
 						gc.fillText("SCORE : "+score, ConfigOption.width/2-80, ConfigOption.height/2+150);
-						gc.fillText(name.substring(0,name.length()-2), ConfigOption.width/2-200, ConfigOption.height/2+60);
+						// keying name
+						if(InputHolder.keyTriggered.size()!=0){
+							if(InputHolder.getLastTrigger().equals("ENTER")){
+								if(ConfigOption.addHighScore(name, score)){
+									// save success full
+									System.out.println("save highscore success");
+									Main.toggleScene();
+									resetGamelogic();
+									this.stop();
+								}else{
+									//there is no name
+									
+								}
+							}
+							else if(InputHolder.getLastTrigger().equals("BACK_SPACE")){
+								if(name.length()>2)name = name.substring(0, name.length()-3)+"_";
+								else name = "_";
+							}
+							else if(name.length()<=30){
+								name = name.substring(0, name.length()-1)+InputHolder.getLastTrigger()+" _";
+							}
+						}
+						gc.fillText(name.substring(0,name.indexOf("_")), ConfigOption.width/2-200, ConfigOption.height/2+60);
 						double name_width = Toolkit.getToolkit().getFontLoader().computeStringWidth(name, gc.getFont());
 						if(count%4<=1){
 							gc.fillText(name.substring(name.length()-1), ConfigOption.width/2-210+name_width, ConfigOption.height/2+60);
 						}
 					}else{
-						gc.fillText("BACK", ConfigOption.width/2-40, ConfigOption.height/2+50);
+						// Score does not High enough
+						gc.fillText("SORRY BUT YOU'RE TOO NOOB", ConfigOption.width/2-210, ConfigOption.height/2+20);
+						if(count%4<=1)gc.fillText("PRESS ENTER", ConfigOption.width/2-90, ConfigOption.height/2+130);
+						if(InputHolder.keyTriggered.size()!=0){
+							if(InputHolder.getLastTrigger().equals("ENTER")){
+								System.out.println("To Main Menu");
+								Main.toggleScene();
+								resetGamelogic();
+								this.stop();
+							}
+						}
 					}
 					
 				}
@@ -201,6 +237,7 @@ public class GameLogic {
 					count++;
 				}
 				frame++;
+				InputHolder.postUpdate();
 			}
 			
 		};
@@ -332,5 +369,20 @@ public class GameLogic {
 	}
 	public void setGc(GraphicsContext gc){
 		this.gc = gc;
+	}
+	public void resetGamelogic(){
+		score = 0;
+		name = "_";
+		miss = 0;
+		totalMiss = 0;
+		perfect = 0;
+		chapter = 1;
+		hitting = 0;
+		hitting2 = 0;
+		hit_count = 0;
+		gameStart = true;
+		setupChapter = false;
+		focusing = false;
+		endChapter = false;
 	}
 }

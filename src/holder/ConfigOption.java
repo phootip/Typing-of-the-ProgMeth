@@ -48,6 +48,7 @@ public class ConfigOption {
 	public static String[] rank1 = {"Hello","Hi","ah...","OMG","Really","Ant","Elephant","Rat","Mouse"};
 	
 	public static void loadHighScore(){
+		highscore.clear();
 		File f = new File("highscore.txt");
 		try {
 			Scanner sc = new Scanner(f);
@@ -92,5 +93,34 @@ public class ConfigOption {
 	public static boolean checkHighScore(int score){
 		if(score>Integer.parseInt(highscore.get(9).substring(highscore.get(9).indexOf(":")+1)))return true;
 		else return false;
+	}
+	
+	public static boolean addHighScore(String name,int score){
+		String final_name = name.replaceAll("\\s","");
+		if(final_name.length()<=1)return false;
+		else{
+			final_name = final_name.substring(0, final_name.length()-1);
+			String result = final_name+":"+score;
+			highscore.add(result);
+			sortHighScore();
+			highscore.remove(10);
+			saveHighScore();
+			return true;
+		}
+	}
+	
+	public static void saveHighScore(){
+		try {
+			String str = "";
+			for(String i:highscore){
+				str += i+System.getProperty("line.separator");
+			}
+			BufferedWriter out = new BufferedWriter(new FileWriter("highscore.txt"));
+			out.write(str);
+			out.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
