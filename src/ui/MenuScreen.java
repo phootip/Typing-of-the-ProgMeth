@@ -62,7 +62,7 @@ public class MenuScreen extends StackPane {
 		RenderableHolder.instance.add(new MenuText("HIGH SCORE", 1, gc));
 		RenderableHolder.instance.add(new MenuText("OPTION", 2, gc));
 		RenderableHolder.instance.add(new MenuText("EXIT", 3, gc));
-
+		RenderableHolder.instance.getEntities().get(0).setFocus(true);
 	}
 
 	public void initializeOptionScreen() {
@@ -72,9 +72,10 @@ public class MenuScreen extends StackPane {
 		gc.setFont(font);
 		this.gc.setFill(Color.WHITE);
 		RenderableHolder.instance.add(new OptionText("< HEALTH >", ConfigOption.health + "", 0, gc));
-		RenderableHolder.instance.add(new OptionText("< DIFICULTY >", ConfigOption.dificultylist[ConfigOption.dif], 1, gc));
-		RenderableHolder.instance.add(new OptionText("< VOLUME >", "10", 2, gc));
+		RenderableHolder.instance.add(new OptionText("< DIFICULTY >", ConfigOption.difficulty, 1, gc));
+		RenderableHolder.instance.add(new OptionText("< VOLUME >", ConfigOption.volume+"", 2, gc));
 		RenderableHolder.instance.add(new MenuText("BACK", 3, gc));
+		RenderableHolder.instance.getEntities().get(0).setFocus(true);
 	}
 
 	public void initializeHighScoreScreen() throws FileNotFoundException {
@@ -94,10 +95,14 @@ public class MenuScreen extends StackPane {
 			String name = line[0];
 			int score = Integer.parseInt(line[1]);
 			int order = Integer.parseInt(line[2]);
+			int index = 0;
 			HighscoreText s = new HighscoreText(name, score, order, gc);
 			Thread std = new Thread(new Runnable() {
 				public void run() {
 					try {
+						for(int i=0;i<index;i++){
+							ThreadHolder.instance.getThreads().get(i).join();
+						}
 						RenderableHolder.instance.getEntities().add(s);
 					} catch (Exception e) {
 						// TODO: handle exception
@@ -119,7 +124,7 @@ public class MenuScreen extends StackPane {
 			public void run() {
 				RenderableHolder.instance.removeAll();
 				initializeMenuScreen();
-				while (Main.instance.getScene() == "menuScene") {
+				while (Main.getScene() == "menuScene") {
 					for (int i = 0; i < RenderableHolder.instance.getEntities().size(); i++) {
 						if (RenderableHolder.instance.getEntities().get(i).isFocused()) {
 							((Text) RenderableHolder.instance.getEntities().get(i)).drawFocus(gc);
@@ -203,7 +208,6 @@ public class MenuScreen extends StackPane {
 									// BG
 									gc.setFill(Color.BLACK);
 									gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
-									System.out.println(ConfigOption.dificulty);
 									Main.toggleScene();
 								}
 								// click HIGH SCORE
@@ -227,7 +231,7 @@ public class MenuScreen extends StackPane {
 								// click EXIT
 								if (name == "EXIT") {
 									System.out.println("EXIT");
-									Main.instance.getStage().close();
+									Main.getStage().close();
 									System.exit(0);
 								}
 								// HEALTH
@@ -237,21 +241,16 @@ public class MenuScreen extends StackPane {
 										ConfigOption.health += 50;
 										ConfigOption.setHealth(ConfigOption.health);
 										gc.setFill(Color.BLACK);
-										gc.fillRect(900, 90, 100, 60);
-										RenderableHolder.instance.getEntities().remove(0);
-										RenderableHolder.instance.getEntities().add(0,
-												new OptionText("< HEALTH >", ConfigOption.health + "", 0, gc));
-
+										gc.fillRect(880, 80, 200, 60);
+										((OptionText) RenderableHolder.instance.getEntities().get(i)).setValue(""+ConfigOption.health);
+										
 									} else if (((OptionText) RenderableHolder.instance.getEntities().get(i))
 											.inHitBoxLeft()) {
 										ConfigOption.health -= 50;
 										ConfigOption.setHealth(ConfigOption.health);
-										System.out.println(ConfigOption.health);
 										gc.setFill(Color.BLACK);
-										gc.fillRect(900, 90, 100, 60);
-										RenderableHolder.instance.getEntities().remove(0);
-										RenderableHolder.instance.getEntities().add(0,
-												new OptionText("< HEALTH >", ConfigOption.health + "", 0, gc));
+										gc.fillRect(880, 80, 200, 60);
+										((OptionText) RenderableHolder.instance.getEntities().get(i)).setValue(""+ConfigOption.health);
 									}
 								}
 								// DIFICULTY
@@ -259,42 +258,34 @@ public class MenuScreen extends StackPane {
 									System.out.println("< DIFICULTY >");
 									if (((OptionText) RenderableHolder.instance.getEntities().get(i)).inHitBoxRight()) {
 										ConfigOption.dif++;
-										ConfigOption.setDificulty(ConfigOption.dif);
+										ConfigOption.setDifficulty(ConfigOption.dif);
 										gc.setFill(Color.BLACK);
 										gc.fillRect(880, 180, 200, 60);
-										RenderableHolder.instance.getEntities().remove(1);
-										RenderableHolder.instance.getEntities().add(1,new OptionText("< DIFICULTY >", ConfigOption.dificultylist[ConfigOption.dif], 1, gc));
-
+										((OptionText) RenderableHolder.instance.getEntities().get(i)).setValue(ConfigOption.difficulty);
 									} else if (((OptionText) RenderableHolder.instance.getEntities().get(i)).inHitBoxLeft()) {
 										ConfigOption.dif--;
-										ConfigOption.setDificulty(ConfigOption.dif);
+										ConfigOption.setDifficulty(ConfigOption.dif);
 										gc.setFill(Color.BLACK);
 										gc.fillRect(880, 180, 200, 60);
-										RenderableHolder.instance.getEntities().remove(1);
-										RenderableHolder.instance.getEntities().add(1,new OptionText("< DIFICULTY >", ConfigOption.dificultylist[ConfigOption.dif], 1, gc));
+										((OptionText) RenderableHolder.instance.getEntities().get(i)).setValue(ConfigOption.difficulty);
 									}
 								}
 
 								if (name == "< VOLUME >") {
 									System.out.println("< VOLUME >");
-									if (((OptionText) RenderableHolder.instance.getEntities().get(i)).inHitBoxRight()) {
+									if (((OptionText) RenderableHolder.instance.getEntities().get(i)).inHitBoxRight() &&
+											ConfigOption.volume!=10) {
+										ConfigOption.volume++;
 										gc.setFill(Color.BLACK);
-										gc.fillRect(900, 120, 300, 60);
-										RenderableHolder.instance.getEntities().remove(1);
-										RenderableHolder.instance.getEntities().add(1,
-												new OptionText("< VOLUME >", ConfigOption.dificulty + "", 1, gc));
-
-									} else if (((OptionText) RenderableHolder.instance.getEntities().get(i)).inHitBoxLeft()) {
+										gc.fillRect(880, 280, 200, 60);
+										((OptionText) RenderableHolder.instance.getEntities().get(i)).setValue(ConfigOption.volume+"");
+									} else if (((OptionText) RenderableHolder.instance.getEntities().get(i)).inHitBoxLeft() &&
+											ConfigOption.volume!=0) {
+										ConfigOption.volume--;
 										gc.setFill(Color.BLACK);
-										gc.fillRect(900, 120, 300, 60);
-										RenderableHolder.instance.getEntities().remove(1);
-										RenderableHolder.instance.getEntities().add(1,
-												new OptionText("< VOLUME >", ConfigOption.dificulty + "", 1, gc));
+										gc.fillRect(880, 280, 200, 60);
+										((OptionText) RenderableHolder.instance.getEntities().get(i)).setValue(ConfigOption.volume+"");
 									}
-								}
-								// HEALTH
-								if (name == "HEALTH") {
-									System.out.println("HEALTH");
 								}
 								// BACK
 								if (name == "BACK") {

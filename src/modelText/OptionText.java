@@ -37,6 +37,7 @@ public class OptionText extends Text{
 	}
 	
 	public void drawFocus(GraphicsContext gc){
+		gc.fillText(value, x, y);
 		if(c<3){
 			gc.setFill(Color.YELLOW);
 			c++;
@@ -47,6 +48,11 @@ public class OptionText extends Text{
 		}
 		else c=0;
 		gc.fillText(name, 200, y);
+	}
+	
+	//set Value
+	public void setValue(String value){
+		this.value = value;
 	}
 
 	@Override

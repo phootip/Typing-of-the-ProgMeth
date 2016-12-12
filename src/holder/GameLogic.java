@@ -185,7 +185,7 @@ public class GameLogic {
 	
 	private void addEnemies(){
 		int order = 1;
-		if(ConfigOption.dificulty=="EASY"){
+		if(ConfigOption.difficulty=="EASY"){
 			if(chapter == 1){
 				//fetch word
 				fetchWord(1,5,wave1);
@@ -212,9 +212,14 @@ public class GameLogic {
 				order=0;
 			}
 		}
-		else if (ConfigOption.dificulty=="MEDIUM"){
-			gc.setFill(Color.RED);
-			gc.fillOval(50, 50, 100, 100);
+		else if (ConfigOption.difficulty=="MEDIUM"){
+			if(chapter==1){
+				fetchWord(1,5,wave1);
+				for(String i: wave1){
+					RenderableHolder.instance.add(new Dog(1000+200*order+(int)(Math.random()*401),
+							90+(int)(Math.random()*601),i,gc));
+				}
+			}
 		}
 	}
 	
@@ -259,6 +264,8 @@ public class GameLogic {
 		gc.setFill(Color.RED);
 		gc.fillText("HEALTH : "+health, 20, 740);
 		gc.strokeText("HEALTH : "+health,20,740);
+		gc.setFill(Color.CORNFLOWERBLUE);
+		gc.fillText(ConfigOption.difficulty, 50, 60);
 	}
 	
 	private void moveAndActtack(){
