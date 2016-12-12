@@ -73,7 +73,7 @@ public class MenuScreen extends StackPane {
 		this.gc.setFill(Color.WHITE);
 		RenderableHolder.instance.add(new OptionText("< HEALTH >", ConfigOption.health + "", 0, gc));
 		RenderableHolder.instance.add(new OptionText("< DIFICULTY >", ConfigOption.dificultylist[ConfigOption.dif], 1, gc));
-		RenderableHolder.instance.add(new OptionText("< SOUND >", "10", 2, gc));
+		RenderableHolder.instance.add(new OptionText("< VOLUME >", "10", 2, gc));
 		RenderableHolder.instance.add(new MenuText("BACK", 3, gc));
 	}
 
@@ -203,6 +203,7 @@ public class MenuScreen extends StackPane {
 									// BG
 									gc.setFill(Color.BLACK);
 									gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
+									System.out.println(ConfigOption.dificulty);
 									Main.toggleScene();
 								}
 								// click HIGH SCORE
@@ -258,7 +259,6 @@ public class MenuScreen extends StackPane {
 									System.out.println("< DIFICULTY >");
 									if (((OptionText) RenderableHolder.instance.getEntities().get(i)).inHitBoxRight()) {
 										ConfigOption.dif++;
-										System.out.println(ConfigOption.dif);
 										ConfigOption.setDificulty(ConfigOption.dif);
 										gc.setFill(Color.BLACK);
 										gc.fillRect(880, 180, 200, 60);
@@ -276,22 +276,20 @@ public class MenuScreen extends StackPane {
 								}
 
 								if (name == "< VOLUME >") {
-									System.out.println("< DIFICULTY >");
+									System.out.println("< VOLUME >");
 									if (((OptionText) RenderableHolder.instance.getEntities().get(i)).inHitBoxRight()) {
 										gc.setFill(Color.BLACK);
-										gc.fillRect(910, 180, 100, 60);
+										gc.fillRect(900, 120, 300, 60);
 										RenderableHolder.instance.getEntities().remove(1);
 										RenderableHolder.instance.getEntities().add(1,
-												new OptionText("< DIFICULTY >", ConfigOption.dificulty + "", 1, gc));
+												new OptionText("< VOLUME >", ConfigOption.dificulty + "", 1, gc));
 
-									} else if (((OptionText) RenderableHolder.instance.getEntities().get(i))
-											.inHitBoxLeft()) {
-										System.out.println("left");
+									} else if (((OptionText) RenderableHolder.instance.getEntities().get(i)).inHitBoxLeft()) {
 										gc.setFill(Color.BLACK);
-										gc.fillRect(900, 120, 100, 60);
+										gc.fillRect(900, 120, 300, 60);
 										RenderableHolder.instance.getEntities().remove(1);
 										RenderableHolder.instance.getEntities().add(1,
-												new OptionText("< DIFICULTY >", ConfigOption.dificulty + "", 1, gc));
+												new OptionText("< VOLUME >", ConfigOption.dificulty + "", 1, gc));
 									}
 								}
 								// HEALTH

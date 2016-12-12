@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class ConfigOption {
 	public static int width = 1200;
 	public static int height = 780;
-	public static int dif = 0;
+	public static int dif;
 	
 	
 	public static String[] dificultylist = {"EASY","MEDIUM","HARD"};
@@ -18,8 +18,9 @@ public class ConfigOption {
 		else if (i < 50) health = 50;
 	}
 	public static void setDificulty(int i){
-		if(i > 2) dif = 2;
-		else if (i < 0) dif = 0;
+		if(i >= 2) dif = 2;
+		else if (i <= 0) dif = 0;
+		else dif = i;
 	}
 	
 	public static ArrayList<Integer> highscore_score = new ArrayList<>(10);

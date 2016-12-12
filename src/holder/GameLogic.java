@@ -212,6 +212,10 @@ public class GameLogic {
 				order=0;
 			}
 		}
+		else if (ConfigOption.dificulty=="MEDIUM"){
+			gc.setFill(Color.RED);
+			gc.fillOval(50, 50, 100, 100);
+		}
 	}
 	
 	//fetch word
