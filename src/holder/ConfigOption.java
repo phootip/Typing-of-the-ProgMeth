@@ -44,8 +44,12 @@ public class ConfigOption {
 			"Whe whe whe wheee whee wheee", "My servants never die", "YOU AND YOUR FRIENDS ARE DEAD",
 			"The right man in the wrong place", "War. War never changes", "Requiescat in pace", "Its super effective",
 			"Tell my wife, I had another wife", "A man chooses, a slave obeys", "Don't make a girl a promise", };
-	public static String[] rank2 = {};
-	public static String[] rank1 = {"Hello","Hi","ah...","OMG","Really","Ant","Elephant","Rat","Mouse"};
+	public static String[] rank2 = {"Discrete","Com elec","Prog meth","Com eng ess","Its High Noon","Dig comp logic","Walking Dead",
+			"Dead by daylight","Payload","DOTA = LOL2","Lisa Sherwood","Michael Myers","Final Fantasy XV","Good Project","Best game",
+			"Time Lapse","Nightcore","MisNIGHT","Xenogenesis","World of Tank","Yumetourou","Communication","Eclipse NEON","Kimi no nawa","Indy Kuma"};
+	public static String[] rank1 = {"Hello","Hi","ah...","OMG","Really","Ant","Elephant","Rat",
+			"Mouse","Easy","Posinw","Hungry","Pain","Mist","Slow","Sleepy","Walking","Toptip","Waii",
+			"Coffee","Death","Good","Ghoul","Sexy","Pride","DOTA","Java","KBTG","Arros","Wynter"};
 	
 	public static void loadHighScore(){
 		highscore.clear();
