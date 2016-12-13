@@ -7,7 +7,6 @@ public interface IRenderable {
 	 *  bg = -100;
 	 *  maincharacter = 90;
 	 *  bunger = 91;
-	 *  gun = 92;
 	 *  zombie = 95;
 	 *  focused zombie = 99;
 	 *  stageText = 100;

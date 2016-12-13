@@ -46,7 +46,7 @@ public class Main extends Application {
 		this.menuScene = new Scene(this.menuScreen);
 		this.gameScreen = new GameScreen(this.gameLogic);
 		this.gameScene = new Scene(this.gameScreen);
-		addGameListener();
+		addListener();
 		
 		primaryStage.setScene(this.menuScene);
 		primaryStage.setTitle("Typing of the Progmeth");
@@ -86,7 +86,7 @@ public class Main extends Application {
 		scene_count = s;
 	}
 	
-	private void addGameListener(){
+	private void addListener(){
 		gameScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent e) {
@@ -99,6 +99,24 @@ public class Main extends Application {
 			}
 		});
 		gameScene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent e) {
+				String key = e.getCode().toString();
+				InputHolder.keyPressed.remove(key);
+			}
+		});
+		menuScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent e) {
+				String key = e.getCode().toString();
+				if(!InputHolder.keyPressed.contains(key)){
+					InputHolder.keyTriggered.add(key);
+					InputHolder.keyPressed.add(key);
+				}
+				
+			}
+		});
+		menuScene.setOnKeyReleased(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent e) {
 				String key = e.getCode().toString();

@@ -42,7 +42,6 @@ public class GameLogic {
 	private boolean endChapter = false;
 	private boolean gameEnding = false;
 	private String name = "_";
-	private AudioClip typing = new AudioClip(ClassLoader.getSystemResource("sound/typing_2.wav").toString());
 	private AudioClip gameover = new AudioClip(ClassLoader.getSystemResource("sound/gameover.mp3").toString());
 	
 	public GameLogic(){
@@ -92,30 +91,30 @@ public class GameLogic {
 					if(!focusing){
 						for(int i = 0;i<wave1.size();i++){
 							if(InputHolder.getLastTrigger().equals(wave1.get(i).substring(0,1).toUpperCase()) && 
-									((Enemy) RenderableHolder.instance.getEntities().get(i+4)).getX()<1300){
+									((Enemy) RenderableHolder.instance.getEntities().get(i+3)).getX()<1300){
 								focusing = true;
 								hitting = i;
 								hitting2 = RenderableHolder.instance.getEntities().size();
-								((Enemy) RenderableHolder.instance.getEntities().get(hitting+4)).setZ(Integer.MAX_VALUE-1);
-								((Enemy) RenderableHolder.instance.getEntities().get(hitting+4)).setFocus(true);
-								//set focus on Enemy                              //+4 Skip Bg main bunger gun
-								((Enemy) RenderableHolder.instance.getEntities().get(hitting+4)).hit();
+								((Enemy) RenderableHolder.instance.getEntities().get(hitting+3)).setZ(Integer.MAX_VALUE-1);
+								((Enemy) RenderableHolder.instance.getEntities().get(hitting+3)).setFocus(true);
+								//set focus on Enemy                              //+3 Skip Bg main bunger
+								((Enemy) RenderableHolder.instance.getEntities().get(hitting+3)).hit();
+								((MainCharacter) RenderableHolder.instance.getEntities().get(1)).shoot();
 								wave1.set(hitting, wave1.get(hitting).substring(1));
 								score+=5;
 							}
 						}
 					} else if(focusing){  // already set focused Enemy
 						if(InputHolder.getLastTrigger().equals(wave1.get(hitting).substring(0,1).toUpperCase())){
-							typing.play();
 							((Enemy) RenderableHolder.instance.getEntities().get(hitting2-2)).hit();
 							wave1.set(hitting, wave1.get(hitting).substring(1));
+							((MainCharacter) RenderableHolder.instance.getEntities().get(1)).shoot();
 							score+=5;
 							// Enemy Dead
 							if(wave1.get(hitting).equals("")){
 								focusing = false;
 								wave1.remove(hitting);
 								RenderableHolder.instance.remove(hitting2-2);
-								typing.stop();
 								if(miss==0){
 									perfect++;
 									if(perfect>=10)score+=50;
@@ -203,7 +202,6 @@ public class GameLogic {
 							if(InputHolder.getLastTrigger().equals("ENTER")){
 								if(ConfigOption.addHighScore(name, score)){
 									// save success full
-									gameover.stop();
 									System.out.println("save highscore success");
 									Main.toggleScene();
 									resetGamelogic();
@@ -398,7 +396,6 @@ public class GameLogic {
 		RenderableHolder.instance.add(new BackGround());
 		//add Main Character, Gun & Bunger
 		RenderableHolder.instance.add(new MainCharacter(100,395));
-		RenderableHolder.instance.add(new Gun(115,410));
 		RenderableHolder.instance.add(new Bunger(150,90));
 	}
 	public void GameLoopStart(){
@@ -422,5 +419,6 @@ public class GameLogic {
 		focusing = false;
 		endChapter = false;
 		gameEnding = false;
+		gameover.stop();
 	}
 }

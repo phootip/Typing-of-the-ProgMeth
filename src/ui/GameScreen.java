@@ -36,27 +36,4 @@ public class GameScreen extends StackPane{
 	public void GameStart(){
 		gameLogic.GameLoopStart();
 	}
-	
-	//Event receive key
-	public void addListener(){
-		this.canvas.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent e) {
-				String key = e.getCode().toString();
-				if(!InputHolder.keyPressed.contains(key)){
-					InputHolder.keyTriggered.add(key);
-					InputHolder.keyPressed.add(key);
-				}
-				System.out.println("keyPress!!");
-			}
-		});
-		
-		this.canvas.setOnKeyReleased(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent e) {
-				String key = e.getCode().toString();
-				InputHolder.keyPressed.remove(key);
-			}
-		});
-	}
 }

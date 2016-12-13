@@ -30,7 +30,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import main.Main;
 import model.BackGround;
-import model.Gun;
 import modelText.HighscoreText;
 import modelText.MenuText;
 import modelText.OptionText;
@@ -115,6 +114,7 @@ public class MenuScreen extends StackPane {
 							e.printStackTrace();
 						}
 					}
+					InputHolder.postUpdate();
 				}
 			}
 		}));
@@ -289,7 +289,6 @@ public class MenuScreen extends StackPane {
 				}
 			}
 		});
-
 	}
 }
  
