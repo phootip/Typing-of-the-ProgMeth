@@ -9,7 +9,7 @@ public class MainCharacter extends Entity{
 	
 	private Image hero = new Image(ClassLoader.getSystemResource("pic/soldier76.png").toString());
 	private Image hero_shoot = new Image(ClassLoader.getSystemResource("pic/soldier76_bang.png").toString());
-	private AudioClip typing = new AudioClip(ClassLoader.getSystemResource("sound/typing_2.wav").toString());
+	private AudioClip typing = new AudioClip(ClassLoader.getSystemResource("sound/gunshot.wav").toString());
 	private boolean shoot;
 	private int count;
 	public MainCharacter(int x, int y) {

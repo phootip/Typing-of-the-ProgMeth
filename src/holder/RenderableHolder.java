@@ -40,10 +40,10 @@ public class RenderableHolder {
 	}
 	
 	//remove
-	public synchronized void remove(int index){
+	public void remove(int index){
 		entities.remove(index);
 	}
-	public synchronized void removeAll(){
+	public void removeAll(){
 		entities.clear();
 	}
 	
@@ -52,7 +52,7 @@ public class RenderableHolder {
 	public RenderableHolder getInstance(){
 		return instance;
 	}
-	public synchronized List<IRenderable> getEntities(){
+	public List<IRenderable> getEntities(){
 		return entities;
 	}
 }

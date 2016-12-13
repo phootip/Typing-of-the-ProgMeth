@@ -43,6 +43,7 @@ public class GameLogic {
 	private boolean gameEnding = false;
 	private String name = "_";
 	private AudioClip gameover = new AudioClip(ClassLoader.getSystemResource("sound/gameover.mp3").toString());
+	private AudioClip gameplay = new AudioClip(ClassLoader.getSystemResource("sound/gameplay.mp3").toString());
 	
 	public GameLogic(){
 		gameloop = new AnimationTimer(){
@@ -60,6 +61,7 @@ public class GameLogic {
 				
 				if(gameStart){
 					gc.setFont(font);
+					gameplay.play();
 					if(wait==0){
 						health = ConfigOption.health;
 						RenderableHolder.instance.add(new MenuText("Ready",-4.5,gc));
@@ -154,6 +156,7 @@ public class GameLogic {
 						wait=0;
 						gc.setGlobalAlpha(0.1);
 						gc.setLineWidth(10);
+						gameplay.stop();
 						gameOverloop.start();
 						this.stop();
 					}
@@ -374,6 +377,7 @@ public class GameLogic {
 						hit_count = 0;
 						if(health<=0){
 							gameOverloop.start();
+							gameplay.stop();
 							gameover.play();
 							paint();
 							//set gc for game over

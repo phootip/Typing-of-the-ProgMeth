@@ -1,5 +1,6 @@
 package main;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import holder.ConfigOption;
@@ -15,7 +16,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.AudioClip;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import modelText.OptionText;
+import modelText.Text;
 import ui.GameScreen;
 import ui.MenuScreen;
 
@@ -112,6 +116,97 @@ public class Main extends Application {
 				if(!InputHolder.keyPressed.contains(key)){
 					InputHolder.keyTriggered.add(key);
 					InputHolder.keyPressed.add(key);
+					int current = 0;
+					for (int i = 0; i < RenderableHolder.instance.getEntities().size(); i++) {
+						if (RenderableHolder.instance.getEntities().get(i).isFocused())
+							current = i;
+					}
+					String name = ((Text)RenderableHolder.instance.getEntities().get(current)).getName();
+					if(InputHolder.getLastTrigger().equals("UP")&&current!=0){
+						RenderableHolder.instance.getEntities().get(current-1).setFocus(true);
+						RenderableHolder.instance.getEntities().get(current).setFocus(false);
+					}else if(InputHolder.getLastTrigger().equals("DOWN")&&
+							current!=RenderableHolder.instance.getEntities().size()-1){
+						RenderableHolder.instance.getEntities().get(current+1).setFocus(true);
+						RenderableHolder.instance.getEntities().get(current).setFocus(false);
+					}else if(InputHolder.getLastTrigger().equals("ENTER")){
+						if (name.equals("START")) {
+							System.out.println("START");
+							Main.toggleScene();
+						}
+						if(name.equals("HIGH SCORE")){
+							System.out.println("HIGH SCORE");
+
+							RenderableHolder.instance.removeAll();
+							try {
+								menuScreen.initializeHighScoreScreen();
+							} catch (FileNotFoundException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						}
+						if (name.equals("OPTION")) {
+							System.out.println("OPTION");
+							RenderableHolder.instance.removeAll();
+							menuScreen.initializeOptionScreen();
+						}
+						if (name.equals("EXIT")) {
+							System.out.println("EXIT");
+							Main.getStage().close();
+							System.exit(0);
+						}
+						if (name.equals("BACK")) {
+							System.out.println("BACK");
+							RenderableHolder.instance.removeAll();
+							menuScreen.initializeMenuScreen();
+						}
+					}else if(InputHolder.getLastTrigger().equals("LEFT")){
+						if (name.equals("< HEALTH >")) {
+							System.out.println("< HEALTH >");
+							ConfigOption.health -= 50;
+							ConfigOption.setHealth(ConfigOption.health);
+							menuScreen.gc.setFill(Color.BLACK);
+							menuScreen.gc.fillRect(880, 80, 200, 60);
+							((OptionText) RenderableHolder.instance.getEntities().get(current)).setValue(""+ConfigOption.health);
+						}
+						if (name.equals("< DIFFICULTY >")) {
+							ConfigOption.dif--;
+							ConfigOption.setDifficulty(ConfigOption.dif);
+							menuScreen.gc.setFill(Color.BLACK);
+							menuScreen.gc.fillRect(880, 180, 200, 60);
+							((OptionText) RenderableHolder.instance.getEntities().get(current)).setValue(ConfigOption.difficulty);
+						}
+						if (name.equals("< VOLUME >") && ConfigOption.volume>0) {
+							System.out.println("< VOLUME >");
+							ConfigOption.volume--;
+							menuScreen.gc.setFill(Color.BLACK);
+							menuScreen.gc.fillRect(880, 280, 200, 60);
+							((OptionText) RenderableHolder.instance.getEntities().get(current)).setValue(ConfigOption.volume+"");
+						}
+					}else if(InputHolder.getLastTrigger().equals("RIGHT")){
+						if (name.equals("< HEALTH >")) {
+							System.out.println("< HEALTH >");
+							ConfigOption.health += 50;
+							ConfigOption.setHealth(ConfigOption.health);
+							menuScreen.gc.setFill(Color.BLACK);
+							menuScreen.gc.fillRect(880, 80, 200, 60);
+							((OptionText) RenderableHolder.instance.getEntities().get(current)).setValue(""+ConfigOption.health);
+						}
+						if (name.equals("< DIFFICULTY >")) {
+							ConfigOption.dif++;
+							ConfigOption.setDifficulty(ConfigOption.dif);
+							menuScreen.gc.setFill(Color.BLACK);
+							menuScreen.gc.fillRect(880, 180, 200, 60);
+							((OptionText) RenderableHolder.instance.getEntities().get(current)).setValue(ConfigOption.difficulty);
+						}
+						if (name.equals("< VOLUME >") && ConfigOption.volume<10) {
+							System.out.println("< VOLUME >");
+							ConfigOption.volume++;
+							menuScreen.gc.setFill(Color.BLACK);
+							menuScreen.gc.fillRect(880, 280, 200, 60);
+							((OptionText) RenderableHolder.instance.getEntities().get(current)).setValue(ConfigOption.volume+"");
+						}
+					}
 				}
 				
 			}

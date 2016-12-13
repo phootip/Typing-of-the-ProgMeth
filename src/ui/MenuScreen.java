@@ -38,7 +38,7 @@ import modelText.Text;
 public class MenuScreen extends StackPane {
 
 	private Canvas canvas;
-	private GraphicsContext gc;
+	public GraphicsContext gc;
 	private Font font = Font.font("Cloud", FontWeight.LIGHT, 30);
 	
 
@@ -177,16 +177,12 @@ public class MenuScreen extends StackPane {
 							if (RenderableHolder.instance.getEntities().get(i).isFocused()
 									&& RenderableHolder.instance.getEntities().get(i).inHitBox()) {
 								String name;
-								if (RenderableHolder.instance.getEntities().get(i) instanceof MenuText) {
-									name = ((MenuText) RenderableHolder.instance.getEntities().get(i)).getName();
-								} else
-									name = ((OptionText) RenderableHolder.instance.getEntities().get(i)).getName();
+								if (RenderableHolder.instance.getEntities().get(i) instanceof Text) {
+									name = ((Text) RenderableHolder.instance.getEntities().get(i)).getName();
+								} else name = null;
 								// START
 								if (name == "START") {
 									System.out.println("START");
-									// BG
-									gc.setFill(Color.BLACK);
-									gc.fillRect(0, 0, ConfigOption.width, ConfigOption.height);
 									Main.toggleScene();
 								}
 								// click HIGH SCORE
