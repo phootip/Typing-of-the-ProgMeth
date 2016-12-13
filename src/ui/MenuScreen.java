@@ -1,28 +1,14 @@
 package ui;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
-
-import com.sun.javafx.tk.FontLoader;
-import com.sun.javafx.tk.Toolkit;
-
 import holder.ConfigOption;
 import holder.IRenderable;
 import holder.InputHolder;
 import holder.RenderableHolder;
 import holder.ThreadHolder;
-import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -102,7 +88,7 @@ public class MenuScreen extends StackPane {
 			public void run() {
 				RenderableHolder.instance.removeAll();
 				initializeMenuScreen();
-				while (Main.getScene() == "menuScene") {
+				while (Main.getScene().equals("menuScene")) {
 					for (int i = 0; i < RenderableHolder.instance.getEntities().size(); i++) {
 						if (RenderableHolder.instance.getEntities().get(i).isFocused()) {
 							((Text) RenderableHolder.instance.getEntities().get(i)).drawFocus(gc);
@@ -170,8 +156,8 @@ public class MenuScreen extends StackPane {
 		this.canvas.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				if (event.getButton().toString() == "PRIMARY") {
-					if (InputHolder.mouseLeftDown == false) {
+				if (event.getButton().toString().equals("PRIMARY")) {
+					if (!InputHolder.mouseLeftDown) {
 						InputHolder.mouseLeftDownTrigger = true;
 						for (int i = 0; i < RenderableHolder.instance.getEntities().size(); i++) {
 							if (RenderableHolder.instance.getEntities().get(i).isFocused()
@@ -181,12 +167,12 @@ public class MenuScreen extends StackPane {
 									name = ((Text) RenderableHolder.instance.getEntities().get(i)).getName();
 								} else name = null;
 								// START
-								if (name == "START") {
+								if (name.equals("START")) {
 									System.out.println("START");
 									Main.toggleScene();
 								}
 								// click HIGH SCORE
-								if (name == "HIGH SCORE") {
+								if (name.equals("HIGH SCORE")) {
 									System.out.println("HIGH SCORE");
 
 									RenderableHolder.instance.removeAll();
@@ -198,19 +184,19 @@ public class MenuScreen extends StackPane {
 									}
 								}
 								// click OPTION
-								if (name == "OPTION") {
+								if (name.equals("OPTION")) {
 									System.out.println("OPTION");
 									RenderableHolder.instance.removeAll();
 									initializeOptionScreen();
 								}
 								// click EXIT
-								if (name == "EXIT") {
+								if (name.equals("EXIT")) {
 									System.out.println("EXIT");
 									Main.getStage().close();
 									System.exit(0);
 								}
 								// HEALTH
-								if (name == "< HEALTH >") {
+								if (name.equals("< HEALTH >")) {
 									System.out.println("< HEALTH >");
 									if (((OptionText) RenderableHolder.instance.getEntities().get(i)).inHitBoxRight()) {
 										ConfigOption.health += 50;
@@ -229,7 +215,7 @@ public class MenuScreen extends StackPane {
 									}
 								}
 								// DIFICULTY
-								if (name == "< DIFFICULTY >") {
+								if (name.equals("< DIFFICULTY >")) {
 									System.out.println("< DIFFICULTY >");
 									if (((OptionText) RenderableHolder.instance.getEntities().get(i)).inHitBoxRight()) {
 										ConfigOption.dif++;
@@ -246,7 +232,7 @@ public class MenuScreen extends StackPane {
 									}
 								}
 
-								if (name == "< VOLUME >") {
+								if (name.equals("< VOLUME >")) {
 									System.out.println("< VOLUME >");
 									if (((OptionText) RenderableHolder.instance.getEntities().get(i)).inHitBoxRight() &&
 											ConfigOption.volume!=10) {
@@ -263,7 +249,7 @@ public class MenuScreen extends StackPane {
 									}
 								}
 								// BACK
-								if (name == "BACK") {
+								if (name.equals("BACK")) {
 									System.out.println("BACK");
 									RenderableHolder.instance.removeAll();
 									initializeMenuScreen();
@@ -280,7 +266,7 @@ public class MenuScreen extends StackPane {
 		this.canvas.setOnMouseReleased(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				if (event.getButton().toString() == "PRIMARY") {
+				if (event.getButton().toString().equals("PRIMARY")) {
 					InputHolder.mouseLeftDown = false;
 				}
 			}
