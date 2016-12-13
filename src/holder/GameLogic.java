@@ -203,16 +203,20 @@ public class GameLogic {
 						// keying name
 						if(InputHolder.keyTriggered.size()!=0){
 							if(InputHolder.getLastTrigger().equals("ENTER")){
-								if(ConfigOption.addHighScore(name, score)){
-									// save success full
-									System.out.println("save highscore success");
-									Main.toggleScene();
-									resetGamelogic();
-									w=0;h=0;count=0;
+								try {
+									if(ConfigOption.addHighScore(name, score)){
+										// save success full
+										System.out.println("save highscore success");
+										Main.toggleScene();
+										resetGamelogic();
+										w=0;h=0;count=0;
+										this.stop();
+									}
+								} catch (NonameException e) {
+									// there is no name
 									this.stop();
-								}else{
-									//there is no name
-									
+									e.show();
+									this.start();
 								}
 							}
 							else if(InputHolder.getLastTrigger().equals("BACK_SPACE")){

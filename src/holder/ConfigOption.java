@@ -58,11 +58,15 @@ public class ConfigOption {
 			Scanner sc = new Scanner(f);
 			while (sc.hasNextLine()) {
 				highscore.add(sc.nextLine());
+				String a = highscore.get(highscore.size()-1);
+				if(a.indexOf(":")==-1||Integer.parseInt(a.substring(a.indexOf(":")+1))<0){
+					
+				}
 			}
 			System.out.println(highscore);
 			sc.close();
 			// Create and read defualt file again if file not found
-		} catch (FileNotFoundException e) {
+		} catch (FileNotFoundException | NumberFormatException e) {
 			createDefualtFile();
 			loadHighScore();
 		}
@@ -71,7 +75,16 @@ public class ConfigOption {
 	public static void createDefualtFile(){
 		try {
 			BufferedWriter out = new BufferedWriter(new FileWriter("highscore.txt"));
-			String str = "Hello test\nCreate Defualt";
+			String str = "HATER:100"+System.getProperty("line.separator")+
+					"ELLE:95"+System.getProperty("line.separator")+
+					"LILY:90"+System.getProperty("line.separator")+
+					"LEO:85"+System.getProperty("line.separator")+
+					"OPUTO:80"+System.getProperty("line.separator")+
+					"ITO:75"+System.getProperty("line.separator")+
+					"TERA:70"+System.getProperty("line.separator")+
+					"SERENA:65"+System.getProperty("line.separator")+
+					"MICKIE:60"+System.getProperty("line.separator")+
+					"ERROR:55"+System.getProperty("line.separator");
 			out.write(str);
 			out.close();
 		} catch (IOException e) {
@@ -99,11 +112,10 @@ public class ConfigOption {
 		else return false;
 	}
 	
-	public static boolean addHighScore(String name,int score){
+	public static boolean addHighScore(String name,int score) throws NonameException{
 		String final_name = name.replaceAll("\\s","");
 		if(final_name.length()<=1){
-			
-			return false;
+			throw new NonameException();
 		}
 		else{
 			final_name = final_name.substring(0, final_name.length()-1);
