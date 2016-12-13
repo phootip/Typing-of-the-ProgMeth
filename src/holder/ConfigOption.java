@@ -101,7 +101,10 @@ public class ConfigOption {
 	
 	public static boolean addHighScore(String name,int score){
 		String final_name = name.replaceAll("\\s","");
-		if(final_name.length()<=1)return false;
+		if(final_name.length()<=1){
+			
+			return false;
+		}
 		else{
 			final_name = final_name.substring(0, final_name.length()-1);
 			String result = final_name+":"+score;

@@ -24,11 +24,11 @@ public class Dog extends Enemy{
 		}else{
 			gc.setFill(Color.BLUE);			
 		}
-		gc.fillRect(x-15, y-font_height+5, font_width+30, font_height+10);
+		gc.fillRect(x-15, y-font_height-5, font_width+30, font_height+10);
 		gc.setFill(Color.BLACK);
-		gc.fillRect(x-10, y-font_height+10, font_width+20, font_height);
+		gc.fillRect(x-10, y-font_height, font_width+20, font_height);
 		gc.setFill(Color.WHITE);
-		gc.fillText(word, x+font_width-font_width_remain, y);
+		gc.fillText(word, x+font_width-font_width_remain, y-10);
 		count++;
 	}
 
