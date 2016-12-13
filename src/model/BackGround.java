@@ -1,14 +1,12 @@
 package model;
 
-import holder.ConfigOption;
 import holder.IRenderable;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 
 public class BackGround implements IRenderable{
 	public static Image menubg = getImage("pic/start.jpg");
-	public static Image gameBg = getImage("pic/road.png");
+	public static Image gamebg = getImage("pic/road.png");
 	
 	@Override
 	public int getZ() {
@@ -17,7 +15,7 @@ public class BackGround implements IRenderable{
 
 	@Override
 	public void draw(GraphicsContext gc) {
-		gc.drawImage(gameBg, 0, 0);
+		gc.drawImage(gamebg, 0, 0);
 	}
 
 	@Override

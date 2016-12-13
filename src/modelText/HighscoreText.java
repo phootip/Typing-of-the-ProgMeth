@@ -29,11 +29,6 @@ public class HighscoreText extends Text{
 		gc.fillText(player_score+"", x+ConfigOption.width/1.5, y);
 		gc.setGlobalAlpha(1.0);
 	}
-	
-	@Override
-	public void drawFocus(GraphicsContext gc){
-		
-	}
 
 	@Override
 	public int getZ() {
@@ -61,6 +56,12 @@ public class HighscoreText extends Text{
 
 	@Override
 	public void setFocus(boolean isfouced) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void drawFocus(GraphicsContext gc) {
 		// TODO Auto-generated method stub
 		
 	}
