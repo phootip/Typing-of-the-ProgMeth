@@ -32,7 +32,6 @@ public class GameLogic {
 	private ArrayList<String> wave1 = new ArrayList<>();
 	private ArrayList<String> used = new ArrayList<>();
 	private int chapter = 1;
-	private int wave = 1;
 	private int hitting = 0;
 	private int hitting2 =0;
 	private int hit_count=0;
@@ -44,6 +43,7 @@ public class GameLogic {
 	private String name = "_";
 	private AudioClip gameover = new AudioClip(ClassLoader.getSystemResource("sound/gameover.mp3").toString());
 	private AudioClip gameplay = new AudioClip(ClassLoader.getSystemResource("sound/gameplay.mp3").toString());
+	private AudioClip gameend = new AudioClip(ClassLoader.getSystemResource("sound/gameend.mp3").toString());
 	
 	public GameLogic(){
 		gameloop = new AnimationTimer(){
@@ -125,7 +125,8 @@ public class GameLogic {
 								}else miss=0;
 								if(wave1.size()==0){
 									chapter++;
-									if(chapter==3){
+									// Game end chapter 3
+									if(chapter>=4){
 										gameEnding=true;
 									}
 									else endChapter = true;
@@ -157,6 +158,7 @@ public class GameLogic {
 						gc.setGlobalAlpha(0.1);
 						gc.setLineWidth(10);
 						gameplay.stop();
+						gameend.play();
 						gameOverloop.start();
 						this.stop();
 					}
@@ -199,7 +201,7 @@ public class GameLogic {
 						h+=20;
 					}else if(ConfigOption.checkHighScore(score)){
 						gc.fillText("ENTER YOUR NAME", ConfigOption.width/2-135, ConfigOption.height/2-30);
-						gc.fillText("SCORE : "+score, ConfigOption.width/2-80, ConfigOption.height/2+150);
+						gc.fillText("SCORE : "+score, ConfigOption.width/2-90, ConfigOption.height/2+150);
 						// keying name
 						if(InputHolder.keyTriggered.size()!=0){
 							if(InputHolder.getLastTrigger().equals("ENTER")){
@@ -234,8 +236,9 @@ public class GameLogic {
 						}
 					}else{
 						// Score does not High enough
-						gc.fillText("SORRY BUT YOU'RE TOO NOOB", ConfigOption.width/2-210, ConfigOption.height/2+20);
-						if(count%4<=1)gc.fillText("PRESS ENTER", ConfigOption.width/2-90, ConfigOption.height/2+130);
+						gc.fillText("SORRY BUT YOU'RE TOO NOOB", ConfigOption.width/2-210, ConfigOption.height/2-20);
+						gc.fillText("SCORE : "+score, ConfigOption.width/2-90, ConfigOption.height/2+150);
+						if(count%4<=1)gc.fillText("PRESS ENTER", ConfigOption.width/2-100, ConfigOption.height/2+65);
 						if(InputHolder.keyTriggered.size()!=0){
 							if(InputHolder.getLastTrigger().equals("ENTER")){
 								System.out.println("To Main Menu");
@@ -257,9 +260,15 @@ public class GameLogic {
 					else if(count<20){
 						gc.setStroke(Color.BLACK);
 						if(gameEnding){
-							gc.setFill(Color.YELLOW);
+							gc.setFill(Color.BLUE);
+							gc.setLineWidth(3);
 							gc.fillText("CONGRATULATION", ConfigOption.width/2-125, ConfigOption.height/2-170);
 							gc.strokeText("CONGRATULATION", ConfigOption.width/2-125, ConfigOption.height/2-170);
+							if(ConfigOption.difficulty.equals("HARD")){
+								gc.setFill(Color.BLACK);
+								gc.fillText("HIDDEN CODE : HIDDEN CODE", ConfigOption.width/2-205, ConfigOption.height/2+250);
+								gc.strokeText("HIDDEN CODE : HIDDEN CODE", ConfigOption.width/2-205, ConfigOption.height/2+250);
+							}
 						}
 						else{
 							gc.setFill(Color.RED);
@@ -279,70 +288,137 @@ public class GameLogic {
 	
 	private void addEnemies(){
 		int order = 1;
-		if(ConfigOption.difficulty=="EASY"){
+		if(ConfigOption.difficulty.equals("EASY")){
 			if(chapter == 1){
 				//fetch word
-				fetchWord(1,5,wave1);
-				for(String i: wave1.subList(0, 3)){
+				fetchWord(1,4,wave1);
+				for(String i: wave1){
 					RenderableHolder.instance.add(new Zombie(1000+200*order+(int)(Math.random()*401),
 							90+(int)(Math.random()*601),i,gc));
 					order++;
 				}
-				for(String i:wave1.subList(3, 5)){
-					RenderableHolder.instance.add(new Dog(1000+200*order+(int)(Math.random()*401),
-							90+(int)(Math.random()*601),i,gc));
-					order++;
-				}
-				order =0;
 			}
 			if(chapter == 2){
 				//fetch word
-				fetchWord(3,5,wave1);
-				for(String i: wave1){
-					RenderableHolder.instance.add(new Zombie(1200+200*order+(int)(Math.random()*401),
+				fetchWord(1,3,wave1);
+				fetchWord(2,4,wave1);
+				for(String i: wave1.subList(0, 2)){
+					RenderableHolder.instance.add(new Dog(1200+300*order+(int)(Math.random()*401),
 							90+(int)(Math.random()*601),i,gc));
 					order++;
 				}
-				order=0;
+				order = 1;
+				for(String i : wave1.subList(2, 7)){
+					RenderableHolder.instance.add(new Zombie(1200+200*order+(int)(Math.random()*301),
+							90+(int)(Math.random()*601),i,gc));
+					order++;
+				}
 			}
+			if(chapter == 3){
+				//fetch word
+				fetchWord(1,4,wave1);
+				fetchWord(2,6,wave1);
+				for(String i: wave1.subList(0, 4)){
+					RenderableHolder.instance.add(new Dog(1000+200*order+(int)(Math.random()*351),
+							90+(int)(Math.random()*601),i,gc));
+					order++;
+				}
+				order = 1;
+				for(String i: wave1.subList(4, 10)){
+					RenderableHolder.instance.add(new Zombie(1000+200*order+(int)(Math.random()*251),
+							90+(int)(Math.random()*601),i,gc));
+					order++;
+				}
+			}
+			order=1;
+			used.clear();
 		}
-		else if (ConfigOption.difficulty=="MEDIUM"){
+		else if (ConfigOption.difficulty.equals("MEDIUM")){
 			if(chapter==1){
 				fetchWord(1,3,wave1);
+				fetchWord(2,2,wave1);
 				for(String i: wave1){
-					RenderableHolder.instance.add(new Dog(1000+200*order+(int)(Math.random()*401),
+					RenderableHolder.instance.add(new Zombie(1000+200*order+(int)(Math.random()*351),
 							90+(int)(Math.random()*601),i,gc));
 					order++;
 				}
 			}
 			if(chapter==2){
-				fetchWord(1,3,wave1);
-				for(String i: wave1){
+				fetchWord(2,5,wave1);
+				fetchWord(3,1,wave1);
+				for(String i: wave1.subList(0, 3)){
 					RenderableHolder.instance.add(new Dog(1000+200*order+(int)(Math.random()*401),
 							90+(int)(Math.random()*601),i,gc));
 					order++;
 				}
-				order=0;
+				order = 1;
+				for(String i: wave1.subList(3, 6)){
+					RenderableHolder.instance.add(new Zombie(1000+200*order+(int)(Math.random()*301),
+							90+(int)(Math.random()*601),i,gc));
+					order++;
+				}
 			}
+			if(chapter==3){
+				fetchWord(2,6,wave1);
+				fetchWord(3,3,wave1);
+				for(String i: wave1.subList(0, 4)){
+					RenderableHolder.instance.add(new Dog(1000+200*order+(int)(Math.random()*301),
+							90+(int)(Math.random()*601),i,gc));
+					order++;
+				}
+				order=1;
+				for(String i: wave1.subList(4, 9)){
+					RenderableHolder.instance.add(new Zombie(1000+200*order+(int)(Math.random()*251),
+							90+(int)(Math.random()*601),i,gc));
+					order++;
+				}
+			}
+			order = 1;
+			used.clear();
 		}
-		else if (ConfigOption.difficulty=="HARD"){
+		else if (ConfigOption.difficulty.equals("HARD")){
 			if(chapter==1){
-				fetchWord(1,3,wave1);
+				fetchWord(1,1,wave1);
+				fetchWord(2,4,wave1);
 				for(String i: wave1){
-					RenderableHolder.instance.add(new Dog(1000+200*order+(int)(Math.random()*401),
+					RenderableHolder.instance.add(new Zombie(1000+200*order+(int)(Math.random()*351),
 							90+(int)(Math.random()*601),i,gc));
 					order++;
 				}
 			}
 			if(chapter==2){
-				fetchWord(1,3,wave1);
-				for(String i: wave1){
-					RenderableHolder.instance.add(new Dog(1000+200*order+(int)(Math.random()*401),
+				fetchWord(2,6,wave1);
+				fetchWord(3,3,wave1);
+				for(String i: wave1.subList(0, 4)){
+					RenderableHolder.instance.add(new Dog(1000+200*order+(int)(Math.random()*351),
 							90+(int)(Math.random()*601),i,gc));
 					order++;
 				}
-				order=0;
+				order = 1;
+				for(String i: wave1.subList(4, 9)){
+					RenderableHolder.instance.add(new Zombie(1000+200*order+(int)(Math.random()*301),
+							90+(int)(Math.random()*601),i,gc));
+					order++;
+				}
 			}
+			if(chapter==3){
+				fetchWord(1,2,wave1);
+				fetchWord(2,5,wave1);
+				fetchWord(3,4,wave1);
+				for(String i: wave1.subList(0, 4)){
+					RenderableHolder.instance.add(new Dog(1000+200*order+(int)(Math.random()*251),
+							90+(int)(Math.random()*601),i,gc));
+					order++;
+				}
+				order=1;
+				for(String i: wave1.subList(4, 11)){
+					RenderableHolder.instance.add(new Zombie(1000+200*order+(int)(Math.random()*251),
+							90+(int)(Math.random()*601),i,gc));
+					order++;
+				}
+			}
+			order = 1;
+			used.clear();
 		}
 	}
 	
@@ -359,7 +435,6 @@ public class GameLogic {
 			used.add(char1);
 			wave.add(word);
 		}
-		used.clear();
 	}
 	
 	public void removeSpace(ArrayList<String> wave){
@@ -450,5 +525,6 @@ public class GameLogic {
 		endChapter = false;
 		gameEnding = false;
 		gameover.stop();
+		gameend.stop();
 	}
 }

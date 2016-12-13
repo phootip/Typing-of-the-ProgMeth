@@ -31,6 +31,16 @@ public class InputHolder {
 		else if(keyTriggered.get(keyTriggered.size()-1).equals("SUBTRACT"))return"-";
 		else if(keyTriggered.get(keyTriggered.size()-1).equals("SHIFT"))return" ";
 		else if(keyTriggered.get(keyTriggered.size()-1).equals("TAB"))return" ";
+		else if(keyTriggered.get(keyTriggered.size()-1).equals("DIGIT1"))return"1";
+		else if(keyTriggered.get(keyTriggered.size()-1).equals("DIGIT2"))return"2";
+		else if(keyTriggered.get(keyTriggered.size()-1).equals("DIGIT3"))return"3";
+		else if(keyTriggered.get(keyTriggered.size()-1).equals("DIGIT4"))return"4";
+		else if(keyTriggered.get(keyTriggered.size()-1).equals("DIGIT5"))return"5";
+		else if(keyTriggered.get(keyTriggered.size()-1).equals("DIGIT6"))return"6";
+		else if(keyTriggered.get(keyTriggered.size()-1).equals("DIGIT7"))return"7";
+		else if(keyTriggered.get(keyTriggered.size()-1).equals("DIGIT8"))return"8";
+		else if(keyTriggered.get(keyTriggered.size()-1).equals("DIGIT9"))return"9";
+		else if(keyTriggered.get(keyTriggered.size()-1).equals("DIGIT0"))return"0";
 		return keyTriggered.get(keyTriggered.size()-1);
 	}
 }

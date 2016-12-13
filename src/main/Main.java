@@ -113,6 +113,7 @@ public class Main extends Application {
 				if(!InputHolder.keyPressed.contains(key)){
 					InputHolder.keyTriggered.add(key);
 					InputHolder.keyPressed.add(key);
+					System.out.println(InputHolder.getLastTrigger());
 					int current = 0;
 					for (int i = 0; i < RenderableHolder.instance.getEntities().size(); i++) {
 						if (RenderableHolder.instance.getEntities().get(i).isFocused())
