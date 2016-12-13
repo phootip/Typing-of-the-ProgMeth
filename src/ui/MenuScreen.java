@@ -71,7 +71,7 @@ public class MenuScreen extends StackPane {
 		gc.setFont(font);
 		this.gc.setFill(Color.WHITE);
 		RenderableHolder.instance.add(new OptionText("< HEALTH >", ConfigOption.health + "", 0, gc));
-		RenderableHolder.instance.add(new OptionText("< DIFICULTY >", ConfigOption.difficulty, 1, gc));
+		RenderableHolder.instance.add(new OptionText("< DIFFICULTY >", ConfigOption.difficulty, 1, gc));
 		RenderableHolder.instance.add(new OptionText("< VOLUME >", ConfigOption.volume+"", 2, gc));
 		RenderableHolder.instance.add(new MenuText("BACK", 3, gc));
 		RenderableHolder.instance.getEntities().get(0).setFocus(true);
@@ -233,8 +233,8 @@ public class MenuScreen extends StackPane {
 									}
 								}
 								// DIFICULTY
-								if (name == "< DIFICULTY >") {
-									System.out.println("< DIFICULTY >");
+								if (name == "< DIFFICULTY >") {
+									System.out.println("< DIFFICULTY >");
 									if (((OptionText) RenderableHolder.instance.getEntities().get(i)).inHitBoxRight()) {
 										ConfigOption.dif++;
 										ConfigOption.setDifficulty(ConfigOption.dif);
