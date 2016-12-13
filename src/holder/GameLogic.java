@@ -7,6 +7,7 @@ import com.sun.javafx.tk.Toolkit;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -41,6 +42,8 @@ public class GameLogic {
 	private boolean endChapter = false;
 	private boolean gameEnding = false;
 	private String name = "_";
+	private AudioClip typing = new AudioClip(ClassLoader.getSystemResource("sound/typing_2.wav").toString());
+	private AudioClip gameover = new AudioClip(ClassLoader.getSystemResource("sound/gameover.mp3").toString());
 	
 	public GameLogic(){
 		gameloop = new AnimationTimer(){
@@ -103,6 +106,7 @@ public class GameLogic {
 						}
 					} else if(focusing){  // already set focused Enemy
 						if(InputHolder.getLastTrigger().equals(wave1.get(hitting).substring(0,1).toUpperCase())){
+							typing.play();
 							((Enemy) RenderableHolder.instance.getEntities().get(hitting2-2)).hit();
 							wave1.set(hitting, wave1.get(hitting).substring(1));
 							score+=5;
@@ -111,6 +115,7 @@ public class GameLogic {
 								focusing = false;
 								wave1.remove(hitting);
 								RenderableHolder.instance.remove(hitting2-2);
+								typing.stop();
 								if(miss==0){
 									perfect++;
 									if(perfect>=10)score+=50;
@@ -198,6 +203,7 @@ public class GameLogic {
 							if(InputHolder.getLastTrigger().equals("ENTER")){
 								if(ConfigOption.addHighScore(name, score)){
 									// save success full
+									gameover.stop();
 									System.out.println("save highscore success");
 									Main.toggleScene();
 									resetGamelogic();
@@ -370,6 +376,7 @@ public class GameLogic {
 						hit_count = 0;
 						if(health<=0){
 							gameOverloop.start();
+							gameover.play();
 							paint();
 							//set gc for game over
 							gc.setGlobalAlpha(0.1);
