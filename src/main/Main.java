@@ -34,12 +34,11 @@ public class Main extends Application {
 	private static Stage primaryStage;
 	private static String scene_count; // indicate what scene to be shown.
 	
-	public static ArrayList<Integer> test1 = new ArrayList<Integer>();
 	public static void main(String[] args) {
 		launch(args);
 	}
 	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public void start(Stage primaryStage){
 		primaryStage.setResizable(false);
 		ConfigOption.loadHighScore();
 		ConfigOption.sortHighScore();
