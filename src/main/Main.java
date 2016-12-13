@@ -55,9 +55,6 @@ public class Main extends Application {
 		primaryStage.setScene(this.menuScene);
 		primaryStage.setTitle("Typing of the Progmeth");
 		primaryStage.show();
-		
-		ThreadHolder.instance.getThreads().get(0).start();
-		
 	}
 	
 	public static void toggleScene(){
@@ -145,6 +142,17 @@ public class Main extends Application {
 								e1.printStackTrace();
 							}
 						}
+						// ENTER CODE
+						if(name.equals("ENTER CODE")){
+							System.out.println("ENTER CODE");
+							menuScreen.addCodeThread();
+							ThreadHolder.instance.getThreads().get(1).start();
+						}
+						//9999 HEALTH
+						if(name.equals("9999 HEALTH")){
+							System.out.println("9999 HEALTH");
+							ConfigOption.health = 9999;
+						}
 						if (name.equals("OPTION")) {
 							System.out.println("OPTION");
 							RenderableHolder.instance.removeAll();
@@ -176,13 +184,6 @@ public class Main extends Application {
 							menuScreen.gc.fillRect(880, 180, 200, 60);
 							((OptionText) RenderableHolder.instance.getEntities().get(current)).setValue(ConfigOption.difficulty);
 						}
-						if (name.equals("< VOLUME >") && ConfigOption.volume>0) {
-							System.out.println("< VOLUME >");
-							ConfigOption.volume--;
-							menuScreen.gc.setFill(Color.BLACK);
-							menuScreen.gc.fillRect(880, 280, 200, 60);
-							((OptionText) RenderableHolder.instance.getEntities().get(current)).setValue(ConfigOption.volume+"");
-						}
 					}else if(InputHolder.getLastTrigger().equals("RIGHT")){
 						if (name.equals("< HEALTH >")) {
 							System.out.println("< HEALTH >");
@@ -198,13 +199,6 @@ public class Main extends Application {
 							menuScreen.gc.setFill(Color.BLACK);
 							menuScreen.gc.fillRect(880, 180, 200, 60);
 							((OptionText) RenderableHolder.instance.getEntities().get(current)).setValue(ConfigOption.difficulty);
-						}
-						if (name.equals("< VOLUME >") && ConfigOption.volume<10) {
-							System.out.println("< VOLUME >");
-							ConfigOption.volume++;
-							menuScreen.gc.setFill(Color.BLACK);
-							menuScreen.gc.fillRect(880, 280, 200, 60);
-							((OptionText) RenderableHolder.instance.getEntities().get(current)).setValue(ConfigOption.volume+"");
 						}
 					}
 				}

@@ -312,6 +312,7 @@ public class GameLogic {
 				for(String i: wave1){
 					RenderableHolder.instance.add(new Dog(1000+200*order+(int)(Math.random()*401),
 							90+(int)(Math.random()*601),i,gc));
+					order++;
 				}
 			}
 			if(chapter==2){
@@ -319,7 +320,28 @@ public class GameLogic {
 				for(String i: wave1){
 					RenderableHolder.instance.add(new Dog(1000+200*order+(int)(Math.random()*401),
 							90+(int)(Math.random()*601),i,gc));
+					order++;
 				}
+				order=0;
+			}
+		}
+		else if (ConfigOption.difficulty=="HARD"){
+			if(chapter==1){
+				fetchWord(1,3,wave1);
+				for(String i: wave1){
+					RenderableHolder.instance.add(new Dog(1000+200*order+(int)(Math.random()*401),
+							90+(int)(Math.random()*601),i,gc));
+					order++;
+				}
+			}
+			if(chapter==2){
+				fetchWord(1,3,wave1);
+				for(String i: wave1){
+					RenderableHolder.instance.add(new Dog(1000+200*order+(int)(Math.random()*401),
+							90+(int)(Math.random()*601),i,gc));
+					order++;
+				}
+				order=0;
 			}
 		}
 	}

@@ -13,7 +13,6 @@ public class ConfigOption {
 	public static int height = 780;
 	public static int dif = 0;
 	public static int health = 100;
-	public static int volume = 10;
 	public static ArrayList<String> highscore = new ArrayList<>(10);
 	
 	public static String[] difficultylist = {"EASY","MEDIUM","HARD"};
@@ -60,7 +59,7 @@ public class ConfigOption {
 				highscore.add(sc.nextLine());
 				String a = highscore.get(highscore.size()-1);
 				if(a.indexOf(":")==-1||Integer.parseInt(a.substring(a.indexOf(":")+1))<0){
-					
+					throw new NumberFormatException();
 				}
 			}
 			System.out.println(highscore);

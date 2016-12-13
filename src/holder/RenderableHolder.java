@@ -34,7 +34,7 @@ public class RenderableHolder {
 		Collections.sort(entities,comparator);
 	}
 	//add and sort
-	public void add(IRenderable entity){
+	public synchronized void add(IRenderable entity){
 		entities.add(entity);
 		sort();
 	}
@@ -52,7 +52,7 @@ public class RenderableHolder {
 	public RenderableHolder getInstance(){
 		return instance;
 	}
-	public List<IRenderable> getEntities(){
+	public synchronized List<IRenderable> getEntities(){
 		return entities;
 	}
 }

@@ -85,4 +85,9 @@ public class MenuText extends Text{
 	public void setDestroy(boolean isDestroyed){
 		this.isDestroy = isDestroyed;
 	}
+	public void setName(String name){
+		this.name = name;
+		this.font_width = fontLoader.computeStringWidth(name, gc.getFont());
+		this.x = ConfigOption.width/2-font_width/2;
+	}
 }

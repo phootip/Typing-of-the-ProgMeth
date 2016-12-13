@@ -1,14 +1,18 @@
 package ui;
 
 import java.io.FileNotFoundException;
+import java.util.Optional;
+
 import holder.ConfigOption;
 import holder.IRenderable;
 import holder.InputHolder;
 import holder.RenderableHolder;
 import holder.ThreadHolder;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -25,6 +29,7 @@ public class MenuScreen extends StackPane {
 
 	private Canvas canvas;
 	public GraphicsContext gc;
+	private boolean hiddenCode = false;
 	private Font font = Font.font("Cloud", FontWeight.LIGHT, 30);
 	
 
@@ -36,6 +41,7 @@ public class MenuScreen extends StackPane {
 		addMenuThread();
 
 		this.getChildren().add(canvas);
+		ThreadHolder.instance.getThreads().get(0).start();
 	}
 
 	public void initializeMenuScreen() {
@@ -45,8 +51,10 @@ public class MenuScreen extends StackPane {
 		this.gc.setFill(Color.WHITE);
 		RenderableHolder.instance.add(new MenuText("START", 0, gc));
 		RenderableHolder.instance.add(new MenuText("HIGH SCORE", 1, gc));
-		RenderableHolder.instance.add(new MenuText("OPTION", 2, gc));
-		RenderableHolder.instance.add(new MenuText("EXIT", 3, gc));
+		if(hiddenCode)RenderableHolder.instance.add(new MenuText("9999 HEALTH", 2, gc));
+		else RenderableHolder.instance.add(new MenuText("ENTER CODE", 2, gc));
+		RenderableHolder.instance.add(new MenuText("OPTION", 3, gc));
+		RenderableHolder.instance.add(new MenuText("EXIT", 4, gc));
 		RenderableHolder.instance.getEntities().get(0).setFocus(true);
 	}
 
@@ -58,7 +66,6 @@ public class MenuScreen extends StackPane {
 		this.gc.setFill(Color.WHITE);
 		RenderableHolder.instance.add(new OptionText("< HEALTH >", ConfigOption.health + "", 0, gc));
 		RenderableHolder.instance.add(new OptionText("< DIFFICULTY >", ConfigOption.difficulty, 1, gc));
-		RenderableHolder.instance.add(new OptionText("< VOLUME >", ConfigOption.volume+"", 2, gc));
 		RenderableHolder.instance.add(new MenuText("BACK", 3, gc));
 		RenderableHolder.instance.getEntities().get(0).setFocus(true);
 	}
@@ -102,6 +109,34 @@ public class MenuScreen extends StackPane {
 					}
 					InputHolder.postUpdate();
 				}
+			}
+		}));
+	}
+	
+	public void addCodeThread(){
+		ThreadHolder.instance.add(new Thread(new Runnable() {
+			@Override
+			public void run(){
+				Platform.runLater(new Runnable(){
+					@Override
+					public void run(){
+						System.out.println("OPEN ENTER CODE DIALOG");
+						TextInputDialog dialog = new TextInputDialog();
+						dialog.setTitle("ENTER CODE");
+						dialog.setHeaderText(null);
+						dialog.setContentText("PLEASE ENTER CODE");
+						Optional<String> result = dialog.showAndWait();
+						if(result.isPresent()){
+							if(result.toString().equals("Optional[HIDDEN CODE]")){
+								((MenuText) RenderableHolder.instance.getEntities().get(2)).setName("9999 HEALTH");
+								ConfigOption.health = 9999;
+								hiddenCode = true;
+							}
+						}
+						gc.drawImage(BackGround.menubg, 0, 0);
+						ThreadHolder.instance.getThreads().remove(1);
+					}
+				});
 			}
 		}));
 	}
@@ -174,7 +209,6 @@ public class MenuScreen extends StackPane {
 								// click HIGH SCORE
 								if (name.equals("HIGH SCORE")) {
 									System.out.println("HIGH SCORE");
-
 									RenderableHolder.instance.removeAll();
 									try {
 										initializeHighScoreScreen();
@@ -182,6 +216,17 @@ public class MenuScreen extends StackPane {
 										// TODO Auto-generated catch block
 										e.printStackTrace();
 									}
+								}
+								// ENTER CODE
+								if(name.equals("ENTER CODE")){
+									System.out.println("ENTER CODE");
+									addCodeThread();
+									ThreadHolder.instance.getThreads().get(1).start();
+								}
+								//9999 HEALTH
+								if(name.equals("9999 HEALTH")){
+									System.out.println("9999 HEALTH");
+									ConfigOption.health = 9999;
 								}
 								// click OPTION
 								if (name.equals("OPTION")) {
@@ -229,23 +274,6 @@ public class MenuScreen extends StackPane {
 										gc.setFill(Color.BLACK);
 										gc.fillRect(880, 180, 200, 60);
 										((OptionText) RenderableHolder.instance.getEntities().get(i)).setValue(ConfigOption.difficulty);
-									}
-								}
-
-								if (name.equals("< VOLUME >")) {
-									System.out.println("< VOLUME >");
-									if (((OptionText) RenderableHolder.instance.getEntities().get(i)).inHitBoxRight() &&
-											ConfigOption.volume!=10) {
-										ConfigOption.volume++;
-										gc.setFill(Color.BLACK);
-										gc.fillRect(880, 280, 200, 60);
-										((OptionText) RenderableHolder.instance.getEntities().get(i)).setValue(ConfigOption.volume+"");
-									} else if (((OptionText) RenderableHolder.instance.getEntities().get(i)).inHitBoxLeft() &&
-											ConfigOption.volume!=0) {
-										ConfigOption.volume--;
-										gc.setFill(Color.BLACK);
-										gc.fillRect(880, 280, 200, 60);
-										((OptionText) RenderableHolder.instance.getEntities().get(i)).setValue(ConfigOption.volume+"");
 									}
 								}
 								// BACK
