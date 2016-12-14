@@ -23,13 +23,11 @@ public class GameLogic {
 	private int miss=0;
 	private int totalMiss=0;
 	private int perfect=0;
-	private String word;
-	private String char1;
 	private AnimationTimer gameloop;
 	private AnimationTimer gameOverloop;
 	private GraphicsContext gc;
 	private Font font = Font.font("Cloud", FontWeight.LIGHT, 30);
-	private ArrayList<String> wave1 = new ArrayList<>();
+	private ArrayList<String> current_wave = new ArrayList<>();
 	private ArrayList<String> used = new ArrayList<>();
 	private int chapter = 1;
 	private int hitting = 0;
@@ -82,17 +80,17 @@ public class GameLogic {
 					}
 					
 					RenderableHolder.instance.add(new StageText("Chapter "+chapter,gc));
-					wave1.clear();
+					current_wave.clear();
 					addEnemies();
-					removeSpace(wave1);
+					removeSpace(current_wave);
 					setupChapter = false;
 				}
 				
 				// isn't focusing
 				if(InputHolder.keyTriggered.size()!=0){
 					if(!focusing){
-						for(int i = 0;i<wave1.size();i++){
-							if(InputHolder.getLastTrigger().equals(wave1.get(i).substring(0,1).toUpperCase()) && 
+						for(int i = 0;i<current_wave.size();i++){
+							if(InputHolder.getLastTrigger().equals(current_wave.get(i).substring(0,1).toUpperCase()) && 
 									((Enemy) RenderableHolder.instance.getEntities().get(i+3)).getX()<1300){
 								focusing = true;
 								hitting = i;
@@ -102,20 +100,20 @@ public class GameLogic {
 								//set focus on Enemy                              //+3 Skip Bg main bunger
 								((Enemy) RenderableHolder.instance.getEntities().get(hitting+3)).hit();
 								((MainCharacter) RenderableHolder.instance.getEntities().get(1)).shoot();
-								wave1.set(hitting, wave1.get(hitting).substring(1));
+								current_wave.set(hitting, current_wave.get(hitting).substring(1));
 								score+=5;
 							}
 						}
 					} else if(focusing){  // already set focused Enemy
-						if(InputHolder.getLastTrigger().equals(wave1.get(hitting).substring(0,1).toUpperCase())){
+						if(InputHolder.getLastTrigger().equals(current_wave.get(hitting).substring(0,1).toUpperCase())){
 							((Enemy) RenderableHolder.instance.getEntities().get(hitting2-2)).hit();
-							wave1.set(hitting, wave1.get(hitting).substring(1));
+							current_wave.set(hitting, current_wave.get(hitting).substring(1));
 							((MainCharacter) RenderableHolder.instance.getEntities().get(1)).shoot();
 							score+=5;
 							// Enemy Dead
-							if(wave1.get(hitting).equals("")){
+							if(current_wave.get(hitting).equals("")){
 								focusing = false;
-								wave1.remove(hitting);
+								current_wave.remove(hitting);
 								RenderableHolder.instance.remove(hitting2-2);
 								if(miss==0){
 									perfect++;
@@ -123,7 +121,7 @@ public class GameLogic {
 									else if(perfect>=5)score+=25;
 									else score+=5;
 								}else miss=0;
-								if(wave1.size()==0){
+								if(current_wave.size()==0){
 									chapter++;
 									// Game end chapter 3
 									if(chapter>=4){
@@ -291,8 +289,8 @@ public class GameLogic {
 		if(ConfigOption.difficulty.equals("EASY")){
 			if(chapter == 1){
 				//fetch word
-				fetchWord(1,4,wave1);
-				for(String i: wave1){
+				fetchWord(1,4,current_wave);
+				for(String i: current_wave){
 					RenderableHolder.instance.add(new Zombie(1000+200*order+(int)(Math.random()*401),
 							90+(int)(Math.random()*601),i,gc));
 					order++;
@@ -300,15 +298,15 @@ public class GameLogic {
 			}
 			if(chapter == 2){
 				//fetch word
-				fetchWord(1,3,wave1);
-				fetchWord(2,4,wave1);
-				for(String i: wave1.subList(0, 2)){
+				fetchWord(1,3,current_wave);
+				fetchWord(2,4,current_wave);
+				for(String i: current_wave.subList(0, 2)){
 					RenderableHolder.instance.add(new Dog(1200+300*order+(int)(Math.random()*401),
 							90+(int)(Math.random()*601),i,gc));
 					order++;
 				}
 				order = 1;
-				for(String i : wave1.subList(2, 7)){
+				for(String i : current_wave.subList(2, 7)){
 					RenderableHolder.instance.add(new Zombie(1200+200*order+(int)(Math.random()*301),
 							90+(int)(Math.random()*601),i,gc));
 					order++;
@@ -316,15 +314,15 @@ public class GameLogic {
 			}
 			if(chapter == 3){
 				//fetch word
-				fetchWord(1,4,wave1);
-				fetchWord(2,6,wave1);
-				for(String i: wave1.subList(0, 4)){
+				fetchWord(1,4,current_wave);
+				fetchWord(2,6,current_wave);
+				for(String i: current_wave.subList(0, 4)){
 					RenderableHolder.instance.add(new Dog(1000+200*order+(int)(Math.random()*351),
 							90+(int)(Math.random()*601),i,gc));
 					order++;
 				}
 				order = 1;
-				for(String i: wave1.subList(4, 10)){
+				for(String i: current_wave.subList(4, 10)){
 					RenderableHolder.instance.add(new Zombie(1000+200*order+(int)(Math.random()*251),
 							90+(int)(Math.random()*601),i,gc));
 					order++;
@@ -335,39 +333,39 @@ public class GameLogic {
 		}
 		else if (ConfigOption.difficulty.equals("MEDIUM")){
 			if(chapter==1){
-				fetchWord(1,3,wave1);
-				fetchWord(2,2,wave1);
-				for(String i: wave1){
+				fetchWord(1,3,current_wave);
+				fetchWord(2,2,current_wave);
+				for(String i: current_wave){
 					RenderableHolder.instance.add(new Zombie(1000+200*order+(int)(Math.random()*351),
 							90+(int)(Math.random()*601),i,gc));
 					order++;
 				}
 			}
 			if(chapter==2){
-				fetchWord(2,5,wave1);
-				fetchWord(3,1,wave1);
-				for(String i: wave1.subList(0, 3)){
+				fetchWord(2,5,current_wave);
+				fetchWord(3,1,current_wave);
+				for(String i: current_wave.subList(0, 3)){
 					RenderableHolder.instance.add(new Dog(1000+200*order+(int)(Math.random()*401),
 							90+(int)(Math.random()*601),i,gc));
 					order++;
 				}
 				order = 1;
-				for(String i: wave1.subList(3, 6)){
+				for(String i: current_wave.subList(3, 6)){
 					RenderableHolder.instance.add(new Zombie(1000+200*order+(int)(Math.random()*301),
 							90+(int)(Math.random()*601),i,gc));
 					order++;
 				}
 			}
 			if(chapter==3){
-				fetchWord(2,6,wave1);
-				fetchWord(3,3,wave1);
-				for(String i: wave1.subList(0, 4)){
+				fetchWord(2,6,current_wave);
+				fetchWord(3,3,current_wave);
+				for(String i: current_wave.subList(0, 4)){
 					RenderableHolder.instance.add(new Dog(1000+200*order+(int)(Math.random()*301),
 							90+(int)(Math.random()*601),i,gc));
 					order++;
 				}
 				order=1;
-				for(String i: wave1.subList(4, 9)){
+				for(String i: current_wave.subList(4, 9)){
 					RenderableHolder.instance.add(new Zombie(1000+200*order+(int)(Math.random()*251),
 							90+(int)(Math.random()*601),i,gc));
 					order++;
@@ -378,40 +376,40 @@ public class GameLogic {
 		}
 		else if (ConfigOption.difficulty.equals("HARD")){
 			if(chapter==1){
-				fetchWord(1,1,wave1);
-				fetchWord(2,4,wave1);
-				for(String i: wave1){
+				fetchWord(1,1,current_wave);
+				fetchWord(2,4,current_wave);
+				for(String i: current_wave){
 					RenderableHolder.instance.add(new Zombie(1000+200*order+(int)(Math.random()*351),
 							90+(int)(Math.random()*601),i,gc));
 					order++;
 				}
 			}
 			if(chapter==2){
-				fetchWord(2,6,wave1);
-				fetchWord(3,3,wave1);
-				for(String i: wave1.subList(0, 4)){
+				fetchWord(2,6,current_wave);
+				fetchWord(3,3,current_wave);
+				for(String i: current_wave.subList(0, 4)){
 					RenderableHolder.instance.add(new Dog(1000+200*order+(int)(Math.random()*351),
 							90+(int)(Math.random()*601),i,gc));
 					order++;
 				}
 				order = 1;
-				for(String i: wave1.subList(4, 9)){
+				for(String i: current_wave.subList(4, 9)){
 					RenderableHolder.instance.add(new Zombie(1000+200*order+(int)(Math.random()*301),
 							90+(int)(Math.random()*601),i,gc));
 					order++;
 				}
 			}
 			if(chapter==3){
-				fetchWord(1,2,wave1);
-				fetchWord(2,5,wave1);
-				fetchWord(3,4,wave1);
-				for(String i: wave1.subList(0, 4)){
+				fetchWord(1,2,current_wave);
+				fetchWord(2,5,current_wave);
+				fetchWord(3,4,current_wave);
+				for(String i: current_wave.subList(0, 4)){
 					RenderableHolder.instance.add(new Dog(1000+200*order+(int)(Math.random()*251),
 							90+(int)(Math.random()*601),i,gc));
 					order++;
 				}
 				order=1;
-				for(String i: wave1.subList(4, 11)){
+				for(String i: current_wave.subList(4, 11)){
 					RenderableHolder.instance.add(new Zombie(1000+200*order+(int)(Math.random()*251),
 							90+(int)(Math.random()*601),i,gc));
 					order++;
@@ -425,6 +423,8 @@ public class GameLogic {
 	//fetch word
 	private void fetchWord(int rank,int amount,ArrayList<String> wave){
 		String[] a = ConfigOption.getRank(rank);
+		String word;
+		String char1;
 		int range = a.length;
 		for(int i =0;i<amount;i++){
 			do{
@@ -437,7 +437,7 @@ public class GameLogic {
 		}
 	}
 	
-	public void removeSpace(ArrayList<String> wave){
+	private void removeSpace(ArrayList<String> wave){
 		for(int i = 0;i<wave.size();i++){
 			wave.set(i, wave.get(i).replaceAll("\\s",""));
 		}
@@ -451,7 +451,7 @@ public class GameLogic {
 	}
 	
 	//Call draw in RenderableHolder
-	public void paint(){
+	private void paint(){
 		for(int i=0;i<RenderableHolder.instance.getEntities().size();i++){
 			RenderableHolder.instance.getEntities().get(i).draw(gc);
 		}

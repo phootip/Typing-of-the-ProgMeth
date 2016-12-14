@@ -20,15 +20,6 @@ public class RenderableHolder {
 		};
 	}
 	
-	static {
-		loadResource();
-	}
-	
-	//load image
-	private static void loadResource(){
-		
-	}
-	
 	//sort method
 	public void sort(){
 		Collections.sort(entities,comparator);
@@ -49,9 +40,6 @@ public class RenderableHolder {
 	
 	
 	//getter
-	public RenderableHolder getInstance(){
-		return instance;
-	}
 	public synchronized List<IRenderable> getEntities(){
 		return entities;
 	}

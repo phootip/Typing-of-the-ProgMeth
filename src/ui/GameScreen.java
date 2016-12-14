@@ -28,12 +28,4 @@ public class GameScreen extends StackPane{
 		
 		this.getChildren().add(canvas);
 	}
-	
-	public void initializeGameScreen(){
-		gameLogic.setIRenderable();
-	}
-	
-	public void GameStart(){
-		gameLogic.GameLoopStart();
-	}
 }

@@ -5,7 +5,7 @@ import javafx.scene.control.Alert.AlertType;
 
 public class NonameException extends Exception{
 	
-	Alert alert;
+	private Alert alert;
 	public NonameException(){
 		alert = new Alert(AlertType.ERROR);
 		alert.setHeaderText(null);
